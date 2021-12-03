@@ -75,7 +75,10 @@ function TermsAndConditions(props: Props) {
               <CheckboxLabel>
                 <Trans i18nKey="app.terms-and-conditions.checkbox.2.label">
                   I have read, understood and agree to the
-                  <ExternalLink href="https://github.com/bajetech/AstraX/blob/main/LICENSE">Terms and Conditions</ExternalLink> &amp;
+                  <ExternalLink href="https://github.com/bajetech/AstraX/blob/main/LICENSE">
+                    Terms and Conditions
+                  </ExternalLink>{" "}
+                  &amp;
                   <ExternalLink href="https://digitalbits.io/privacy-policy">Privacy policy</ExternalLink> of Solar.
                 </Trans>
               </CheckboxLabel>

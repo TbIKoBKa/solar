@@ -1506,7 +1506,7 @@ Here's a very simple example of creating a custom Jump List:
      *
      * @platform win32
      */
-    setJumpList(categories: (JumpListCategory[]) | (null)): void
+    setJumpList(categories: JumpListCategory[] | null): void
     /**
      * Set the app's login item settings.
      *
@@ -1636,7 +1636,7 @@ Here's a very simple example of creating a custom Jump List:
      * A `Menu | null` property that returns `Menu` if one has been set and `null`
      * otherwise. Users can pass a Menu to set this property.
      */
-    applicationMenu: (Menu) | (null)
+    applicationMenu: Menu | null
     /**
      * An `Integer` property that returns the badge count for current app. Setting the
      * count to `0` will hide the badge.
@@ -1810,7 +1810,7 @@ Here's a very simple example of creating a custom Jump List:
      * The BrowserView that owns the given `webContents` or `null` if the contents are
      * not owned by a BrowserView.
      */
-    static fromWebContents(webContents: WebContents): (BrowserView) | (null)
+    static fromWebContents(webContents: WebContents): BrowserView | null
     /**
      * An array of all opened BrowserViews.
      */
@@ -2269,7 +2269,7 @@ __Note__: On macOS this event is an alias of `moved`.
      * The window that owns the given `browserView`. If the given view is not attached
      * to any window, returns `null`.
      */
-    static fromBrowserView(browserView: BrowserView): (BrowserWindow) | (null)
+    static fromBrowserView(browserView: BrowserView): BrowserWindow | null
     /**
      * The window with the given `id`.
      */
@@ -2278,7 +2278,7 @@ __Note__: On macOS this event is an alias of `moved`.
      * The window that owns the given `webContents` or `null` if the contents are not
      * owned by a window.
      */
-    static fromWebContents(webContents: WebContents): (BrowserWindow) | (null)
+    static fromWebContents(webContents: WebContents): BrowserWindow | null
     /**
      * An array of all opened browser windows.
      */
@@ -2304,7 +2304,7 @@ __Note__: On macOS this event is an alias of `moved`.
     /**
      * The window that is focused in this application, otherwise returns `null`.
      */
-    static getFocusedWindow(): (BrowserWindow) | (null)
+    static getFocusedWindow(): BrowserWindow | null
     /**
      * Remove a DevTools extension by name.
      *
@@ -2384,7 +2384,7 @@ __Note__: On macOS this event is an alias of `moved`.
      *
      * @experimental
      */
-    getBrowserView(): (BrowserView) | (null)
+    getBrowserView(): BrowserView | null
     /**
      * an array of all BrowserViews that have been attached with `addBrowserView` or
      * `setBrowserView`.
@@ -2785,7 +2785,7 @@ On Linux always returns `true`.
      * supplied will default to their current values.
      */
     setBounds(bounds: Partial<Rectangle>, animate?: boolean): void
-    setBrowserView(browserView: (BrowserView) | (null)): void
+    setBrowserView(browserView: BrowserView | null): void
     /**
      * Sets whether the window can be manually closed by user. On Linux does nothing.
      *
@@ -2851,7 +2851,7 @@ On macOS it does not remove the focus from the window.
      *
      * @platform win32,linux
      */
-    setIcon(icon: (NativeImage) | (string)): void
+    setIcon(icon: NativeImage | string): void
     /**
      * Makes the window ignore all mouse events.
      *
@@ -2881,7 +2881,7 @@ On macOS it does not remove the focus from the window.
      *
      * @platform linux,win32
      */
-    setMenu(menu: (Menu) | (null)): void
+    setMenu(menu: Menu | null): void
     /**
      * Sets whether the menu bar should be visible. If the menu bar is auto-hide, users
      * can still bring up the menu bar by pressing the single `Alt` key.
@@ -2923,12 +2923,12 @@ On macOS it does not remove the focus from the window.
      *
      * @platform win32
      */
-    setOverlayIcon(overlay: (NativeImage) | (null), description: string): void
+    setOverlayIcon(overlay: NativeImage | null, description: string): void
     /**
      * Sets `parent` as current window's parent window, passing `null` will turn
      * current window into a top-level window.
      */
-    setParentWindow(parent: (BrowserWindow) | (null)): void
+    setParentWindow(parent: BrowserWindow | null): void
     /**
      * Moves window to `x` and `y`.
      */
@@ -3066,7 +3066,7 @@ On macOS it does not remove the focus from the window.
      * @experimental
      * @platform darwin
      */
-    setTouchBar(touchBar: (TouchBar) | (null)): void
+    setTouchBar(touchBar: TouchBar | null): void
     /**
      * Adds a vibrancy effect to the browser window. Passing `null` or an empty string
      * will remove the vibrancy effect on the window.
@@ -3097,7 +3097,7 @@ On macOS it does not remove the focus from the window.
         | "content"
         | "under-window"
         | "under-page"
-        | (null)
+        | null
     ): void
     /**
      * Sets whether the window should be visible on all workspaces.
@@ -3448,7 +3448,7 @@ This cannot be called when `titleBarStyle` is set to `customButtonsOnHover`.
     /**
      * ClientRequest
      */
-    constructor(options: (ClientRequestConstructorOptions) | (string))
+    constructor(options: ClientRequestConstructorOptions | string)
     /**
      * Cancels an ongoing HTTP transaction. If the request has already emitted the
      * `close` event, the abort operation will have no effect. Otherwise an ongoing
@@ -3460,7 +3460,7 @@ This cannot be called when `titleBarStyle` is set to `customButtonsOnHover`.
      * Sends the last chunk of the request data. Subsequent write or end operations
      * will not be allowed. The `finish` event is emitted just after the end operation.
      */
-    end(chunk?: (string) | (Buffer), encoding?: string, callback?: () => void): void
+    end(chunk?: string | Buffer, encoding?: string, callback?: () => void): void
     /**
      * Continues any pending redirection. Can only be called during a `'redirect'`
      * event.
@@ -3505,7 +3505,7 @@ This cannot be called when `titleBarStyle` is set to `customButtonsOnHover`.
      * the request headers to be issued on the wire. After the first write operation,
      * it is not allowed to add or remove a custom header.
      */
-    write(chunk: (string) | (Buffer), encoding?: string, callback?: () => void): void
+    write(chunk: string | Buffer, encoding?: string, callback?: () => void): void
     chunkedEncoding: boolean
   }
 
@@ -3691,7 +3691,7 @@ This cannot be called when `titleBarStyle` is set to `customButtonsOnHover`.
      * If a recording is already running, the promise will be immediately resolved, as
      * only one trace operation can be in progress at a time.
      */
-    startRecording(options: (TraceConfig) | (TraceCategoriesAndOptions)): Promise<void>
+    startRecording(options: TraceConfig | TraceCategoriesAndOptions): Promise<void>
     /**
      * resolves with a path to a file that contains the traced data once all child
      * processes have acknowledged the `stopRecording` request
@@ -4262,7 +4262,7 @@ Send given command to the debugging target.
      * and a directory selector, so if you set `properties` to `['openFile',
      * 'openDirectory']` on these platforms, a directory selector will be shown.
      */
-    showOpenDialogSync(browserWindow: BrowserWindow, options: OpenDialogSyncOptions): (string[]) | (undefined)
+    showOpenDialogSync(browserWindow: BrowserWindow, options: OpenDialogSyncOptions): string[] | undefined
     /**
      * the file paths chosen by the user; if the dialog is cancelled it returns
      * `undefined`.
@@ -4281,7 +4281,7 @@ Send given command to the debugging target.
      * and a directory selector, so if you set `properties` to `['openFile',
      * 'openDirectory']` on these platforms, a directory selector will be shown.
      */
-    showOpenDialogSync(options: OpenDialogSyncOptions): (string[]) | (undefined)
+    showOpenDialogSync(options: OpenDialogSyncOptions): string[] | undefined
     /**
      * Resolve with an object containing the following:
      *
@@ -4334,7 +4334,7 @@ Send given command to the debugging target.
      * The `filters` specifies an array of file types that can be displayed, see
      * `dialog.showOpenDialog` for an example.
      */
-    showSaveDialogSync(browserWindow: BrowserWindow, options: SaveDialogSyncOptions): (string) | (undefined)
+    showSaveDialogSync(browserWindow: BrowserWindow, options: SaveDialogSyncOptions): string | undefined
     /**
      * the path of the file chosen by the user; if the dialog is cancelled it returns
      * `undefined`.
@@ -4345,7 +4345,7 @@ Send given command to the debugging target.
      * The `filters` specifies an array of file types that can be displayed, see
      * `dialog.showOpenDialog` for an example.
      */
-    showSaveDialogSync(options: SaveDialogSyncOptions): (string) | (undefined)
+    showSaveDialogSync(options: SaveDialogSyncOptions): string | undefined
   }
 
   interface Display {
@@ -4440,7 +4440,7 @@ Send given command to the debugging target.
      *
      * @platform darwin
      */
-    getMenu(): (Menu) | (null)
+    getMenu(): Menu | null
     /**
      * Hides the dock icon.
      *
@@ -4464,7 +4464,7 @@ Send given command to the debugging target.
      *
      * @platform darwin
      */
-    setIcon(image: (NativeImage) | (string)): void
+    setIcon(image: NativeImage | string): void
     /**
      * Sets the application's [dock menu][dock-menu].
      *
@@ -5031,12 +5031,12 @@ Retrieves the product descriptions.
      * that passed to a regular event listener. It includes information about which
      * WebContents is the source of the invoke request.
      */
-    handle(channel: string, listener: (event: IpcMainInvokeEvent, ...args: any[]) => (Promise<void>) | (any)): void
+    handle(channel: string, listener: (event: IpcMainInvokeEvent, ...args: any[]) => Promise<void> | any): void
     /**
      * Handles a single `invoke`able IPC message, then removes the listener. See
      * `ipcMain.handle(channel, listener)`.
      */
-    handleOnce(channel: string, listener: (event: IpcMainInvokeEvent, ...args: any[]) => (Promise<void>) | (any)): void
+    handleOnce(channel: string, listener: (event: IpcMainInvokeEvent, ...args: any[]) => Promise<void> | any): void
     /**
      * Listens to `channel`, when a new message arrives `listener` would be called with
      * `listener(event, args...)`.
@@ -5365,14 +5365,14 @@ For example:
      * You can also attach other fields to the element of the `template` and they will
      * become properties of the constructed menu items.
      */
-    static buildFromTemplate(template: Array<(MenuItemConstructorOptions) | (MenuItem)>): Menu
+    static buildFromTemplate(template: Array<MenuItemConstructorOptions | MenuItem>): Menu
     /**
      * The application menu, if set, or `null`, if not set.
      *
      * **Note:** The returned `Menu` instance doesn't support dynamic addition or
      * removal of menu items. Instance properties can still be dynamically modified.
      */
-    static getApplicationMenu(): (Menu) | (null)
+    static getApplicationMenu(): Menu | null
     /**
      * Sends the `action` to the first responder of application. This is used for
      * emulating default macOS menu behaviors. Usually you would use the `role`
@@ -5401,7 +5401,7 @@ For example:
      * one. It contains standard items such as `File`, `Edit`, `View`, `Window` and
      * `Help`.
      */
-    static setApplicationMenu(menu: (Menu) | (null)): void
+    static setApplicationMenu(menu: Menu | null): void
     /**
      * Appends the `menuItem` to the menu.
      */
@@ -5437,7 +5437,7 @@ For example:
     click: Function
     commandId: number
     enabled: boolean
-    icon?: (NativeImage) | (string)
+    icon?: NativeImage | string
     id: string
     label: string
     menu: Menu
@@ -5762,7 +5762,7 @@ where `SYSTEM_IMAGE_NAME` should be replaced with any value from this list.
      * would be used to issue both secure and insecure HTTP requests according to the
      * specified protocol scheme in the `options` object.
      */
-    request(options: (ClientRequestConstructorOptions) | (string)): ClientRequest
+    request(options: ClientRequestConstructorOptions | string): ClientRequest
   }
 
   interface NetLog {
@@ -6228,10 +6228,7 @@ Calculate system idle time in seconds.
      */
     interceptStreamProtocol(
       scheme: string,
-      handler: (
-        request: Request,
-        callback: (stream?: (NodeJS.ReadableStream) | (StreamProtocolResponse)) => void
-      ) => void,
+      handler: (request: Request, callback: (stream?: NodeJS.ReadableStream | StreamProtocolResponse) => void) => void,
       completion?: (error: Error) => void
     ): void
     /**
@@ -6240,7 +6237,7 @@ Calculate system idle time in seconds.
      */
     interceptStringProtocol(
       scheme: string,
-      handler: (request: Request, callback: (data?: (string) | (StringProtocolResponse)) => void) => void,
+      handler: (request: Request, callback: (data?: string | StringProtocolResponse) => void) => void,
       completion?: (error: Error) => void
     ): void
     /**
@@ -6259,7 +6256,7 @@ Example:
      */
     registerBufferProtocol(
       scheme: string,
-      handler: (request: Request, callback: (buffer?: (Buffer) | (MimeTypedBuffer)) => void) => void,
+      handler: (request: Request, callback: (buffer?: Buffer | MimeTypedBuffer) => void) => void,
       completion?: (error: Error) => void
     ): void
     /**
@@ -6285,7 +6282,7 @@ Example:
      */
     registerFileProtocol(
       scheme: string,
-      handler: (request: Request, callback: (filePath?: (string) | (FilePathWithHeaders)) => void) => void,
+      handler: (request: Request, callback: (filePath?: string | FilePathWithHeaders) => void) => void,
       completion?: (error: Error) => void
     ): void
     /**
@@ -6360,10 +6357,7 @@ For POST requests the `uploadData` object must be provided.
      */
     registerStreamProtocol(
       scheme: string,
-      handler: (
-        request: Request,
-        callback: (stream?: (NodeJS.ReadableStream) | (StreamProtocolResponse)) => void
-      ) => void,
+      handler: (request: Request, callback: (stream?: NodeJS.ReadableStream | StreamProtocolResponse) => void) => void,
       completion?: (error: Error) => void
     ): void
     /**
@@ -6375,7 +6369,7 @@ For POST requests the `uploadData` object must be provided.
      */
     registerStringProtocol(
       scheme: string,
-      handler: (request: Request, callback: (data?: (string) | (StringProtocolResponse)) => void) => void,
+      handler: (request: Request, callback: (data?: string | StringProtocolResponse) => void) => void,
       completion?: (error: Error) => void
     ): void
     /**
@@ -6410,7 +6404,7 @@ For POST requests the `uploadData` object must be provided.
      * is a `Buffer`. When returning `String` as response, this is a `String`. This is
      * ignored for other types of responses.
      */
-    data?: (Buffer) | (string) | (NodeJS.ReadableStream)
+    data?: Buffer | string | NodeJS.ReadableStream
     /**
      * When assigned, the `request` will fail with the `error` number . For the
      * available error numbers you can use, please see the net error list.
@@ -6420,7 +6414,7 @@ For POST requests the `uploadData` object must be provided.
      * An object containing the response headers. The keys must be String, and values
      * must be either String or Array of String.
      */
-    headers?: Record<string, (string) | (string[])>
+    headers?: Record<string, string | string[]>
     /**
      * The HTTP `method`. This is only used for file and URL responses.
      */
@@ -6472,7 +6466,7 @@ For POST requests the `uploadData` object must be provided.
     /**
      * Content to be sent.
      */
-    data: (string) | (Buffer)
+    data: string | Buffer
   }
 
   interface Rectangle {
@@ -6651,7 +6645,7 @@ e.g.
      *
      * @platform win32
      */
-    dipToScreenRect(window: (BrowserWindow) | (null), rect: Rectangle): Rectangle
+    dipToScreenRect(window: BrowserWindow | null, rect: Rectangle): Rectangle
     /**
      * An array of displays that are currently available.
      */
@@ -6686,7 +6680,7 @@ e.g.
      *
      * @platform win32
      */
-    screenToDipRect(window: (BrowserWindow) | (null), rect: Rectangle): Rectangle
+    screenToDipRect(window: BrowserWindow | null, rect: Rectangle): Rectangle
   }
 
   interface ScrubberItem {
@@ -6836,7 +6830,7 @@ e.g.
     /**
      * resolves when the session’s HTTP authentication cache has been cleared.
      */
-    clearAuthCache(options: (RemovePassword) | (RemoveClientCertificate)): Promise<void>
+    clearAuthCache(options: RemovePassword | RemoveClientCertificate): Promise<void>
     /**
      * resolves when the cache clear operation is complete.
      * 
@@ -6926,9 +6920,7 @@ Clears the host resolver cache.
      * verify proc.
      */
     setCertificateVerifyProc(
-      proc:
-        | ((request: CertificateVerifyProcProcRequest, callback: (verificationResult: number) => void) => void)
-        | (null)
+      proc: ((request: CertificateVerifyProcProcRequest, callback: (verificationResult: number) => void) => void) | null
     ): void
     /**
      * Sets download saving directory. By default, the download directory will be the
@@ -6943,7 +6935,7 @@ Clears the host resolver cache.
     setPermissionCheckHandler(
       handler:
         | ((webContents: WebContents, permission: string, requestingOrigin: string, details: Details) => boolean)
-        | (null)
+        | null
     ): void
     /**
      * Sets the handler which can be used to respond to permission requests for the
@@ -6959,7 +6951,7 @@ Clears the host resolver cache.
             callback: (permissionGranted: boolean) => void,
             details: PermissionRequestHandlerHandlerDetails
           ) => void)
-        | (null)
+        | null
     ): void
     /**
      * Adds scripts that will be executed on ALL web contents that are associated with
@@ -7185,11 +7177,11 @@ Creates or updates a shortcut link at `shortcutPath`.
     /**
      * A Node.js readable stream representing the response body.
      */
-    data: (NodeJS.ReadableStream) | (null)
+    data: NodeJS.ReadableStream | null
     /**
      * An object containing the response headers.
      */
-    headers?: Record<string, (string) | (string[])>
+    headers?: Record<string, string | string[]>
     /**
      * The HTTP response code.
      */
@@ -7206,7 +7198,7 @@ Creates or updates a shortcut link at `shortcutPath`.
     /**
      * A string representing the response body.
      */
-    data: (string) | (null)
+    data: string | null
     /**
      * MIME type of the response.
      */
@@ -7657,7 +7649,7 @@ Returns an object with system animation settings.
      *
      * @platform darwin
      */
-    registerDefaults(defaults: Record<string, (string) | (boolean) | (number)>): void
+    registerDefaults(defaults: Record<string, string | boolean | number>): void
     /**
      * Removes the `key` in `NSUserDefaults`. This can be used to restore the default
      * or global value of a `key` previously set with `setUserDefault`.
@@ -7674,7 +7666,7 @@ Returns an object with system animation settings.
      * @deprecated
      * @platform darwin
      */
-    setAppLevelAppearance(appearance: "dark" | "light" | (null)): void
+    setAppLevelAppearance(appearance: "dark" | "light" | null): void
     /**
      * Set the value of `key` in `NSUserDefaults`.
      *
@@ -8534,7 +8526,7 @@ This property is only available on macOS 10.14 Mojave or newer.
     /**
      * Tray
      */
-    constructor(image: (NativeImage) | (string))
+    constructor(image: NativeImage | string)
     /**
      * Destroys the tray icon immediately.
      */
@@ -8594,7 +8586,7 @@ The `position` is only available on Windows, and it is (0, 0) by default.
     /**
      * Sets the context menu for this icon.
      */
-    setContextMenu(menu: (Menu) | (null)): void
+    setContextMenu(menu: Menu | null): void
     /**
      * Sets the option to ignore double click events. Ignoring these events allows you
      * to detect every individual click of the tray icon.
@@ -8607,13 +8599,13 @@ This value is set to false by default.
     /**
      * Sets the `image` associated with this tray icon.
      */
-    setImage(image: (NativeImage) | (string)): void
+    setImage(image: NativeImage | string): void
     /**
      * Sets the `image` associated with this tray icon when pressed on macOS.
      *
      * @platform darwin
      */
-    setPressedImage(image: (NativeImage) | (string)): void
+    setPressedImage(image: NativeImage | string): void
     /**
      * Sets the title displayed next to the tray icon in the status bar (Support ANSI
      * colors).
@@ -9039,7 +9031,7 @@ The usage is the same with the `certificate-error` event of `app`.
         /**
          * Theme color is in format of '#rrggbb'. It is `null` when no theme color is set.
          */
-        color: (string) | (null)
+        color: string | null
       ) => void
     ): this
     once(
@@ -9049,7 +9041,7 @@ The usage is the same with the `certificate-error` event of `app`.
         /**
          * Theme color is in format of '#rrggbb'. It is `null` when no theme color is set.
          */
-        color: (string) | (null)
+        color: string | null
       ) => void
     ): this
     addListener(
@@ -9059,7 +9051,7 @@ The usage is the same with the `certificate-error` event of `app`.
         /**
          * Theme color is in format of '#rrggbb'. It is `null` when no theme color is set.
          */
-        color: (string) | (null)
+        color: string | null
       ) => void
     ): this
     removeListener(
@@ -9069,7 +9061,7 @@ The usage is the same with the `certificate-error` event of `app`.
         /**
          * Theme color is in format of '#rrggbb'. It is `null` when no theme color is set.
          */
-        color: (string) | (null)
+        color: string | null
       ) => void
     ): this
     /**
@@ -10626,7 +10618,7 @@ An example of sending messages from the main process to the renderer process:
      * Sends an input `event` to the page. **Note:** The `BrowserWindow` containing the
      * contents needs to be focused for `sendInputEvent()` to work.
      */
-    sendInputEvent(inputEvent: (MouseInputEvent) | (MouseWheelInputEvent) | (KeyboardInputEvent)): void
+    sendInputEvent(inputEvent: MouseInputEvent | MouseWheelInputEvent | KeyboardInputEvent): void
     /**
      * Send an asynchronous message to a specific frame in a renderer process via
      * `channel`, along with arguments. Arguments will be serialized with the
@@ -10935,27 +10927,27 @@ An example of using node-spellchecker as provider:
      * in the current renderer process.
      *
      */
-    readonly firstChild: (WebFrame) | (null)
+    readonly firstChild: WebFrame | null
     /**
      * A `WebFrame | null` representing next sibling frame, the property would be
      * `null` if `webFrame` is the last frame in its parent or if the next sibling is
      * not in the current renderer process.
      *
      */
-    readonly nextSibling: (WebFrame) | (null)
+    readonly nextSibling: WebFrame | null
     /**
      * A `WebFrame | null` representing the frame which opened `webFrame`, the property
      * would be `null` if there's no opener or opener is not in the current renderer
      * process.
      *
      */
-    readonly opener: (WebFrame) | (null)
+    readonly opener: WebFrame | null
     /**
      * A `WebFrame | null` representing parent frame of `webFrame`, the property would
      * be `null` if `webFrame` is top or parent is not in the current renderer process.
      *
      */
-    readonly parent: (WebFrame) | (null)
+    readonly parent: WebFrame | null
     /**
      * An `Integer` representing the unique frame id in the current renderer process.
      * Distinct WebFrame instances that refer to the same underlying frame will have
@@ -10969,7 +10961,7 @@ An example of using node-spellchecker as provider:
      * current renderer process.
      *
      */
-    readonly top: (WebFrame) | (null)
+    readonly top: WebFrame | null
   }
 
   class WebRequest {
@@ -10979,12 +10971,12 @@ An example of using node-spellchecker as provider:
      * The `listener` will be called with `listener(details)` when a server initiated
      * redirect is about to occur.
      */
-    onBeforeRedirect(filter: Filter, listener: ((details: OnBeforeRedirectListenerDetails) => void) | (null)): void
+    onBeforeRedirect(filter: Filter, listener: ((details: OnBeforeRedirectListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` when a server initiated
      * redirect is about to occur.
      */
-    onBeforeRedirect(listener: ((details: OnBeforeRedirectListenerDetails) => void) | (null)): void
+    onBeforeRedirect(listener: ((details: OnBeforeRedirectListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details, callback)` when a request
      * is about to occur.
@@ -10997,7 +10989,7 @@ Some examples of valid `urls`:
      */
     onBeforeRequest(
       filter: Filter,
-      listener: ((details: OnBeforeRequestListenerDetails, callback: (response: Response) => void) => void) | (null)
+      listener: ((details: OnBeforeRequestListenerDetails, callback: (response: Response) => void) => void) | null
     ): void
     /**
      * The `listener` will be called with `listener(details, callback)` when a request
@@ -11010,7 +11002,7 @@ Some examples of valid `urls`:
 Some examples of valid `urls`:
      */
     onBeforeRequest(
-      listener: ((details: OnBeforeRequestListenerDetails, callback: (response: Response) => void) => void) | (null)
+      listener: ((details: OnBeforeRequestListenerDetails, callback: (response: Response) => void) => void) | null
     ): void
     /**
      * The `listener` will be called with `listener(details, callback)` before sending
@@ -11026,7 +11018,7 @@ The `callback` has to be called with a `response` object.
             details: OnBeforeSendHeadersListenerDetails,
             callback: (beforeSendResponse: BeforeSendResponse) => void
           ) => void)
-        | (null)
+        | null
     ): void
     /**
      * The `listener` will be called with `listener(details, callback)` before sending
@@ -11041,26 +11033,26 @@ The `callback` has to be called with a `response` object.
             details: OnBeforeSendHeadersListenerDetails,
             callback: (beforeSendResponse: BeforeSendResponse) => void
           ) => void)
-        | (null)
+        | null
     ): void
     /**
      * The `listener` will be called with `listener(details)` when a request is
      * completed.
      */
-    onCompleted(filter: Filter, listener: ((details: OnCompletedListenerDetails) => void) | (null)): void
+    onCompleted(filter: Filter, listener: ((details: OnCompletedListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` when a request is
      * completed.
      */
-    onCompleted(listener: ((details: OnCompletedListenerDetails) => void) | (null)): void
+    onCompleted(listener: ((details: OnCompletedListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` when an error occurs.
      */
-    onErrorOccurred(filter: Filter, listener: ((details: OnErrorOccurredListenerDetails) => void) | (null)): void
+    onErrorOccurred(filter: Filter, listener: ((details: OnErrorOccurredListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` when an error occurs.
      */
-    onErrorOccurred(listener: ((details: OnErrorOccurredListenerDetails) => void) | (null)): void
+    onErrorOccurred(listener: ((details: OnErrorOccurredListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details, callback)` when HTTP
      * response headers of a request have been received.
@@ -11074,7 +11066,7 @@ The `callback` has to be called with a `response` object.
             details: OnHeadersReceivedListenerDetails,
             callback: (headersReceivedResponse: HeadersReceivedResponse) => void
           ) => void)
-        | (null)
+        | null
     ): void
     /**
      * The `listener` will be called with `listener(details, callback)` when HTTP
@@ -11088,32 +11080,32 @@ The `callback` has to be called with a `response` object.
             details: OnHeadersReceivedListenerDetails,
             callback: (headersReceivedResponse: HeadersReceivedResponse) => void
           ) => void)
-        | (null)
+        | null
     ): void
     /**
      * The `listener` will be called with `listener(details)` when first byte of the
      * response body is received. For HTTP requests, this means that the status line
      * and response headers are available.
      */
-    onResponseStarted(filter: Filter, listener: ((details: OnResponseStartedListenerDetails) => void) | (null)): void
+    onResponseStarted(filter: Filter, listener: ((details: OnResponseStartedListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` when first byte of the
      * response body is received. For HTTP requests, this means that the status line
      * and response headers are available.
      */
-    onResponseStarted(listener: ((details: OnResponseStartedListenerDetails) => void) | (null)): void
+    onResponseStarted(listener: ((details: OnResponseStartedListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` just before a request is
      * going to be sent to the server, modifications of previous `onBeforeSendHeaders`
      * response are visible by the time this listener is fired.
      */
-    onSendHeaders(filter: Filter, listener: ((details: OnSendHeadersListenerDetails) => void) | (null)): void
+    onSendHeaders(filter: Filter, listener: ((details: OnSendHeadersListenerDetails) => void) | null): void
     /**
      * The `listener` will be called with `listener(details)` just before a request is
      * going to be sent to the server, modifications of previous `onBeforeSendHeaders`
      * response are visible by the time this listener is fired.
      */
-    onSendHeaders(listener: ((details: OnSendHeadersListenerDetails) => void) | (null)): void
+    onSendHeaders(listener: ((details: OnSendHeadersListenerDetails) => void) | null): void
   }
 
   interface WebSource {
@@ -11590,7 +11582,7 @@ See webContents.send for examples.
      * 
 See webContents.sendInputEvent for detailed description of `event` object.
      */
-    sendInputEvent(event: (MouseInputEvent) | (MouseWheelInputEvent) | (KeyboardInputEvent)): Promise<void>
+    sendInputEvent(event: MouseInputEvent | MouseWheelInputEvent | KeyboardInputEvent): Promise<void>
     /**
      * Set guest page muted.
      */
@@ -11903,7 +11895,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * When provided, request will be made with these headers.
      */
-    requestHeaders?: Record<string, (string) | (string[])>
+    requestHeaders?: Record<string, string | string[]>
   }
 
   interface BitmapOptions {
@@ -12047,7 +12039,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
      * visual effects, you can also leave it undefined so the executable's icon will be
      * used.
      */
-    icon?: (NativeImage) | (string)
+    icon?: NativeImage | string
     /**
      * Whether window should be shown when created. Default is `true`.
      */
@@ -12603,7 +12595,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * Icon to use when `iconType` is `custom`.
      */
-    icon?: (NativeImage) | (string)
+    icon?: NativeImage | string
     /**
      * Can be `none`, `info`, `warning`, `error` or `custom`. Default is `custom`.
      */
@@ -12714,7 +12706,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * When provided, the server is assumed to have responded with these headers.
      */
-    responseHeaders?: Record<string, (string) | (string[])>
+    responseHeaders?: Record<string, string | string[]>
     /**
      * Should be provided when overriding `responseHeaders` to change header status
      * otherwise original response header's status will be used.
@@ -12823,11 +12815,11 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * The path(s) to the file(s) being dragged.
      */
-    file: (string[]) | (string)
+    file: string[] | string
     /**
      * The image must be non-empty on macOS.
      */
-    icon: (NativeImage) | (string)
+    icon: NativeImage | string
   }
 
   interface JumpListSettings {
@@ -12870,7 +12862,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * An HTTP Referrer url.
      */
-    httpReferrer?: (string) | (Referrer)
+    httpReferrer?: string | Referrer
     /**
      * A user agent originating the request.
      */
@@ -12879,7 +12871,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
      * Extra headers separated by "\n"
      */
     extraHeaders?: string
-    postData?: (UploadRawData[]) | (UploadFile[]) | (UploadBlob[])
+    postData?: UploadRawData[] | UploadFile[] | UploadBlob[]
     /**
      * Base url (with trailing path separator) for files to be loaded by the data url.
      * This is needed only if the specified `url` is a data url and needs to load other
@@ -13015,7 +13007,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
      */
     toolTip?: string
     accelerator?: Accelerator
-    icon?: (NativeImage) | (string)
+    icon?: NativeImage | string
     /**
      * If false, the menu item will be greyed out and unclickable.
      */
@@ -13047,7 +13039,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
      * the `type: 'submenu'` can be omitted. If the value is not a `Menu` then it will
      * be automatically converted to one using `Menu.buildFromTemplate`.
      */
-    submenu?: (MenuItemConstructorOptions[]) | (Menu)
+    submenu?: MenuItemConstructorOptions[] | Menu
     /**
      * Unique within a single menu. If defined then it can be used as a reference to
      * this item by the position attribute.
@@ -13193,7 +13185,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
      * Initial checked state of the checkbox. `false` by default.
      */
     checkboxChecked?: boolean
-    icon?: (NativeImage) | (string)
+    icon?: NativeImage | string
     /**
      * The index of the button to be used to cancel the dialog, via the `Esc` key. By
      * default this is assigned to the first button with "cancel" or "no" as the label.
@@ -13265,7 +13257,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * An icon to use in the notification.
      */
-    icon?: (string) | (NativeImage)
+    icon?: string | NativeImage
     /**
      * Whether or not to add an inline reply option to the notification.
      *
@@ -13676,7 +13668,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
      * Specify page size of the generated PDF. Can be `A3`, `A4`, `A5`, `Legal`,
      * `Letter`, `Tabloid` or an Object containing `height` and `width` in microns.
      */
-    pageSize?: (string) | (Size)
+    pageSize?: string | Size
     /**
      * Whether to print CSS backgrounds.
      */
@@ -13740,7 +13732,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
   interface RedirectRequest {
     url: string
     method?: string
-    session?: (Session) | (null)
+    session?: Session | null
     uploadData?: ProtocolResponseUploadData
   }
 
@@ -14050,7 +14042,7 @@ See webContents.sendInputEvent for detailed description of `event` object.
     /**
      * Button icon.
      */
-    icon?: (NativeImage) | (string)
+    icon?: NativeImage | string
     /**
      * Can be `left`, `right` or `overlay`. Defaults to `overlay`.
      */
@@ -14078,27 +14070,27 @@ See webContents.sendInputEvent for detailed description of `event` object.
 
   interface TouchBarConstructorOptions {
     items?: Array<
-      | (TouchBarButton)
-      | (TouchBarColorPicker)
-      | (TouchBarGroup)
-      | (TouchBarLabel)
-      | (TouchBarPopover)
-      | (TouchBarScrubber)
-      | (TouchBarSegmentedControl)
-      | (TouchBarSlider)
-      | (TouchBarSpacer)
+      | TouchBarButton
+      | TouchBarColorPicker
+      | TouchBarGroup
+      | TouchBarLabel
+      | TouchBarPopover
+      | TouchBarScrubber
+      | TouchBarSegmentedControl
+      | TouchBarSlider
+      | TouchBarSpacer
     >
     escapeItem?:
-      | (TouchBarButton)
-      | (TouchBarColorPicker)
-      | (TouchBarGroup)
-      | (TouchBarLabel)
-      | (TouchBarPopover)
-      | (TouchBarScrubber)
-      | (TouchBarSegmentedControl)
-      | (TouchBarSlider)
-      | (TouchBarSpacer)
-      | (null)
+      | TouchBarButton
+      | TouchBarColorPicker
+      | TouchBarGroup
+      | TouchBarLabel
+      | TouchBarPopover
+      | TouchBarScrubber
+      | TouchBarSegmentedControl
+      | TouchBarSlider
+      | TouchBarSpacer
+      | null
   }
 
   interface TouchBarGroupConstructorOptions {
@@ -14792,7 +14784,7 @@ declare namespace NodeJS {
      * number of milliseconds since epoch. It returns null if it is unable to get the
      * process creation time.
      */
-    getCreationTime(): (number) | (null)
+    getCreationTime(): number | null
     /**
      * * `totalHeapSize` Integer
      * * `totalHeapSizeExecutable` Integer
