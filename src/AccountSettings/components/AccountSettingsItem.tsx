@@ -25,7 +25,7 @@ const useAccountSettingsItemStyles = makeStyles({
   settingsItem: {
     position: "relative",
     padding: "16px 24px",
-    background: "#FFFFFF",
+    background: "#f0f2f6",
     boxShadow: "0 8px 12px 0 rgba(0, 0, 0, 0.1)",
 
     [breakpoints.down(600)]: {
@@ -33,10 +33,10 @@ const useAccountSettingsItemStyles = makeStyles({
     },
 
     "&:focus": {
-      backgroundColor: "#FFFFFF"
+      backgroundColor: "#f0f2f6"
     },
     "&$button:hover": {
-      backgroundColor: isMobileDevice ? "#FFFFFF" : "rgb(232, 232, 232)"
+      backgroundColor: isMobileDevice ? "#f0f2f6" : "rgb(232, 232, 232)"
     },
     "&:not(:first-child):not($subItem)": {
       borderTop: "1px solid rgba(230, 230, 230, 1.0)"

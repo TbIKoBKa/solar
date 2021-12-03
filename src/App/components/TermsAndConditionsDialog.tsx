@@ -14,7 +14,7 @@ import { Section } from "~Layout/components/Page"
 const Transition = React.forwardRef((props: TransitionProps, ref) => <Fade ref={ref} {...props} appear={false} />)
 
 function CheckboxLabel(props: { children: React.ReactNode }) {
-  return <span style={{ color: "white", fontSize: "120%" }}>{props.children}</span>
+  return <span style={{ color: "#f0f2f6", fontSize: "120%" }}>{props.children}</span>
 }
 
 function ExternalLink(props: { children: React.ReactNode; href: string }) {
@@ -75,8 +75,8 @@ function TermsAndConditions(props: Props) {
               <CheckboxLabel>
                 <Trans i18nKey="app.terms-and-conditions.checkbox.2.label">
                   I have read, understood and agree to the
-                  <ExternalLink href="https://solarwallet.io/terms.html">Terms and Conditions</ExternalLink> &amp;
-                  <ExternalLink href="https://solarwallet.io/privacy.html">Privacy policy</ExternalLink> of Solar.
+                  <ExternalLink href="https://github.com/bajetech/AstraX/blob/main/LICENSE">Terms and Conditions</ExternalLink> &amp;
+                  <ExternalLink href="https://digitalbits.io/privacy-policy">Privacy policy</ExternalLink> of Solar.
                 </Trans>
               </CheckboxLabel>
             }

@@ -15,7 +15,7 @@ export const brandColor = {
   light: "#72dbfe"
 }
 
-export const primaryBackground = "linear-gradient(to left bottom, #01B3F3, #0176DC)"
+export const primaryBackground = "linear-gradient(180deg, #010203 0%, #0F181C 100%)"
 export const primaryBackgroundColor = "#0194E7"
 
 export const warningColor = amber["500"]
@@ -96,14 +96,14 @@ const theme = createMuiTheme({
         backgroundColor: "transparent",
         borderColor: "rgba(255, 255, 255, 0.87)",
         boxShadow: "none",
-        color: "white",
+        color: "#f0f2f6",
 
         "&:disabled": {
           opacity: 0.5
         },
         "&:hover": {
           backgroundColor: "rgba(255, 255, 255, 0.10)",
-          borderColor: "white"
+          borderColor: "#f0f2f6"
         }
       }
     },
@@ -292,7 +292,7 @@ const theme = createMuiTheme({
         transition: "background-color 0.2s",
         "&$selected": {
           backgroundColor: brandColor.main,
-          color: "white",
+          color: "#f0f2f6",
           "&:hover": {
             // Don't change color of already-selected tab
             backgroundColor: brandColor.main

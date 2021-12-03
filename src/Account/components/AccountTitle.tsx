@@ -110,7 +110,7 @@ const useTitleTextfieldStyles = makeStyles({
     caretColor: "white",
     "&::selection": {
       background: "rgba(255, 255, 255, 0.2)",
-      color: "white"
+      color: "#f0f2f6"
     }
   },
   underlined: {

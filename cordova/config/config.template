@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.solarwallet" version="$PACKAGE_VERSION" android-versionCode="$ANDROID_VERSIONCODE" ios-CFBundleVersion="$IOS_BUNDLE_VERSION" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
-    <name>Solar</name>
+    <name>AstraX</name>
     <description>
         Wallet for the Stellar payment network by SatoshiPay.
     </description>
@@ -28,13 +28,13 @@
 
         <hook type="before_build" src="scripts/android/useFullScreenActivity.sh" />
 
-        <icon background="res/icon/android/adaptiveicon/mipmap-mdpi/ic_launcher_background.png" density="mdpi" foreground="res/icon/android/adaptiveicon/mipmap-mdpi/ic_launcher_foreground.png" />
-        <icon background="res/icon/android/adaptiveicon/mipmap-hdpi/ic_launcher_background.png" density="hdpi" foreground="res/icon/android/adaptiveicon/mipmap-hdpi/ic_launcher_foreground.png" />
-        <icon background="res/icon/android/adaptiveicon/mipmap-xhdpi/ic_launcher_background.png" density="xhdpi" foreground="res/icon/android/adaptiveicon/mipmap-xhdpi/ic_launcher_foreground.png" />
-        <icon background="res/icon/android/adaptiveicon/mipmap-xxhdpi/ic_launcher_background.png" density="xxhdpi" foreground="res/icon/android/adaptiveicon/mipmap-xxhdpi/ic_launcher_foreground.png" />
-        <icon background="res/icon/android/adaptiveicon/mipmap-xxxhdpi/ic_launcher_background.png" density="xxxhdpi" foreground="res/icon/android/adaptiveicon/mipmap-xxxhdpi/ic_launcher_foreground.png" />
+        <icon src="res/icon/android/adaptiveicon/mipmap-mdpi/ic_launcher.png" density="mdpi" />
+        <icon src="res/icon/android/adaptiveicon/mipmap-hdpi/ic_launcher.png" density="hdpi" />
+        <icon src="res/icon/android/adaptiveicon/mipmap-xhdpi/ic_launcher.png" density="xhdpi" />
+        <icon src="res/icon/android/adaptiveicon/mipmap-xxhdpi/ic_launcher.png" density="xxhdpi" />
+        <icon src="res/icon/android/adaptiveicon/mipmap-xxxhdpi/ic_launcher.png" density="xxxhdpi" />
 
-        <resource-file src="res/icon/android/adaptiveicon/mipmap-anydpi-v26/ic_launcher.xml" target="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" />
+        <!-- <resource-file src="res/icon/android/adaptiveicon/mipmap-anydpi-v26/ic_launcher.xml" target="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" /> -->
         <resource-file src="res/icon/android/adaptiveicon/mipmap-hdpi/ic_launcher.png" target="app/src/main/res/mipmap-hdpi/ic_launcher.png" />
         <resource-file src="res/icon/android/adaptiveicon/mipmap-mdpi/ic_launcher.png" target="app/src/main/res/mipmap-mdpi/ic_launcher.png" />
         <resource-file src="res/icon/android/adaptiveicon/mipmap-xhdpi/ic_launcher.png" target="app/src/main/res/mipmap-xhdpi/ic_launcher.png" />

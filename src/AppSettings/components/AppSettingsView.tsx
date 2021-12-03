@@ -31,7 +31,7 @@ function SettingsPage() {
     () => (
       <Card
         style={{
-          color: "white",
+          color: "#f0f2f6",
           position: "relative",
           background: "transparent",
           boxShadow: "none"

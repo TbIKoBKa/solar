@@ -140,7 +140,7 @@ function AddAccountCard(props: { onClick: () => any; style?: React.CSSProperties
     background: "transparent",
     border: "2px solid white",
     boxShadow: "none",
-    color: "white"
+    color: "#f0f2f6"
   }
   const { t } = useTranslation()
   return (

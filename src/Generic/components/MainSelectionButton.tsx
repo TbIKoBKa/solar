@@ -23,7 +23,7 @@ const useMainSelectionButtonStyles = makeStyles({
   primary: {
     backgroundColor: primaryBackgroundColor,
     borderColor: "rgba(255, 255, 255, 0.15)",
-    color: "white"
+    color: "#f0f2f6"
   },
   dense: {
     // Only used in conjunction with other classes
@@ -43,7 +43,7 @@ const useMainSelectionButtonStyles = makeStyles({
       marginTop: 0
     },
     "$primary &": {
-      color: "white",
+      color: "#f0f2f6",
       opacity: 0.95
     },
     "$root$primary:hover &": {
@@ -62,7 +62,7 @@ const useMainSelectionButtonStyles = makeStyles({
     transition: `color ${theme.transitions.duration.short}ms`,
 
     "$primary &, $root$primary:hover &": {
-      color: "white"
+      color: "#f0f2f6"
     },
     "$root$primary:hover &": {
       textShadow: "0 0 0.02em rgba(0, 0, 0, 0.5)"
