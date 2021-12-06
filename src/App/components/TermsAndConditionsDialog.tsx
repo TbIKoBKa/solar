@@ -77,7 +77,7 @@ function TermsAndConditions(props: Props) {
                   I have read, understood and agree to the
                   <ExternalLink href="https://github.com/bajetech/AstraX/blob/main/LICENSE">
                     Terms and Conditions
-                  </ExternalLink>{" "}
+                  </ExternalLink>
                   &amp;
                   <ExternalLink href="https://digitalbits.io/privacy-policy">Privacy policy</ExternalLink> of Solar.
                 </Trans>

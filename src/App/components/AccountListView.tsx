@@ -24,9 +24,9 @@ import TermsAndConditions from "./TermsAndConditionsDialog"
 
 const useStyles = makeStyles({
   "@keyframes glowing": {
-    "0%": { filter: "drop-shadow(0 0 30px #ffffff)" },
-    "50%": { filter: "drop-shadow(0 0 0px #ffffff)" },
-    "100%": { filter: "drop-shadow(0 0 30px #ffffff)" }
+    "0%": { filter: "drop-shadow(0 0 30px #f0f2f6)" },
+    "50%": { filter: "drop-shadow(0 0 0px #f0f2f6)" },
+    "100%": { filter: "drop-shadow(0 0 30px #f0f2f6)" }
   },
 
   icon: {

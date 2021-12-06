@@ -52,7 +52,7 @@ interface SectionProps extends BoxProps {
 }
 
 const Section = React.memo(function Section(props: SectionProps) {
-  const background = props.brandColored ? primaryBackground : props.backgroundColor || "#fcfcfc"
+  const background = props.brandColored ? primaryBackground : props.backgroundColor || "#f0f2f6"
   const isSmallScreen = useIsMobile()
 
   const padding: React.CSSProperties["padding"] = props.noPadding ? 0 : props.padding !== undefined ? props.padding : 16

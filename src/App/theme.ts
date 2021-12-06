@@ -9,14 +9,14 @@ import { SlideLeftTransition, SlideUpTransition } from "../Generic/components/Tr
 
 // TODO: The dark and light derivation of the brand color have not been design-reviewed!
 export const brandColor = {
-  dark: "#0290c0",
-  main: "#02b8f5",
+  dark: "#010203",
+  main: "#010203",
   main15: "#02b8f526",
-  light: "#72dbfe"
+  light: "#08111a"
 }
 
 export const primaryBackground = "linear-gradient(180deg, #010203 0%, #0F181C 100%)"
-export const primaryBackgroundColor = "#0194E7"
+export const primaryBackgroundColor = "#010203"
 
 export const warningColor = amber["500"]
 
@@ -65,7 +65,7 @@ const theme = createMuiTheme({
         }
       },
       contained: {
-        backgroundColor: "white",
+        backgroundColor: "#f0f2f6",
         boxShadow: "none",
         border: `none`,
         color: brandColor.dark,
@@ -86,7 +86,7 @@ const theme = createMuiTheme({
           color: "rgba(255, 255, 255, 0.7)"
         },
         "&:hover": {
-          backgroundColor: "#02b2f2"
+          backgroundColor: "#08111a"
         }
       },
       textPrimary: {
@@ -119,7 +119,7 @@ const theme = createMuiTheme({
         WebkitOverflowScrolling: "touch"
       },
       paperFullScreen: {
-        backgroundColor: "#fcfcfc",
+        backgroundColor: "#f0f2f6",
         boxSizing: "border-box"
       }
     },
@@ -165,6 +165,7 @@ const theme = createMuiTheme({
         }
       }
     },
+    // TODO May be updated
     MuiLinearProgress: {
       colorPrimary: {
         backgroundColor: lightBlue["100"]
@@ -196,17 +197,17 @@ const theme = createMuiTheme({
         }
       },
       button: {
-        background: "#FFFFFF",
+        background: "#f0f2f6",
         boxShadow: "0 8px 12px 0 rgba(0, 0, 0, 0.1)",
 
         "&:focus:not($selected)": {
-          backgroundColor: "#FFFFFF"
+          backgroundColor: "#f0f2f6"
         },
         "&:hover": {
           backgroundColor: "#F8F8F8",
 
           [breakpoints.down(600)]: {
-            backgroundColor: "#FFFFFF"
+            backgroundColor: "#f0f2f6"
           }
         },
         "&:first-child": {
@@ -232,13 +233,13 @@ const theme = createMuiTheme({
         }
       },
       sticky: {
-        background: "linear-gradient(to bottom, white 0%, white 70%, rgba(255, 255, 255, 0) 100%)"
+        background: "linear-gradient(to bottom, #f0f2f6 0%, #f0f2f6 70%, rgba(255, 255, 255, 0) 100%)"
       }
     },
     MuiMenu: {
       paper: {
         [breakpoints.down(600)]: {
-          backgroundColor: "white",
+          backgroundColor: "#f0f2f6",
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
           bottom: "0 !important",
@@ -316,7 +317,7 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      contrastText: "white",
+      contrastText: "#f0f2f6",
       dark: brandColor.dark,
       main: brandColor.main,
       light: brandColor.light

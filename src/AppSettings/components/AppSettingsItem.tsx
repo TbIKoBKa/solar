@@ -25,17 +25,17 @@ const useAppSettingsItemStyles = makeStyles({
   settingsItem: {
     position: "relative",
     padding: "16px 24px",
-    background: "#FFFFFF",
+    background: "#f0f2f6",
 
     [breakpoints.down(600)]: {
       padding: "16px 12px"
     },
 
     "&:focus": {
-      backgroundColor: "#FFFFFF"
+      backgroundColor: "#f0f2f6"
     },
     "&$actionable:hover": {
-      backgroundColor: isMobileDevice ? "#FFFFFF" : "rgb(232, 232, 232)"
+      backgroundColor: isMobileDevice ? "#f0f2f6" : "rgb(232, 232, 232)"
     },
     "&:not(:first-child)": {
       borderTop: "1px solid rgba(230, 230, 230, 1.0)"

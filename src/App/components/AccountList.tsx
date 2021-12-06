@@ -107,7 +107,7 @@ function AccountCard(props: AccountCardProps) {
   const badgeContent = pendingSignatureRequests.length > 0 ? pendingSignatureRequests.length : null
 
   return (
-    <StyledCard elevation={5} onClick={onClick} style={{ background: "white", color: "black" }}>
+    <StyledCard elevation={5} onClick={onClick} style={{ background: "#f0f2f6", color: "black" }}>
       <StyledBadge badgeContent={badgeContent} color="secondary" style={{ width: "100%" }}>
         <VerticalLayout minHeight="100px" justifyContent="space-evenly" textAlign="left" width="100%">
           <InlineErrorBoundary>
@@ -138,7 +138,7 @@ function AddAccountCard(props: { onClick: () => any; style?: React.CSSProperties
   const style = {
     ...props.style,
     background: "transparent",
-    border: "2px solid white",
+    border: "2px solid #f0f2f6",
     boxShadow: "none",
     color: "#f0f2f6"
   }

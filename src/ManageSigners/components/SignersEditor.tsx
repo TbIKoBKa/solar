@@ -57,7 +57,7 @@ function useFormValidation() {
 }
 
 const listItemStyles: React.CSSProperties = {
-  background: "white",
+  background: "#f0f2f6",
   boxShadow: "0 8px 12px 0 rgba(0, 0, 0, 0.1)"
 }
 

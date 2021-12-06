@@ -49,7 +49,7 @@ const useActionButtonStyles = makeStyles(theme => ({
     left: 8,
     right: 8,
     bottom: 0,
-    backgroundColor: "#fcfcfc",
+    backgroundColor: "#f0f2f6",
     justifyContent: "flex-end",
 
     [MobileKeyboardOpenedSelector()]: {

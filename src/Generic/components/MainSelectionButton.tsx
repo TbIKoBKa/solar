@@ -7,7 +7,7 @@ import theme, { primaryBackgroundColor } from "~App/theme"
 
 const useMainSelectionButtonStyles = makeStyles({
   root: {
-    background: "white",
+    background: "#f0f2f6",
     maxWidth: 380,
     padding: "16px 24px",
     position: "relative",
@@ -83,7 +83,7 @@ const useMainSelectionButtonStyles = makeStyles({
     width: 40,
 
     "$primary &, $root$primary:hover &": {
-      background: "white",
+      background: "#f0f2f6",
       borderRadius: "50%",
       boxSizing: "border-box",
       color: primaryBackgroundColor,

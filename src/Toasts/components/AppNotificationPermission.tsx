@@ -54,7 +54,7 @@ const PermissionNotification = React.memo(function PermissionNotification(props:
         style={{
           display: "flex",
           alignItems: "center",
-          background: "white",
+          background: "#f0f2f6",
           color: theme.palette.text.primary,
           cursor: "pointer",
           flexGrow: 0,

@@ -53,7 +53,7 @@
         "error": "Enable in operating system settings",
         "granted": {
           "title": "Notifications enabled",
-          "text": "Solar will now show notifications"
+          "text": "AstraX will now show notifications"
         },
         "message": "Enable app notifications"
       }

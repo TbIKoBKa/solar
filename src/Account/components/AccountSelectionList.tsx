@@ -50,13 +50,13 @@ function AccountSelectionList(props: AccountSelectionListProps) {
 
 const useAccountListItemStyles = makeStyles({
   listItem: {
-    background: "#FFFFFF",
+    background: "#f0f2f6",
     boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.1)",
     "&:focus": {
-      backgroundColor: "#FFFFFF"
+      backgroundColor: "#f0f2f6"
     },
     "&:hover": {
-      backgroundColor: isMobileDevice ? "#FFFFFF" : "rgb(232, 232, 232)"
+      backgroundColor: isMobileDevice ? "#f0f2f6" : "rgb(232, 232, 232)"
     }
   }
 })

@@ -58,7 +58,7 @@ function SettingsPage() {
       <Section
         bottom={isSmallScreen}
         style={{
-          backgroundColor: "#fcfcfc",
+          backgroundColor: "#f0f2f6",
           height: "100%",
           flexGrow: 1,
           flexShrink: 1,

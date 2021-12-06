@@ -34,7 +34,7 @@ export const useButtonStyles = makeStyles(theme => ({
     padding: "20px !important"
   },
   secondaryButton: {
-    background: "white",
+    background: "#f0f2f6",
     color: theme.palette.primary.dark
   }
 }))
