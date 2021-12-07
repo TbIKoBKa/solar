@@ -1,5 +1,5 @@
 # Don't change the appId! See <https://www.electron.build/configuration/nsis#guid-vs-application-name>
-appId: io.solarwallet.app
+appId: io.astrax.app
 productName: Solar Wallet
 copyright: Copyright © 2021 SatoshiPay Ltd
 
