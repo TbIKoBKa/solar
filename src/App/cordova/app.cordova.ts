@@ -44,6 +44,8 @@ function isBioAuthEnabled() {
 }
 
 function onDeviceReady() {
+  StatusBar.hide()
+
   const contentWindow = iframe.contentWindow
 
   if (!cordova) {
