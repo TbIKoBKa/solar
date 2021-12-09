@@ -2,7 +2,7 @@
   "name": "io.astrax",
   "version": "0.0.0",
   "private": true,
-  "displayName": "Solar",
+  "displayName": "AstraX",
   "cordova": {
     "platforms": [
       "android",
