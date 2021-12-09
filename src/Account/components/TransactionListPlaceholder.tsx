@@ -46,7 +46,7 @@ function TransactionListPlaceholder() {
       <VerticalLayout
         width="100%"
         overflow="hidden"
-        style={{ background: "white", boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.1)", position: "relative" }}
+        style={{ background: "#f0f2f6", boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.1)", position: "relative" }}
       >
         <TransactionLoadingPlaceholder />
         <TransactionLoadingPlaceholder />

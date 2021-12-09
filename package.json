@@ -1,5 +1,5 @@
 {
-  "name": "io.solarwallet.app",
+  "name": "io.astrax.app",
   "version": "0.28.0",
   "description": "Wallet for the Stellar payment network by SatoshiPay.",
   "license": "MIT",
@@ -19,19 +19,19 @@
     "test": "tslint --project . && eslint '{src,stories,electron/src}/**/*.{ts,tsx}' --no-eslintrc -c ./.eslintrc.json",
     "clean:dist": "rimraf dist/*",
     "clean:electron:ts": "rimraf electron/lib/*",
-    "prebuild:electron:bundle": "NODE_ENV=production parcel build ./src/index.prod.njk --detailed-report --no-cache --no-source-maps --public-url=./",
+    "prebuild:electron:bundle": "cross-env NODE_ENV=production parcel build ./src/index.prod.njk --detailed-report --no-cache --no-source-maps --public-url=./",
     "prebuild:electron:ts": "npm run clean:electron:ts && cd electron && tsc",
     "prebuild:electron:ts:watch": "npm run clean:electron:ts && cd electron && tsc -w",
     "prebuild:electron": "run-s prebuild:electron:ts clean:dist prebuild:electron:bundle",
-    "build:linux": "PLATFORM=linux npm run prebuild:electron && electron-builder --linux --x64 --config ./electron-build.yml",
-    "build:mac": "PLATFORM=darwin npm run prebuild:electron && electron-builder --mac --x64 --config ./electron-build.yml",
+    "build:linux": "cross-env PLATFORM=linux npm run prebuild:electron && electron-builder --linux --x64 --config ./electron-build.yml",
+    "build:mac": "cross-env PLATFORM=darwin npm run prebuild:electron && electron-builder --mac --x64 --config ./electron-build.yml",
     "build:mac:signed": "source ./scripts/signing-env.sh mac && NOTARIZE=true npm run build:mac -- -c.forceCodeSigning=true",
-    "build:win": "PLATFORM=win32 npm run prebuild:electron && electron-builder --win --ia32 --config ./electron-build.yml",
+    "build:win": "cross-env PLATFORM=win32 npm run prebuild:electron && electron-builder --win --ia32 --config ./electron-build.yml",
     "build:win:signed": "source ./scripts/signing-env.sh win && npm run build:win -- -c.forceCodeSigning=true",
     "dev": "run-p prebuild:electron:ts:watch dev:bundle dev:app:delayed",
-    "dev:app": "NODE_ENV=development TS_NODE_PROJECT=./electron/tsconfig.json run-electron -r ts-node/register/transpile-only ./electron/src/index.dev",
+    "dev:app": "cross-env NODE_ENV=development TS_NODE_PROJECT=./electron/tsconfig.json run-electron -r ts-node/register/transpile-only ./electron/src/index.dev",
     "dev:app:delayed": "sleep 2 && run-s dev:app",
-    "dev:bundle": "NODE_ENV=development parcel watch ./src/index.dev.njk --hmr-hostname localhost --public-url=./"
+    "dev:bundle": "cross-env NODE_ENV=development parcel watch ./src/index.dev.njk --hmr-hostname localhost --public-url=./"
   },
   "lint-staged": {
     "ignore": [
@@ -100,6 +100,7 @@
     "babel-loader": "^8.0.6",
     "big.js": "^5.2.2",
     "core-js": "^2.6.9",
+    "cross-env": "^7.0.3",
     "cssnano": "^4.1.10",
     "debug": "^4.1.1",
     "electron": "^9.4.0",

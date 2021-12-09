@@ -16,7 +16,7 @@ import { ActionButton, ConfirmDialog } from "~Generic/components/DialogActions"
 
 const useTrustedServiceListItemStyles = makeStyles({
   listItem: {
-    background: "#FFFFFF",
+    background: "#f0f2f6",
     boxShadow: "0 8px 12px 0 rgba(0, 0, 0, 0.1)",
     "&:first-child": {
       borderTopLeftRadius: 8,
@@ -31,7 +31,7 @@ const useTrustedServiceListItemStyles = makeStyles({
     backgroundColor: "rgba(0, 0, 0, 0.54)"
   },
   logoAvatar: {
-    backgroundColor: "white"
+    backgroundColor: "#f0f2f6"
   }
 })
 

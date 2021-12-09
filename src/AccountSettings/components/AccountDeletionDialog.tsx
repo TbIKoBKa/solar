@@ -232,6 +232,7 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
                 : t("account-settings.account-deletion.action.merge.long")}
             </ActionButton>
           ) : (
+            // FIXME Bug with visibility button
             <ActionButton autoFocus icon={<DeleteIcon />} onClick={requestConfirmation} type="primary">
               {t("account-settings.account-deletion.action.delete")}
             </ActionButton>

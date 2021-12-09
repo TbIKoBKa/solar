@@ -82,10 +82,10 @@ function AccountTransactions(props: { account: Account }) {
     handleMoreTxsFetch
   ])
 
-  const navigateToDeposit = React.useCallback(() => router.history.push(routes.depositAsset(account.id)), [
-    account,
-    router
-  ])
+  // const navigateToDeposit = React.useCallback(() => router.history.push(routes.depositAsset(account.id)), [
+  //   account,
+  //   router
+  // ])
 
   return (
     <>
@@ -118,12 +118,12 @@ function AccountTransactions(props: { account: Account }) {
                 style={{ marginBottom: isSmallScreen ? 16 : 32 }}
               />
             ) : null}
-            <MainSelectionButton
+            {/* <MainSelectionButton
               Icon={CreditCardIcon}
               description={t("account.transactions.action.navigate-to-deposit.description")}
               label={t("account.transactions.action.navigate-to-deposit.label")}
               onClick={navigateToDeposit}
-            />
+            /> */}
           </VerticalLayout>
         </>
       )}

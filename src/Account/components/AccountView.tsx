@@ -335,7 +335,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
       <Section
         bottom={!isSmallScreen}
         style={{
-          backgroundColor: "#fcfcfc",
+          backgroundColor: "#f0f2f6",
           flexGrow: 1,
           flexShrink: 1,
           height: "100%",

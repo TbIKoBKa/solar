@@ -28,7 +28,7 @@ const capitalize = (text: string) => text[0].toUpperCase() + text.substr(1)
 
 const useDetailContentStyles = makeStyles({
   card: {
-    backgroundColor: "#fbfbfb",
+    backgroundColor: "#f0f2f6",
     borderRadius: 8,
     margin: "12px -8px",
     overflowY: "auto"
@@ -48,7 +48,7 @@ const useDetailContentStyles = makeStyles({
     right: 8,
     width: 72,
     height: 72,
-    backgroundColor: "white",
+    backgroundColor: "#f0f2f6",
     boxShadow: "0 0 2px 2px rgba(0, 0, 0, 0.2)"
   },
   cardLogoImage: {
@@ -366,7 +366,7 @@ function AssetDetailsDialog(props: Props) {
             }
             titleStyle={{
               maxWidth: isSmallScreen ? "calc(100% - 75px)" : "calc(100% - 100px)",
-              textShadow: "0 0 5px white, 0 0 5px white, 0 0 5px white"
+              textShadow: "0 0 5px #f0f2f6, 0 0 5px #f0f2f6, 0 0 5px #f0f2f6"
             }}
           />
           <Typography className={classes.domain} variant="subtitle1">

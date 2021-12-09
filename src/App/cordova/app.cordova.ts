@@ -44,6 +44,8 @@ function isBioAuthEnabled() {
 }
 
 function onDeviceReady() {
+  StatusBar.hide()
+
   const contentWindow = iframe.contentWindow
 
   if (!cordova) {
@@ -267,9 +269,9 @@ function openUrl(contentWindow: Window, url: string) {
       SafariViewController.show(
         {
           url,
-          tintColor: "#ffffff",
+          tintColor: "#f0f2f6",
           barColor: "#1c8fea",
-          controlTintColor: "#ffffff"
+          controlTintColor: "#f0f2f6"
         },
         result => {
           refreshLastNativeInteractionTime()

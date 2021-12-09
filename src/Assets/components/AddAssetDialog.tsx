@@ -97,12 +97,12 @@ const useSearchResultStyles = makeStyles({
     height: searchResultRowHeight
   },
   issuerItem: {
-    background: "white",
+    background: "#f0f2f6",
     borderRadius: 8,
     height: searchResultRowHeight
   },
   noResultItem: {
-    background: "white",
+    background: "#f0f2f6",
     borderRadius: 8,
     height: searchResultRowHeight
   }
@@ -214,7 +214,7 @@ const useAddAssetStyles = makeStyles({
     padding: 0
   },
   searchField: {
-    background: "white",
+    background: "#f0f2f6",
     flexShrink: 0,
     flexGrow: 0,
     marginBottom: 16

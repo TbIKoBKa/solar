@@ -42,7 +42,7 @@ function TestnetBadge(props: { style?: React.CSSProperties }) {
     display: "inline-flex",
     alignItems: "center",
     padding: "5px",
-    background: "white",
+    background: "#f0f2f6",
     borderRadius: 3,
     color: primaryBackgroundColor,
     fontSize: "50%",
@@ -107,10 +107,10 @@ export const Badges = React.memo(function Badges(props: BadgesProps) {
 const useTitleTextfieldStyles = makeStyles({
   input: {
     borderRadius: 0,
-    caretColor: "white",
+    caretColor: "#f0f2f6",
     "&::selection": {
       background: "rgba(255, 255, 255, 0.2)",
-      color: "white"
+      color: "#f0f2f6"
     }
   },
   underlined: {

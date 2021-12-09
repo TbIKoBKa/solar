@@ -101,7 +101,7 @@ const useScrollableBalancesStyles = makeStyles({
     }
   },
   scrollButtonIcon: {
-    color: "white",
+    color: "#f0f2f6",
     fontSize: 40,
 
     [breakpoints.down(600)]: {
