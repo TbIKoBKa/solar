@@ -79,7 +79,7 @@ function TermsAndConditions(props: Props) {
                     Terms and Conditions
                   </ExternalLink>
                   &amp;
-                  <ExternalLink href="https://digitalbits.io/privacy-policy">Privacy policy</ExternalLink> of Solar.
+                  <ExternalLink href="https://digitalbits.io/privacy-policy">Privacy policy</ExternalLink> of AstraX.
                 </Trans>
               </CheckboxLabel>
             }

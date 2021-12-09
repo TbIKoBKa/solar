@@ -21,8 +21,8 @@ export async function bioAuthenticate() {
   return new Promise((resolve, reject) => {
     Fingerprint.show(
       {
-        title: "Unlock Solar",
-        description: device && device.platform === "iOS" ? "Unlock your Solar wallet" : undefined
+        title: "Unlock AstraX",
+        description: device && device.platform === "iOS" ? "Unlock your AstraX wallet" : undefined
       },
       resolve,
       reject

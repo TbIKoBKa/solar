@@ -31,20 +31,3 @@
   object-fit: contain;
   animation: fade-in 0.5s linear;
 }
-
-/* #splash .splash-caption {
-  animation: fade-in 0.3s linear;
-} */
-
-/* #splash .splash-caption img {
-  height: 4vh;
-  margin: 20px 0 0;
-}
-
-#splash h3 {
-  margin: 0;
-  font-size: 1.9vh;
-  font-weight: 400;
-  line-height: 100%;
-  text-align: right;
-} */
