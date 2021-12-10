@@ -25,12 +25,12 @@ function DialogContainer(props: DialogContainerProps) {
             amount: "1",
             asset: Asset.native(),
             destination: "GA2CZKBI2C55WHALSTNPG54FOQCLC6Y4EIATZEIJOXWQPSEGN4CWAXFT",
-            horizon: new Server("https://horizon-testnet.stellar.org")
+            horizon: new Server("https://frontier.testnet.digitalbits.io")
           })
         ],
         {
           accountData,
-          horizon: new Server("https://horizon-testnet.stellar.org"),
+          horizon: new Server("https://frontier.testnet.digitalbits.io"),
           walletAccount: props.account
         }
       )

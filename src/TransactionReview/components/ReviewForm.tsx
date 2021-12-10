@@ -73,11 +73,18 @@ function TxConfirmationForm(props: Props) {
     }))
   }
 
+  // const openInStellarExpert = React.useCallback(() => {
+  //   openLink(
+  //     `https://stellar.expert/explorer/${props.account.testnet ? "testnet" : "public"
+  //     }/tx/${props.transaction.hash().toString("hex")}`
+  //   )
+  // }, [props.account.testnet, props.transaction])
+
   const openInStellarExpert = React.useCallback(() => {
     openLink(
-      `https://stellar.expert/explorer/${
-        props.account.testnet ? "testnet" : "public"
-      }/tx/${props.transaction.hash().toString("hex")}`
+      `https://frontier.${
+        props.account.testnet ? "testnet" : "livenet"
+      }.digitalbits.io/transactions/${props.transaction.hash().toString("hex")}`
     )
   }, [props.account.testnet, props.transaction])
 

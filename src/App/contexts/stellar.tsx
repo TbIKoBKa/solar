@@ -20,9 +20,9 @@ const initialHorizonSelection: Promise<[string[], string[]]> = (async () => {
   const pubnetHorizonURLs: string[] = Array.from(
     new Set(
       await Promise.all([
-        "https://horizon.stellar.org",
-        netWorker.checkHorizonOrFailover("https://horizon.stellarx.com", "https://horizon.stellar.org"),
-        netWorker.checkHorizonOrFailover("https://horizon.stellar.lobstr.co", "https://horizon.stellar.org")
+        "https://frontier.livenet.digitalbits.io"
+        // netWorker.checkHorizonOrFailover("https://horizon.stellarx.com", "https://horizon.stellar.org"),
+        // netWorker.checkHorizonOrFailover("https://horizon.stellar.lobstr.co", "https://horizon.stellar.org")
       ])
     )
   )
@@ -37,9 +37,12 @@ initialHorizonSelection.catch(trackError)
 const initialValues: ContextType = {
   isSelectionPending: true,
   pendingSelection: initialHorizonSelection,
-  pubnetHorizonURLs: ["https://horizon.stellar.org"],
-  testnetHorizonURLs: ["https://stellar-horizon-testnet.satoshipay.io/"]
+  pubnetHorizonURLs: ["https://frontier.livenet.digitalbits.io"],
+  testnetHorizonURLs: ["https://frontier.testnet.digitalbits.io/"]
 }
+
+// https://horizon.stellar.org
+// https://stellar-horizon-testnet.satoshipay.io
 
 const StellarContext = React.createContext<ContextType>(initialValues)
 

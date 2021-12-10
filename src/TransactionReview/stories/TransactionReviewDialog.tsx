@@ -7,7 +7,7 @@ import { Account } from "~App/contexts/accounts"
 import { useWebAuth } from "~Generic/hooks/stellar"
 
 const eurt = new Asset("EURT", "GAP5LETOV6YIE62YAM56STDANPRDO7ZFDBGSNHJQIYGGKSMOZAHOOS2S")
-const testnetHorizon = new Server("https://horizon-testnet.stellar.org")
+const testnetHorizon = new Server("https://frontier.testnet.digitalbits.io")
 
 const doNothing = () => undefined
 
@@ -49,7 +49,8 @@ interface SampleWebAuthProps {
 }
 
 function SampleWebAuth(props: SampleWebAuthProps) {
-  const horizon = new Server("https://horizon.stellar.org")
+  // https://horizon.stellar.org || https://horizon-testnet.stellar.org
+  const horizon = new Server("https://frontier.livenet.digitalbits.io")
   const WebAuth = useWebAuth()
 
   const promise = React.useMemo(

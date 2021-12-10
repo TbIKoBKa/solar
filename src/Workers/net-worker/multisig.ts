@@ -278,7 +278,7 @@ export async function submitMultisigTransactionToStellarNetwork(multisigTx: Mult
 
 async function handleServerError(response: Response, responseBodyObject: any) {
   const horizonResponse =
-    responseBodyObject && responseBodyObject.type === "https://stellar.org/horizon-errors/transaction_failed"
+    responseBodyObject && responseBodyObject.type === "https://digitalbits.org/frontier-errors/transaction_failed"
       ? responseBodyObject
       : null
 
