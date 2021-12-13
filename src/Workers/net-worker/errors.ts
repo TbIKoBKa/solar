@@ -1,8 +1,8 @@
 import { Observable, Subject } from "observable-fns"
 
 export const enum ServiceID {
-  HorizonPublic = "HorizonPublic",
-  HorizonTestnet = "HorizonTestnet",
+  FrontierPublic = "FrontierPublic",
+  FrontierTestnet = "FrontierTestnet",
   MultiSignature = "MultiSignature"
 }
 

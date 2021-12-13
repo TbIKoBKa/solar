@@ -1,7 +1,7 @@
-import { AccountResponse, Horizon } from "stellar-sdk"
+import { AccountResponse, Frontier } from "xdb-digitalbits-sdk"
 
-// Horizon.BalanceLine without Horizon.BalanceLineLiquidityPool
-export type BalanceLine = Horizon.BalanceLineAsset | Horizon.BalanceLineNative
+// Frontier.BalanceLine without Frontier.BalanceLineLiquidityPool
+export type BalanceLine = Frontier.BalanceLineAsset | Frontier.BalanceLineNative
 
 export interface AccountData {
   account_id: AccountResponse["account_id"]
@@ -12,9 +12,9 @@ export interface AccountData {
   id: string
   inflation_destination?: string
   paging_token: AccountResponse["paging_token"]
-  signers: Horizon.AccountSigner[]
+  signers: Frontier.AccountSigner[]
   subentry_count: number
-  thresholds: Horizon.AccountThresholds
+  thresholds: Frontier.AccountThresholds
 }
 
 export const createEmptyAccountData = (accountID: string): AccountData => ({

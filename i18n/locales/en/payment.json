@@ -36,7 +36,7 @@
     "no-destination": "No destination specified.",
     "no-price": "No amount specified.",
     "not-enough-funds": "Not enough funds.",
-    "invalid-destination": "Expected a public key or stellar address.",
+    "invalid-destination": "Expected a public key or digitalbits address.",
     "invalid-price": "Invalid amount.",
     "integer-memo-required": "Memo must be an integer."
   }

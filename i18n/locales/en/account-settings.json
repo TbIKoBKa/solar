@@ -136,7 +136,7 @@
         }
       },
       "new-signer": {
-        "label": "Public Key or Stellar Address",
+        "label": "Public Key or DigitalBits Address",
         "placeholder": {
           "long": "GABC… or address",
           "short": "GABCDEFGHIJK… or alice*example.org"
@@ -149,7 +149,7 @@
       "validation": {
         "existing-signer": "Cannot add existing signer.",
         "integer-required": "Must be an integer.",
-        "invalid-stellar-address": "Expected a public key or stellar address."
+        "invalid-digitalbits-address": "Expected a public key or digitalbits address."
       }
     },
     "title": {

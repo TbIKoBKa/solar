@@ -1,7 +1,7 @@
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { Asset, Horizon, Operation, Transaction } from "stellar-sdk"
+import { Asset, Frontier, Operation, Transaction } from "xdb-digitalbits-sdk"
 import Button from "@material-ui/core/Button"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
@@ -20,8 +20,8 @@ import AssetSelector from "~Generic/components/AssetSelector"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { ReadOnlyTextfield } from "~Generic/components/FormFields"
 import Portal from "~Generic/components/Portal"
-import { useHorizon } from "~Generic/hooks/stellar"
-import { useLiveOrderbook } from "~Generic/hooks/stellar-subscriptions"
+import { useFrontier } from "~Generic/hooks/digitalbits"
+import { useLiveOrderbook } from "~Generic/hooks/digitalbits-subscriptions"
 import { RefStateObject, useIsMobile } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
 import { CustomError } from "~Generic/lib/errors"
@@ -30,7 +30,7 @@ import {
   findMatchingBalanceLine,
   getAccountMinimumBalance,
   getSpendableBalance
-} from "~Generic/lib/stellar"
+} from "~Generic/lib/digitalbits"
 import { FormBigNumber, isValidAmount } from "~Generic/lib/form"
 import { createTransaction } from "~Generic/lib/transaction"
 import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
@@ -73,7 +73,7 @@ interface Props {
   primaryAction: "buy" | "sell"
   sendTransaction: (transaction: Transaction) => void
   style?: React.CSSProperties
-  trustlines: Horizon.BalanceLineAsset[]
+  trustlines: Frontier.BalanceLineAsset[]
 }
 
 function TradingForm(props: Props) {
@@ -105,7 +105,7 @@ function TradingForm(props: Props) {
     }
   }, [form, primaryAsset, props.initialPrimaryAsset])
 
-  const horizon = useHorizon(props.account.testnet)
+  const frontier = useFrontier(props.account.testnet)
   const tradePair = useLiveOrderbook(primaryAsset || Asset.native(), secondaryAsset, props.account.testnet)
 
   const assets = React.useMemo(() => props.trustlines.map(balancelineToAsset), [props.trustlines])
@@ -169,12 +169,12 @@ function TradingForm(props: Props) {
         )
       }
 
-      const spendableXLMBalance = getSpendableBalance(
+      const spendableXDBBalance = getSpendableBalance(
         getAccountMinimumBalance(props.accountData),
         findMatchingBalanceLine(props.accountData.balances, Asset.native())
       )
-      if (spendableXLMBalance.minus(0.5).cmp(0) <= 0) {
-        throw CustomError("LowReserveOrderError", "Cannot place order because spendable XLM balance is too low.")
+      if (spendableXDBBalance.minus(0.5).cmp(0) <= 0) {
+        throw CustomError("LowReserveOrderError", "Cannot place order because spendable XDB balance is too low.")
       }
 
       const tx = await createTransaction(
@@ -199,7 +199,7 @@ function TradingForm(props: Props) {
         ],
         {
           accountData: props.accountData,
-          horizon,
+          frontier,
           walletAccount: props.account
         }
       )
@@ -212,7 +212,7 @@ function TradingForm(props: Props) {
   }, [
     form,
     effectivePrice,
-    horizon,
+    frontier,
     primaryAsset,
     props.account,
     props.accountData,
@@ -257,7 +257,7 @@ function TradingForm(props: Props) {
                     : t("trading.inputs.primary-asset-selector.label.sell")
                 }
                 minWidth={75}
-                showXLM
+                showXDB
                 style={{ flexGrow: 1, marginRight: 24, maxWidth: 150, width: "25%" }}
                 testnet={props.account.testnet}
                 value={primaryAsset}
@@ -341,7 +341,7 @@ function TradingForm(props: Props) {
                     : t("trading.inputs.secondary-asset-selector.label.sell")
                 }
                 minWidth={75}
-                showXLM
+                showXDB
                 style={{ flexGrow: 1, marginRight: 24, maxWidth: 150, width: "25%" }}
                 testnet={props.account.testnet}
                 value={secondaryAsset}

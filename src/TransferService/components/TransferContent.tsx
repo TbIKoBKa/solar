@@ -1,11 +1,11 @@
 import { AssetTransferInfo } from "@satoshipay/stellar-transfer"
 import React from "react"
-import { Asset, Transaction } from "stellar-sdk"
+import { Asset, Transaction } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { CustomError } from "~Generic/lib/errors"
 import { RefStateObject } from "~Generic/hooks/userinterface"
 import DepositSuccess from "./DepositSuccess"
-import PurchaseLumens from "./PurchaseLumens"
+import PurchaseDigitalbits from "./PurchaseDigitalbits"
 import TransferAuthentication from "./TransferAuthentication"
 import TransferKYCDenied from "./TransferKYCDenied"
 import TransferKYCPending from "./TransferKYCPending"
@@ -52,8 +52,8 @@ export const TransferContent = React.memo(function TransferContent(props: Transf
         type={props.type}
       />
     )
-  } else if (state.step === "xlm-deposit") {
-    return <PurchaseLumens onCloseDialog={props.onClose} />
+  } else if (state.step === "xdb-deposit") {
+    return <PurchaseDigitalbits onCloseDialog={props.onClose} />
   } else if (state.step === "auth-pending") {
     return (
       <TransferAuthentication
@@ -103,8 +103,8 @@ export const TransferSidebar = React.memo(function TransferSidebar(props: Transf
     return <TransferInitial.Sidebar type={type} />
   } else if (state.step === "enter-values") {
     return <TransferDetailsForm.Sidebar type={type} />
-  } else if (state.step === "xlm-deposit") {
-    return <PurchaseLumens.Sidebar />
+  } else if (state.step === "xdb-deposit") {
+    return <PurchaseDigitalbits.Sidebar />
   } else if (state.step === "auth-pending") {
     return <TransferAuthentication.Sidebar />
   } else if (state.step === "kyc-pending") {

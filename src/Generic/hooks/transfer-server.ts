@@ -4,10 +4,10 @@ import {
   TransferServer,
   TransferServerInfo
 } from "@satoshipay/stellar-transfer"
-import { Asset, Networks } from "stellar-sdk"
+import { Asset, Networks } from "xdb-digitalbits-sdk"
 import { mapSuspendables } from "../lib/suspense"
 import { transferInfosCache } from "./_caches"
-import { useAccountHomeDomains } from "./stellar"
+import { useAccountHomeDomains } from "./digitalbits"
 
 const dedupe = <T>(input: T[]): T[] => Array.from(new Set(input))
 
@@ -26,8 +26,8 @@ async function initTransferServer(domain: string, testnet: boolean): Promise<Tra
   try {
     const transferServer = await withTimeout(
       openTransferServer(domain, network, {
-        walletName: "Solar",
-        walletURL: "https://solarwallet.io"
+        walletName: "AstraX",
+        walletURL: "https://astraxwallet.com"
       }),
       8000,
       `Transfer server discovery at ${domain} timed out.`

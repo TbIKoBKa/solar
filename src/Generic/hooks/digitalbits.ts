@@ -1,50 +1,50 @@
 /* tslint:disable:no-string-literal */
 
 import React from "react"
-import { Asset, Networks, Server, Transaction, Horizon } from "stellar-sdk"
+import { Asset, Networks, Server, Transaction, Frontier } from "xdb-digitalbits-sdk"
 import {
   SigningKeyCacheContext,
-  StellarAddressCacheContext,
-  StellarAddressReverseCacheContext,
+  DigitalBitsAddressCacheContext,
+  DigitalBitsAddressReverseCacheContext,
   WebAuthTokenCacheContext
 } from "~App/contexts/caches"
-import { StellarContext } from "~App/contexts/stellar"
+import { DigitalBitsContext } from "~App/contexts/digitalbits"
 import { workers } from "~Workers/worker-controller"
-import { StellarToml, StellarTomlCurrency } from "~shared/types/stellar-toml"
+import { DigitalBitsToml, DigitalBitsTomlCurrency } from "~shared/types/digitalbits-toml"
 import { createEmptyAccountData, AccountData, BalanceLine } from "../lib/account"
 import { createPersistentCache } from "../lib/persistent-cache"
-import * as StellarAddresses from "../lib/stellar-address"
+import * as DigitalBitsAddresses from "../lib/digitalbits-address"
 import { mapSuspendables } from "../lib/suspense"
-import { accountDataCache, accountHomeDomainCache, stellarTomlCache } from "./_caches"
+import { accountDataCache, accountHomeDomainCache, digitalbitsTomlCache } from "./_caches"
 import { useNetWorker } from "./workers"
 
 /** @deprecated */
-export function useHorizon(testnet: boolean = false) {
-  const horizonURLs = useHorizonURLs(testnet)
-  const horizonURL = horizonURLs[0]
+export function useFrontier(testnet: boolean = false) {
+  const frontierURLs = useFrontierURLs(testnet)
+  const frontierURL = frontierURLs[0]
 
-  return testnet ? new Server(horizonURL) : new Server(horizonURL)
+  return testnet ? new Server(frontierURL) : new Server(frontierURL)
 }
 
-export function useHorizonURLs(testnet: boolean = false) {
-  const stellar = React.useContext(StellarContext)
+export function useFrontierURLs(testnet: boolean = false) {
+  const digitalbits = React.useContext(DigitalBitsContext)
 
-  if (stellar.isSelectionPending) {
-    throw stellar.pendingSelection
+  if (digitalbits.isSelectionPending) {
+    throw digitalbits.pendingSelection
   }
 
-  const horizonURLs = testnet ? stellar.testnetHorizonURLs : stellar.pubnetHorizonURLs
-  return horizonURLs
+  const frontierURLs = testnet ? digitalbits.testnetFrontierURLs : digitalbits.pubnetFrontierURLs
+  return frontierURLs
 }
 
 export function useFederationLookup() {
-  const lookup = React.useContext(StellarAddressCacheContext)
-  const reverseLookup = React.useContext(StellarAddressReverseCacheContext)
+  const lookup = React.useContext(DigitalBitsAddressCacheContext)
+  const reverseLookup = React.useContext(DigitalBitsAddressReverseCacheContext)
   return {
-    lookupFederationRecord(stellarAddress: string) {
-      return StellarAddresses.lookupFederationRecord(stellarAddress, lookup.cache, reverseLookup.cache)
+    lookupFederationRecord(digitalbitsAddress: string) {
+      return DigitalBitsAddresses.lookupFederationRecord(digitalbitsAddress, lookup.cache, reverseLookup.cache)
     },
-    lookupStellarAddress(publicKey: string) {
+    lookupDigitalBitsAddress(publicKey: string) {
       return reverseLookup.cache.get(publicKey)
     }
   }
@@ -70,9 +70,9 @@ export function useWebAuth() {
       return new Transaction(challenge, network)
     },
 
-    async fetchWebAuthData(horizonURL: string, issuerAccountID: string) {
+    async fetchWebAuthData(frontierURL: string, issuerAccountID: string) {
       const { netWorker } = await workers
-      const metadata = await netWorker.fetchWebAuthData(horizonURL, issuerAccountID)
+      const metadata = await netWorker.fetchWebAuthData(frontierURL, issuerAccountID)
       if (metadata && metadata.signingKey) {
         signingKeys.store(metadata.signingKey, metadata.domain)
       }
@@ -105,41 +105,41 @@ export function useWebAuth() {
   }
 }
 
-const stellarTomlPersistentCache = createPersistentCache<StellarToml>("stellar.toml", {
+const digitalbitsTomlPersistentCache = createPersistentCache<DigitalBitsToml>("digitalbits.toml", {
   expiresIn: 24 * 60 * 60_000,
   maxItems: 50
 })
 
-export function useStellarToml(domain: string | undefined): StellarToml | undefined {
+export function useDigitalBitsToml(domain: string | undefined): DigitalBitsToml | undefined {
   if (!domain) {
     return undefined
   }
 
-  const fetchStellarTomlData = async (): Promise<[true, any]> => {
+  const fetchDigitalBitsTomlData = async (): Promise<[true, any]> => {
     const { netWorker } = await workers
-    const stellarTomlData = await netWorker.fetchStellarToml(domain)
+    const digitalbitsTomlData = await netWorker.fetchDigitalBitsToml(domain)
 
-    stellarTomlPersistentCache.save(domain, stellarTomlData || null)
-    return [true, stellarTomlData]
+    digitalbitsTomlPersistentCache.save(domain, digitalbitsTomlData || null)
+    return [true, digitalbitsTomlData]
   }
 
-  const cached = stellarTomlCache.get(domain)
+  const cached = digitalbitsTomlCache.get(domain)
 
   if (cached && cached[0]) {
     return cached[1]
   }
 
-  return stellarTomlPersistentCache.read(domain) || stellarTomlCache.suspend(domain, fetchStellarTomlData)
+  return digitalbitsTomlPersistentCache.read(domain) || digitalbitsTomlCache.suspend(domain, fetchDigitalBitsTomlData)
 }
 
 export function useAccountData(accountID: string, testnet: boolean) {
-  const horizonURLs = useHorizonURLs(testnet)
+  const frontierURLs = useFrontierURLs(testnet)
   const netWorker = useNetWorker()
 
-  const selector = [horizonURLs, accountID] as const
+  const selector = [frontierURLs, accountID] as const
   const cached = accountDataCache.get(selector)
 
-  const prepare = (account: Horizon.AccountResponse | null): AccountData =>
+  const prepare = (account: Frontier.AccountResponse | null): AccountData =>
     account
       ? {
           ...account,
@@ -151,7 +151,7 @@ export function useAccountData(accountID: string, testnet: boolean) {
       : createEmptyAccountData(accountID)
 
   if (!cached) {
-    accountDataCache.suspend(selector, () => netWorker.fetchAccountData(horizonURLs, accountID).then(prepare))
+    accountDataCache.suspend(selector, () => netWorker.fetchAccountData(frontierURLs, accountID).then(prepare))
   }
   return cached || createEmptyAccountData(accountID)
 }
@@ -164,14 +164,14 @@ export function useAccountHomeDomains(
   testnet: boolean,
   allowIncompleteResult?: boolean
 ): Array<string | undefined> {
-  const horizonURLs = useHorizonURLs(testnet)
+  const frontierURLs = useFrontierURLs(testnet)
   const netWorker = useNetWorker()
   const [, setRerenderCounter] = React.useState(0)
 
   const forceRerender = () => setRerenderCounter(counter => counter + 1)
 
   const fetchHomeDomain = async (accountID: string): Promise<[string] | []> => {
-    const accountData = await netWorker.fetchAccountData(horizonURLs, accountID)
+    const accountData = await netWorker.fetchAccountData(frontierURLs, accountID)
     const homeDomain = accountData ? (accountData as any).home_domain : undefined
     if (homeDomain) {
       ;(testnet ? homeDomainCacheTestnet : homeDomainCachePubnet).save(accountID, homeDomain || null)
@@ -184,7 +184,7 @@ export function useAccountHomeDomains(
 
   try {
     return mapSuspendables(accountIDs, accountID => {
-      const selector = [horizonURLs, accountID] as const
+      const selector = [frontierURLs, accountID] as const
       return (accountHomeDomainCache.get(selector) ||
         accountHomeDomainCache.suspend(selector, () => fetchHomeDomain(accountID)))[0]
     })
@@ -219,24 +219,25 @@ export function useAccountHomeDomainSafe(
   allowIncompleteResult?: boolean
 ) {
   const homeDomain = useAccountHomeDomain(accountID, testnet, allowIncompleteResult)
-  const stellarToml = useStellarToml(homeDomain)
+  const digitalbitsToml = useDigitalBitsToml(homeDomain)
 
   const matchesIssuingAccount =
-    stellarToml && (stellarToml.CURRENCIES || []).some(currency => currency.issuer === accountID)
+    digitalbitsToml && (digitalbitsToml.CURRENCIES || []).some(currency => currency.issuer === accountID)
   const matchesSigningKey =
-    stellarToml && (stellarToml.SIGNING_KEY === accountID || stellarToml.URI_REQUEST_SIGNING_KEY === accountID)
+    digitalbitsToml &&
+    (digitalbitsToml.SIGNING_KEY === accountID || digitalbitsToml.URI_REQUEST_SIGNING_KEY === accountID)
 
   return homeDomain && (matchesIssuingAccount || matchesSigningKey) ? homeDomain : undefined
 }
 
-export function useAssetMetadata(asset: Asset | undefined, testnet: boolean): StellarTomlCurrency | undefined {
+export function useAssetMetadata(asset: Asset | undefined, testnet: boolean): DigitalBitsTomlCurrency | undefined {
   const assetCode = !asset || asset.isNative() ? undefined : asset.getCode()
   const issuerAccountID = !asset || asset.isNative() ? undefined : asset.getIssuer()
   const homeDomain = useAccountHomeDomain(issuerAccountID, testnet, true)
-  const stellarTomlData = useStellarToml(homeDomain)
+  const digitalbitsTomlData = useDigitalBitsToml(homeDomain)
 
-  if (stellarTomlData && stellarTomlData["CURRENCIES"] && Array.isArray(stellarTomlData["CURRENCIES"])) {
-    const assetMetadata = stellarTomlData["CURRENCIES"].find(
+  if (digitalbitsTomlData && digitalbitsTomlData["CURRENCIES"] && Array.isArray(digitalbitsTomlData["CURRENCIES"])) {
+    const assetMetadata = digitalbitsTomlData["CURRENCIES"].find(
       (currency: any) => currency.code === assetCode && currency.issuer === issuerAccountID
     )
     return assetMetadata

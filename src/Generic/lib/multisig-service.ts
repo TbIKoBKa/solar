@@ -1,6 +1,6 @@
 import qs from "qs"
-import { Transaction } from "stellar-sdk"
-import { signatureMatchesPublicKey } from "./stellar"
+import { Transaction } from "xdb-digitalbits-sdk"
+import { signatureMatchesPublicKey } from "./digitalbits"
 
 export interface MultisigServerInfo {
   capabilities: string[]
@@ -52,7 +52,7 @@ export function createSignatureRequestURI(transaction: Transaction, options: TxP
     ...options,
     xdr
   }
-  return "web+stellar:tx?" + qs.stringify(query)
+  return "web+digitalbits:tx?" + qs.stringify(query)
 }
 
 export function isSignedByOneOf(transaction: Transaction, localPublicKeys: string[]) {

@@ -2,7 +2,7 @@ import BigNumber from "big.js"
 import nanoid from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 import Typography from "@material-ui/core/Typography"
 import { AssetTransferInfo } from "@satoshipay/stellar-transfer"
 import { trackError } from "~App/contexts/notifications"
@@ -10,12 +10,12 @@ import theme from "~App/theme"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { ReadOnlyTextfield } from "~Generic/components/FormFields"
 import Portal from "~Generic/components/Portal"
-import { useStellarToml } from "~Generic/hooks/stellar"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useDigitalBitsToml } from "~Generic/hooks/digitalbits"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { RefStateObject } from "~Generic/hooks/userinterface"
 import { useLoadingState } from "~Generic/hooks/util"
 import { CustomError } from "~Generic/lib/errors"
-import { findMatchingBalanceLine } from "~Generic/lib/stellar"
+import { findMatchingBalanceLine } from "~Generic/lib/digitalbits"
 import { VerticalLayout } from "~Layout/components/Box"
 import { formatDescriptionText } from "../util/formatters"
 import { TransferStates } from "../util/statemachine"
@@ -170,7 +170,7 @@ function TransferDetailsForm(props: TransferDetailsFormProps) {
   const { t } = useTranslation()
 
   const assetInfo = props.assetTransferInfos.find(info => info.asset.equals(props.state.asset))
-  const stellarToml = useStellarToml(props.state.transferServer.domain)
+  const digitalbitsToml = useDigitalBitsToml(props.state.transferServer.domain)
 
   const [formValues, setFormValues] = React.useState<FormValues>(
     (props.state.formValues as Record<string, string>) || {}
@@ -214,7 +214,7 @@ function TransferDetailsForm(props: TransferDetailsFormProps) {
     }
   })()
 
-  const isSEP24Anchor = Boolean(stellarToml && stellarToml.TRANSFER_SERVER_SEP0024)
+  const isSEP24Anchor = Boolean(digitalbitsToml && digitalbitsToml.TRANSFER_SERVER_SEP0024)
   const fields = methodMetadata && methodMetadata.fields && !isSEP24Anchor ? methodMetadata.fields : {}
 
   const automaticallySetValues = ["account", "asset_code", "type"]

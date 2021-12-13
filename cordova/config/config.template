@@ -2,7 +2,7 @@
 <widget id="com.astraxwallet.app" version="$PACKAGE_VERSION" android-versionCode="$ANDROID_VERSIONCODE" ios-CFBundleVersion="$IOS_BUNDLE_VERSION" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
     <name>AstraX</name>
     <description>
-        Wallet for the Stellar payment network by SatoshiPay.
+        Wallet for the DigitalBits payment network.
     </description>
     <author email="hello@solarwallet.io" href="https://solarwallet.io/">
         SatoshiPay Ltd

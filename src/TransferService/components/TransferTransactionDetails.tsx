@@ -2,7 +2,7 @@ import BigNumber from "big.js"
 import nanoid from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Transaction } from "stellar-sdk"
+import { Transaction } from "xdb-digitalbits-sdk"
 import SendIcon from "@material-ui/icons/Send"
 import {
   Deposit,
@@ -11,11 +11,11 @@ import {
   DepositInstructionsSuccess
 } from "@satoshipay/stellar-transfer"
 import { trackError } from "~App/contexts/notifications"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { RefStateObject } from "~Generic/hooks/userinterface"
 import { useLoadingState } from "~Generic/hooks/util"
-import { useStellarToml } from "~Generic/hooks/stellar"
-import { findMatchingBalanceLine } from "~Generic/lib/stellar"
+import { useDigitalBitsToml } from "~Generic/hooks/digitalbits"
+import { findMatchingBalanceLine } from "~Generic/lib/digitalbits"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { PriceInput, ReadOnlyTextfield } from "~Generic/components/FormFields"
 import Portal from "~Generic/components/Portal"
@@ -65,8 +65,8 @@ function TransferTransactionDetails(props: TransferTransactionDetailsProps) {
   const isAmountOutOfBounds = (minAmount && amount.lt(minAmount)) || (maxAmount && amount.gt(maxAmount))
   const isDisabled = props.type === "withdrawal" ? !amount.gt(0) || amount.gt(balance) || isAmountOutOfBounds : false
 
-  const stellarToml = useStellarToml(props.state.withdrawal?.transferServer.domain)
-  const isSEP24Anchor = Boolean(stellarToml && stellarToml.TRANSFER_SERVER_SEP0024)
+  const digitalbitsToml = useDigitalBitsToml(props.state.withdrawal?.transferServer.domain)
+  const isSEP24Anchor = Boolean(digitalbitsToml && digitalbitsToml.TRANSFER_SERVER_SEP0024)
 
   const fees = BigNumber(data.fee_fixed || 0).add(
     BigNumber(data.fee_percent || 0)

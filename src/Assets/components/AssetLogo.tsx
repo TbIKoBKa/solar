@@ -1,10 +1,10 @@
 import React from "react"
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 import Avatar from "@material-ui/core/Avatar"
 import makeStyles from "@material-ui/core/styles/makeStyles"
-import { useAssetMetadata } from "~Generic/hooks/stellar"
+import { useAssetMetadata } from "~Generic/hooks/digitalbits"
 import { brandColor } from "~App/theme"
-import LumenIcon from "~Icons/components/Lumen"
+import DigitalbitIcon from "~Icons/components/Digitalbit"
 
 const paddedAssetIconsRegex = /bitbondsto\.com/
 
@@ -27,7 +27,7 @@ const useAssetLogoStyles = makeStyles({
     background: brandColor.dark,
     border: `1px solid ${brandColor.main15}`
   },
-  xlmAvatar: {
+  xdbAvatar: {
     background: "#f0f2f6",
     boxSizing: "border-box",
     color: "black",
@@ -58,8 +58,8 @@ function AssetLogo(props: AssetLogoProps) {
 
   if (props.asset.isNative()) {
     return (
-      <Avatar alt="Stellar Lumens (XLM)" className={`${className} ${classes.xlmAvatar}`} style={props.style}>
-        <LumenIcon className={classes.icon} />
+      <Avatar alt="Digitalbits (XDB)" className={`${className} ${classes.xdbAvatar}`} style={props.style}>
+        <DigitalbitIcon className={classes.icon} />
       </Avatar>
     )
   } else {

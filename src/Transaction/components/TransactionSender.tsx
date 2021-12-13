@@ -1,14 +1,14 @@
 import { TFunction } from "i18next"
 import React from "react"
 import { Translation } from "react-i18next"
-import { Networks, Server, Transaction } from "stellar-sdk"
+import { Networks, Server, Transaction } from "xdb-digitalbits-sdk"
 import Zoom from "@material-ui/core/Zoom"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext, SettingsContextType } from "~App/contexts/settings"
-import { useHorizon } from "~Generic/hooks/stellar"
+import { useFrontier } from "~Generic/hooks/digitalbits"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { isWrongPasswordError, getErrorTranslation } from "~Generic/lib/errors"
-import { explainSubmissionErrorResponse } from "~Generic/lib/horizonErrors"
+import { explainSubmissionErrorResponse } from "~Generic/lib/frontierErrors"
 import { resolveMultiSignatureCoordinator } from "~Generic/lib/multisig-discovery"
 import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { hasSigned, requiresRemoteSignatures, signTransaction } from "~Generic/lib/transaction"
@@ -77,7 +77,7 @@ export type SendTransaction = (
 ) => Promise<any>
 
 interface RenderFunctionProps {
-  horizon: Server
+  frontier: Server
   sendTransaction: SendTransaction
 }
 
@@ -85,7 +85,7 @@ interface Props {
   account: Account
   completionCallbackDelay?: number
   forceClose?: boolean
-  horizon: Server
+  frontier: Server
   settings: SettingsContextType
   t: TFunction
   children: (props: RenderFunctionProps) => React.ReactNode
@@ -215,29 +215,29 @@ class TransactionSender extends React.Component<Props, State> {
     const {
       account,
       completionCallbackDelay = 1000,
-      horizon,
+      frontier,
       onSubmissionCompleted = () => undefined,
       onSubmissionFailure
     } = this.props
     try {
-      const thirdPartySecurityService = await isThirdPartyProtected(horizon, account.accountID)
+      const thirdPartySecurityService = await isThirdPartyProtected(frontier, account.accountID)
       if (thirdPartySecurityService) {
         await this.submitTransactionToThirdPartyService(signedTx, thirdPartySecurityService)
       } else if (
         this.state.signatureRequest &&
         (this.state.signatureRequest.status === "ready" || this.state.signatureRequest.status === "failed")
       ) {
-        await this.submitMultisigTransactionToStellarNetwork(this.state.signatureRequest)
+        await this.submitMultisigTransactionToDigitalBitsNetwork(this.state.signatureRequest)
       } else if (
         // handle edge case where a signature request was created from a source account
         // with master weight set to 0 --> request should be submitted to multisig service
         // although it does not require remote signatures
         this.state.signatureRequest?.status === "pending" ||
-        (await requiresRemoteSignatures(horizon, signedTx, account.publicKey))
+        (await requiresRemoteSignatures(frontier, signedTx, account.publicKey))
       ) {
         await this.submitTransactionToMultisigService(signedTx, unsignedTx)
       } else {
-        await this.submitTransactionToHorizon(signedTx)
+        await this.submitTransactionToFrontier(signedTx)
       }
       setTimeout(() => {
         this.clearSubmissionPromise()
@@ -254,9 +254,9 @@ class TransactionSender extends React.Component<Props, State> {
     }
   }
 
-  submitMultisigTransactionToStellarNetwork = async (signatureRequest: MultisigTransactionResponse) => {
+  submitMultisigTransactionToDigitalBitsNetwork = async (signatureRequest: MultisigTransactionResponse) => {
     const { netWorker } = await workers
-    const promise = netWorker.submitMultisigTransactionToStellarNetwork(signatureRequest).then(response => {
+    const promise = netWorker.submitMultisigTransactionToDigitalBitsNetwork(signatureRequest).then(response => {
       if (response.status !== 200) {
         throw explainSubmissionErrorResponse(response, this.props.t)
       }
@@ -269,7 +269,7 @@ class TransactionSender extends React.Component<Props, State> {
     return promise
   }
 
-  submitTransactionToHorizon = async (signedTransaction: Transaction) => {
+  submitTransactionToFrontier = async (signedTransaction: Transaction) => {
     const { netWorker } = await workers
 
     const network = this.props.account.testnet ? Networks.TESTNET : Networks.PUBLIC
@@ -279,7 +279,7 @@ class TransactionSender extends React.Component<Props, State> {
       .toString("base64")
 
     const promise = netWorker
-      .submitTransaction(String(this.props.horizon.serverURL), txEnvelopeXdr, network)
+      .submitTransaction(String(this.props.frontier.serverURL), txEnvelopeXdr, network)
       .then(response => {
         if (response.status !== 200) {
           throw explainSubmissionErrorResponse(response, this.props.t)
@@ -325,7 +325,7 @@ class TransactionSender extends React.Component<Props, State> {
 
       const result = await promise
 
-      if (result.submittedToStellarNetwork) {
+      if (result.submittedToDigitalBitsNetwork) {
         this.setState({ submissionType: SubmissionType.default })
       }
 
@@ -364,7 +364,7 @@ class TransactionSender extends React.Component<Props, State> {
     } = this.state
 
     const content = this.props.children({
-      horizon: this.props.horizon,
+      frontier: this.props.frontier,
       sendTransaction: this.setTransaction
     })
 
@@ -402,10 +402,12 @@ class TransactionSender extends React.Component<Props, State> {
   }
 }
 
-function TransactionSenderWithHorizon(props: Omit<Props, "horizon" | "settings" | "t">) {
-  const horizon = useHorizon(props.account.testnet)
+function TransactionSenderWithFrontier(props: Omit<Props, "frontier" | "settings" | "t">) {
+  const frontier = useFrontier(props.account.testnet)
   const settings = React.useContext(SettingsContext)
-  return <Translation>{t => <TransactionSender {...props} horizon={horizon} settings={settings} t={t} />}</Translation>
+  return (
+    <Translation>{t => <TransactionSender {...props} frontier={frontier} settings={settings} t={t} />}</Translation>
+  )
 }
 
-export default React.memo(TransactionSenderWithHorizon)
+export default React.memo(TransactionSenderWithFrontier)

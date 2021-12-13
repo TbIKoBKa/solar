@@ -1,6 +1,6 @@
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
-import { Asset, Horizon, Operation, Server } from "stellar-sdk"
+import { Asset, Frontier, Operation, Server } from "xdb-digitalbits-sdk"
 import CloseIcon from "@material-ui/icons/Close"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
@@ -16,7 +16,7 @@ interface Props {
   account: Account
   accountData: AccountData
   asset: Asset
-  horizon: Server
+  frontier: Server
   onClose: () => void
   onRemoved: () => void
   sendTransaction: SendTransaction
@@ -33,7 +33,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
       const operations = [Operation.changeTrust({ asset: props.asset, limit: "0", withMuxing: true })]
       const transaction = await createTransaction(operations, {
         accountData: props.accountData,
-        horizon: props.horizon,
+        frontier: props.frontier,
         walletAccount: props.account
       })
       setTxCreationPending(false)
@@ -45,7 +45,7 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
     }
   }
 
-  const assetBalance = (props.accountData.balances as Horizon.BalanceLineAsset[]).find(
+  const assetBalance = (props.accountData.balances as Frontier.BalanceLineAsset[]).find(
     balance => balance.asset_code === props.asset.getCode() && balance.asset_issuer === props.asset.getIssuer()
   )
   const stillOwnsTokens = assetBalance && parseFloat(assetBalance.balance) > 0
@@ -88,14 +88,14 @@ const RemoveTrustlineDialog = React.memo(function RemoveTrustlineDialog(props: P
   )
 })
 
-function ConnectedRemoveTrustlineDialog(props: Omit<Props, "balances" | "horizon" | "sendTransaction">) {
+function ConnectedRemoveTrustlineDialog(props: Omit<Props, "balances" | "frontier" | "sendTransaction">) {
   return (
     <TransactionSender account={props.account} onSubmissionCompleted={props.onClose}>
-      {({ horizon, sendTransaction }) => (
+      {({ frontier, sendTransaction }) => (
         <RemoveTrustlineDialog
           {...props}
           accountData={props.accountData}
-          horizon={horizon}
+          frontier={frontier}
           sendTransaction={sendTransaction}
         />
       )}

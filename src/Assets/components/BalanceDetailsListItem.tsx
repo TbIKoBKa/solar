@@ -5,8 +5,8 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import { makeStyles } from "@material-ui/core/styles"
-import { useAssetMetadata } from "~Generic/hooks/stellar"
-import { balancelineToAsset } from "~Generic/lib/stellar"
+import { useAssetMetadata } from "~Generic/hooks/digitalbits"
+import { balancelineToAsset } from "~Generic/lib/digitalbits"
 import { breakpoints } from "~App/theme"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import { BalanceLine } from "~Generic/lib/account"
@@ -129,11 +129,9 @@ function BalanceListItem(props: BalanceListItemProps) {
             secondary: classes.mainListItemTextSecondaryTypography
           }}
           primary={
-            props.spendableBalance
-              ? t("account.balance-details.item.spendable-balance.primary")
-              : "Stellar Lumens (XLM)"
+            props.spendableBalance ? t("account.balance-details.item.spendable-balance.primary") : "Digitalbits (XDB)"
           }
-          secondary={props.spendableBalance ? undefined : "stellar.org"}
+          secondary={props.spendableBalance ? undefined : "digitalbits.io"}
         />
         <ListItemText
           classes={{

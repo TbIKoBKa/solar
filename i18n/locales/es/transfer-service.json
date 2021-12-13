@@ -16,7 +16,7 @@
       "deposit-pending": "Depósito pendiente",
       "info": {
         "1": "{{domain}} está esperando por tu depósito.",
-        "2": "Los fondos serán acreditados a tu cuenta Stellar cuando el depósito sea acreditado al emisor del activo."
+        "2": "Los fondos serán acreditados a tu cuenta DigitalBits cuando el depósito sea acreditado al emisor del activo."
       }
     },
     "sidebar": {
@@ -57,7 +57,7 @@
       "deposit": {
         "headline": "Agregar fondos a tu cuenta",
         "info": {
-          "1": "Compra Lúmenes Stellar (XLM) o deposita recursos en tu cuenta. Envía dinero desde tu cuenta bancaria, ETH de tu monedero Ethereum, etc.",
+          "1": "Compra digitalbits (XDB) o deposita recursos en tu cuenta. Envía dinero desde tu cuenta bancaria, ETH de tu monedero Ethereum, etc.",
           "2": "AstraX actúa como un cliente para el servicio ofrecido exclusivamente por el emisor del activo."
         }
       },
@@ -100,12 +100,12 @@
       "no-withdrawable-assets": "Esta cuenta no contiene activos para retirar."
     }
   },
-  "purchase-lumens": {
+  "purchase-digitalbits": {
     "sidebar": {
-      "headline": "Comprar Lúmenes Stellar",
+      "headline": "Comprar digitalbits",
       "info": {
-        "1": "Ofrecemos opciones para comrpar Lumenes Stellar que no involucran a un emisor de activos Stellar.",
-        "2": "Los Lúmenes Stellar (XLM) son las moneda nativa de la red Stellar. Se usan para pagar los costos de transacción, entre otras cosas."
+        "1": "Ofrecemos opciones para comrpar Digitalbites que no involucran a un emisor de activos DigitalBits.",
+        "2": "Los digitalbits (XDB) son las moneda nativa de la red DigitalBits. Se usan para pagar los costos de transacción, entre otras cosas."
       }
     }
   },
@@ -199,7 +199,7 @@
       "withdrawal-in-progress": "Retiro en proceso",
       "info": {
         "1": "{{domain}} esta procesando el retiro.",
-        "2": "Los fondos serán deducidos de la tu cuenta Stellar y deberían ser acreditados a tu cuenta de retiro prontamente."
+        "2": "Los fondos serán deducidos de la tu cuenta DigitalBits y deberían ser acreditados a tu cuenta de retiro prontamente."
       }
     },
     "sidebar": {

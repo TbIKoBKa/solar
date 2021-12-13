@@ -11,7 +11,7 @@ import ListItemText from "@material-ui/core/ListItemText"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import { SettingsContext } from "~App/contexts/settings"
-import { useStellarToml } from "~Generic/hooks/stellar"
+import { useDigitalBitsToml } from "~Generic/hooks/digitalbits"
 import { ActionButton, ConfirmDialog } from "~Generic/components/DialogActions"
 
 const useTrustedServiceListItemStyles = makeStyles({
@@ -45,9 +45,9 @@ interface TrustedServiceListItemProps {
 const TrustedServiceListItem = React.memo(function TrustedServiceListItem(props: TrustedServiceListItemProps) {
   const classes = useTrustedServiceListItemStyles()
 
-  const stellarToml = useStellarToml(props.trustedService.domain)
-  const imageURL = stellarToml && stellarToml.DOCUMENTATION && stellarToml.DOCUMENTATION.ORG_LOGO
-  const orgName = stellarToml && stellarToml.DOCUMENTATION && stellarToml.DOCUMENTATION.ORG_NAME
+  const digitalbitsToml = useDigitalBitsToml(props.trustedService.domain)
+  const imageURL = digitalbitsToml && digitalbitsToml.DOCUMENTATION && digitalbitsToml.DOCUMENTATION.ORG_LOGO
+  const orgName = digitalbitsToml && digitalbitsToml.DOCUMENTATION && digitalbitsToml.DOCUMENTATION.ORG_NAME
 
   return (
     <ListItem className={classes.listItem}>

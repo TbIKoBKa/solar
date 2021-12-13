@@ -2,7 +2,7 @@ import BigNumber from "big.js"
 import nanoid from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Transaction } from "stellar-sdk"
+import { Transaction } from "xdb-digitalbits-sdk"
 import CheckIcon from "@material-ui/icons/Check"
 import CloseIcon from "@material-ui/icons/Close"
 import OpenInNewIcon from "@material-ui/icons/OpenInNew"
@@ -73,20 +73,22 @@ function TxConfirmationForm(props: Props) {
     }))
   }
 
-  // const openInStellarExpert = React.useCallback(() => {
-  //   openLink(
-  //     `https://stellar.expert/explorer/${props.account.testnet ? "testnet" : "public"
-  //     }/tx/${props.transaction.hash().toString("hex")}`
-  //   )
-  // }, [props.account.testnet, props.transaction])
-
-  const openInStellarExpert = React.useCallback(() => {
+  const openInDigitalBitsExpert = React.useCallback(() => {
+    //TODO transaction explorer
     openLink(
-      `https://frontier.${
-        props.account.testnet ? "testnet" : "livenet"
-      }.digitalbits.io/transactions/${props.transaction.hash().toString("hex")}`
+      `https://stellar.expert/explorer/${
+        props.account.testnet ? "testnet" : "public"
+      }/tx/${props.transaction.hash().toString("hex")}`
     )
   }, [props.account.testnet, props.transaction])
+
+  // const openInDigitalBitsExpert = React.useCallback(() => {
+  //   openLink(
+  //     `https://frontier.${
+  //       props.account.testnet ? "testnet" : "livenet"
+  //     }.digitalbits.io/transactions/${props.transaction.hash().toString("hex")}`
+  //   )
+  // }, [props.account.testnet, props.transaction])
 
   const handleTextFieldChange = React.useCallback(event => setFormValue("password", event.target.value), [])
 
@@ -187,7 +189,7 @@ function TxConfirmationForm(props: Props) {
             </ActionButton>
           )}
           {props.disabled && !props.signatureRequest ? (
-            <ActionButton icon={<OpenInNewIcon />} onClick={openInStellarExpert} type="secondary">
+            <ActionButton icon={<OpenInNewIcon />} onClick={openInDigitalBitsExpert} type="secondary">
               {t("account.transaction-review.action.inspect")}
             </ActionButton>
           ) : null}

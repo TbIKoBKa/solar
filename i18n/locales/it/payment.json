@@ -33,7 +33,7 @@
     "no-destination": "Nessuna destinazione specificata.",
     "no-price": "Nessun importo specificato.",
     "not-enough-funds": "Fondi insufficienti.",
-    "invalid-destination": "Attesa una chiave pubblica o un indirizzo stellare.",
+    "invalid-destination": "Attesa una chiave pubblica o un indirizzo digitalbitse.",
     "invalid-price": "Importo non valido.",
     "integer-memo-required": "Il memo deve essere un numero intero."
   }

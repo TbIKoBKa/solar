@@ -2,11 +2,11 @@ import Typography from "@material-ui/core/Typography"
 import CheckIcon from "@material-ui/icons/Check"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Horizon } from "stellar-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
 import { AccountsContext } from "~App/contexts/accounts"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import Portal from "~Generic/components/Portal"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useIsMobile, RefStateObject } from "~Generic/hooks/userinterface"
 import { Box, VerticalLayout } from "~Layout/components/Box"
 import { MultisigPreset, MultisigPresets } from "../lib/editor"
@@ -55,13 +55,13 @@ interface DetailsEditorProps {
   actionsRef: RefStateObject | undefined
   disabled?: boolean
   onSubmit: () => Promise<any>
-  signers: Horizon.AccountSigner[]
+  signers: Frontier.AccountSigner[]
   showKeyWeights?: boolean
   testnet: boolean
 }
 
 function DetailsEditor(props: DetailsEditorProps) {
-  const [selectedSigner, setSelectedSigner] = React.useState<Horizon.AccountSigner | undefined>()
+  const [selectedSigner, setSelectedSigner] = React.useState<Frontier.AccountSigner | undefined>()
   const { t } = useTranslation()
   const { accounts } = React.useContext(AccountsContext)
   const { accountID, editorState, setEditorState, testnet } = React.useContext(MultisigEditorContext)
@@ -72,7 +72,7 @@ function DetailsEditor(props: DetailsEditorProps) {
     editorState.preset.type === MultisigPresets.Type.SingleSignature && accountData.signers.length > 1
 
   const selectSingleSigner = React.useCallback(
-    (newlySelectedSigner: Horizon.AccountSigner) => {
+    (newlySelectedSigner: Frontier.AccountSigner) => {
       setSelectedSigner(newlySelectedSigner)
       setEditorState(prev => ({
         ...prev,

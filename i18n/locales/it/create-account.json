@@ -31,7 +31,7 @@
   },
   "inputs": {
     "import": {
-      "helper-text": "Una chiave segreta Stellar è lunga 56 caratteri alfanumerici e inizia con una S.",
+      "helper-text": "Una chiave segreta DigitalBits è lunga 56 caratteri alfanumerici e inizia con una S.",
       "placeholder": "SABCDEFGH ...",
       "label": "Chiave segreta",
       "title": "Importa esistente"
@@ -57,7 +57,7 @@
     }
   },
   "validation": {
-    "invalid-key": "Chiave privata stellare non valida.",
+    "invalid-key": "Chiave privata digitalbite non valida.",
     "no-account-name": "Non è stato inserito alcun nome account.",
     "no-password": "Non è stata inserita alcuna password.",
     "password-no-match": "La password non corrisponde.",

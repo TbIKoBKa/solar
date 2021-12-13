@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Horizon, Networks, Operation, Server, Transaction, xdr } from "stellar-sdk"
+import { Frontier, Networks, Operation, Server, Transaction, xdr } from "xdb-digitalbits-sdk"
 import { WebauthData } from "@satoshipay/stellar-sep-10"
 import {
   fetchTransferInfos,
@@ -11,7 +11,7 @@ import {
   WithdrawalTransaction
 } from "@satoshipay/stellar-transfer"
 import { Account } from "~App/contexts/accounts"
-import { useHorizonURLs, useWebAuth } from "~Generic/hooks/stellar"
+import { useFrontierURLs, useWebAuth } from "~Generic/hooks/digitalbits"
 import { CustomError } from "~Generic/lib/errors"
 import { useNetWorker } from "~Generic/hooks/workers"
 import { createTransaction } from "~Generic/lib/transaction"
@@ -29,9 +29,9 @@ function createWithdrawal(state: Omit<TransferStates.EnterBasics, "step">): With
 
 async function createWithdrawalTransaction(
   account: Account,
-  accountData: Horizon.AccountResponse,
+  accountData: Frontier.AccountResponse,
   amount: BigNumber,
-  horizon: Server,
+  frontier: Server,
   instructions: WithdrawalInstructionsSuccess,
   withdrawal: Withdrawal
 ): Promise<Transaction> {
@@ -56,7 +56,7 @@ async function createWithdrawalTransaction(
 
   return createTransaction(operations, {
     accountData,
-    horizon,
+    frontier,
     memo,
     walletAccount: account
   })
@@ -64,7 +64,7 @@ async function createWithdrawalTransaction(
 
 export function useWithdrawalState(account: Account, closeDialog: () => void) {
   const netWorker = useNetWorker()
-  const horizonURLs = useHorizonURLs(account.testnet)
+  const frontierURLs = useFrontierURLs(account.testnet)
   const WebAuth = useWebAuth()
 
   const { dispatch, machineState, transfer } = useTransferState(account, closeDialog)
@@ -157,18 +157,18 @@ export function useWithdrawalState(account: Account, closeDialog: () => void) {
     instructions: WithdrawalInstructionsSuccess,
     amount: BigNumber
   ) => {
-    const accountData = await netWorker.fetchAccountData(horizonURLs, account.accountID)
-    const horizonURL = horizonURLs[0]
+    const accountData = await netWorker.fetchAccountData(frontierURLs, account.accountID)
+    const frontierURL = frontierURLs[0]
 
     if (!accountData) {
       throw CustomError(
         "FetchAccountDataError",
-        `Cannot fetch account data of ${account.accountID} from ${horizonURL}`,
-        { account: account.accountID, horizon: horizonURL }
+        `Cannot fetch account data of ${account.accountID} from ${frontierURL}`,
+        { account: account.accountID, frontier: frontierURL }
       )
     }
 
-    return createWithdrawalTransaction(account, accountData, amount, new Server(horizonURL), instructions, withdrawal)
+    return createWithdrawalTransaction(account, accountData, amount, new Server(frontierURL), instructions, withdrawal)
   }
 
   const pollKYCStatus = async (withdrawal: Withdrawal, transferTxId: string, authToken?: string) => {

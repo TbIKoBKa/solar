@@ -1,6 +1,6 @@
 import BigNumber from "big.js"
 import React from "react"
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 import {
   AssetTransferInfo,
   KYCResponseType,
@@ -72,7 +72,7 @@ const demoTransaction: TransferTransaction = {
   refunded: false,
   started_at: new Date().toISOString(),
   status: TransferStatus.incomplete,
-  stellar_transaction_id: "",
+  digitalbits_transaction_id: "",
   to: "",
   withdraw_anchor_account: "",
   withdraw_memo: "",

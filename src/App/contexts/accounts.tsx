@@ -1,5 +1,5 @@
 import React from "react"
-import { Keypair, Transaction } from "stellar-sdk"
+import { Keypair, Transaction } from "xdb-digitalbits-sdk"
 import { CustomError, WrongPasswordError } from "~Generic/lib/errors"
 import getKeyStore, { KeyStoreAPI } from "~Platform/key-store"
 import { trackError } from "./notifications"
@@ -39,7 +39,7 @@ interface ContextValue {
 }
 
 /**
- * Creates a wallet account instance. Not to be confused with the Stellar
+ * Creates a wallet account instance. Not to be confused with the DigitalBits
  * account response, although they map 1:1.
  */
 async function createAccountInstance(keyStore: KeyStoreAPI, keyID: string) {

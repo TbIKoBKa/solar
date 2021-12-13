@@ -16,7 +16,7 @@
       "deposit-pending": "Deposito in attesa",
       "info": {
         "1": "{{domain}} sta aspettando il tuo deposito.",
-        "2": "I fondi verranno accreditati sul tuo account Stellar quando il deposito viene accreditato all'emittente della risorsa."
+        "2": "I fondi verranno accreditati sul tuo account DigitalBits quando il deposito viene accreditato all'emittente della risorsa."
       }
     },
     "sidebar": {
@@ -57,7 +57,7 @@
       "deposit": {
         "headline": "Finanzia il tuo account",
         "info": {
-          "1": "Acquista Stellar lumen (XLM) o deposita risorse per finanziare il tuo account. Invia EURO dal tuo conto bancario, ETH dal tuo portafoglio Ethereum, ecc",
+          "1": "Acquista digitalbit (XDB) o deposita risorse per finanziare il tuo account. Invia EURO dal tuo conto bancario, ETH dal tuo portafoglio Ethereum, ecc",
           "2": "AstraX agisce solo come cliente del servizio offerto dall'emittente della risorsa."
         }
       },
@@ -100,12 +100,12 @@
       "no-withdrawable-assets": "Questo conto non contiene risorse prelevabili."
     }
   },
-  "purchase-lumens": {
+  "purchase-digitalbits": {
     "sidebar": {
-      "headline": "Acquista Stellar lumen",
+      "headline": "Acquista digitalbit",
       "info": {
-        "1": "Offriamo opzioni per acquistare lumen che non coinvolgono un emittente di risorse Stellar.",
-        "2": "I lumen stellari (XLM) sono i token nativi sulla rete Stellar. Vengono utilizzati per pagare le commissioni di transazione, tra le altre cose"
+        "1": "Offriamo opzioni per acquistare digitalbit che non coinvolgono un emittente di risorse DigitalBits.",
+        "2": "I digitalbit (XDB) sono i token nativi sulla rete DigitalBits. Vengono utilizzati per pagare le commissioni di transazione, tra le altre cose"
       }
     }
   },
@@ -196,7 +196,7 @@
       "withdrawal-in-progress": "Ritiro in corso",
       "info": {
         "1": "{{domain}} sta conducendo il ritiro.",
-        "2": "I fondi sono stati detratti dal tuo account Stellar e dovrebbero essere accreditati a breve sulla destinazione del prelievo."
+        "2": "I fondi sono stati detratti dal tuo account DigitalBits e dovrebbero essere accreditati a breve sulla destinazione del prelievo."
       }
     },
     "sidebar": {

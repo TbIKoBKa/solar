@@ -23,7 +23,7 @@ import { Account, AccountsContext } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
 import { warningColor, FullscreenDialogTransition } from "~App/theme"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useClipboard, useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { getLastArgumentFromURL } from "~Generic/lib/url"
 import { matchesRoute } from "~Generic/lib/routes"
@@ -32,7 +32,7 @@ import { InlineErrorBoundary, HideOnError } from "~Generic/components/ErrorBound
 const modules = {
   AssetDetailsDialog: import("../../Assets/components/AssetDetailsDialog"),
   BalanceDetailsDialog: import("../../Assets/components/BalanceDetailsDialog"),
-  LumenPurchaseDialog: import("../../LumenPurchase/components/LumenPurchaseDialog"),
+  DigitalbitPurchaseDialog: import("../../DigitalbitPurchase/components/DigitalbitPurchaseDialog"),
   TradeAssetDialog: import("../../Trading/components/TradingDialog"),
   TransferDialog: import("../../TransferService/components/ConnectedTransferDialog")
 }
@@ -58,8 +58,8 @@ const BalanceDetailsDialog = withFallback(
   React.lazy(() => modules.BalanceDetailsDialog),
   <ViewLoading />
 )
-const LumenPurchaseDialog = withFallback(
-  React.lazy(() => modules.LumenPurchaseDialog),
+const DigitalbitPurchaseDialog = withFallback(
+  React.lazy(() => modules.DigitalbitPurchaseDialog),
   <ViewLoading />
 )
 const TradeAssetDialog = withFallback(
@@ -135,7 +135,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
   const showBalanceDetails = matchesRoute(router.location.pathname, routes.balanceDetails("*"))
   const showCreatePayment = matchesRoute(router.location.pathname, routes.createPayment("*"))
   const showDeposit = matchesRoute(router.location.pathname, routes.depositAsset("*"))
-  const showLumenPurchase = matchesRoute(router.location.pathname, routes.purchaseLumens("*"))
+  const showDigitalbitPurchase = matchesRoute(router.location.pathname, routes.purchaseDigitalbits("*"))
   const showReceivePayment = matchesRoute(router.location.pathname, routes.receivePayment("*"))
   const showWithdrawal = matchesRoute(router.location.pathname, routes.withdrawAsset("*"))
 
@@ -171,7 +171,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
       deposit: accountID ? () => router.history.push(routes.depositAsset(accountID)) : undefined,
       balanceDetails: accountID ? () => router.history.push(routes.balanceDetails(accountID)) : undefined,
       createPayment: accountID ? () => router.history.push(routes.createPayment(accountID)) : undefined,
-      purchaseLumens: accountID ? () => router.history.push(routes.purchaseLumens(accountID)) : undefined,
+      purchaseDigitalbits: accountID ? () => router.history.push(routes.purchaseDigitalbits(accountID)) : undefined,
       receivePayment: accountID ? () => router.history.push(routes.receivePayment(accountID)) : undefined,
       tradeAssets: accountID ? () => router.history.push(routes.tradeAsset(accountID)) : undefined,
       transactions: accountID ? () => router.history.push(routes.account(accountID)) : undefined,
@@ -287,7 +287,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
         onClose={handleBackNavigation}
         onDeposit={navigateTo.deposit}
         onManageAssets={navigateTo.balanceDetails}
-        onPurchaseLumens={navigateTo.purchaseLumens}
+        onPurchaseDigitalbits={navigateTo.purchaseDigitalbits}
         onRename={performRenaming}
         onTrade={navigateTo.tradeAssets}
         onWithdraw={navigateTo.withdraw}
@@ -404,7 +404,7 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             <React.Suspense fallback={<ViewLoading />}>
               <AssetDetailsDialog
                 account={props.account}
-                assetID={showAssetDetails ? getLastArgumentFromURL(router.location.pathname) : "XLM"}
+                assetID={showAssetDetails ? getLastArgumentFromURL(router.location.pathname) : "XDB"}
                 onClose={closeAssetDetails}
               />
             </React.Suspense>
@@ -454,13 +454,13 @@ const AccountPageContent = React.memo(function AccountPageContent(props: Account
             </React.Suspense>
           </Dialog>
           <Dialog
-            open={showLumenPurchase}
+            open={showDigitalbitPurchase}
             fullScreen
             onClose={closeDialog}
             TransitionComponent={FullscreenDialogTransition}
           >
             <React.Suspense fallback={<ViewLoading />}>
-              <LumenPurchaseDialog account={props.account} onClose={closeDialog} />
+              <DigitalbitPurchaseDialog account={props.account} onClose={closeDialog} />
             </React.Suspense>
           </Dialog>
         </>

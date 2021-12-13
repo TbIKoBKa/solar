@@ -1,4 +1,4 @@
-<h1 align="center">Solar Wallet</h1>
+<h1 align="center">AstraX Wallet</h1>
 
 <p align="center">
   <a href="https://github.com/satoshipay/solar/releases/latest">
@@ -20,7 +20,7 @@
 
 <br />
 
-User-friendly Stellar wallet, featuring multi-signature, custom assets management and more.
+User-friendly DigitalBits wallet, featuring multi-signature, custom assets management and more.
 
 Runs on Mac OS, Windows, Linux, Android and iOS.
 
@@ -88,7 +88,7 @@ npm run build:linux
 
 #### Building windows binaries on macOS
 
-Starting with macOS Catalina 32-bit executables are not supported. This means that the windows binaries cannot be build natively. One can circumvent this issue by using docker for building the windows binaries. Details are documented [here](https://www.electron.build/multi-platform-build#build-electron-app-using-docker-on-a-local-machine). Since Solar is using Squirrel.Windows the `electronuserland/builder:wine-mono` image should be used.
+Starting with macOS Catalina 32-bit executables are not supported. This means that the windows binaries cannot be build natively. One can circumvent this issue by using docker for building the windows binaries. Details are documented [here](https://www.electron.build/multi-platform-build#build-electron-app-using-docker-on-a-local-machine). Since AstraX is using Squirrel.Windows the `electronuserland/builder:wine-mono` image should be used.
 
 To run the docker container use:
 
@@ -103,13 +103,13 @@ docker run --rm -ti \
  -v ~/.cache/electron-builder:/root/.cache/electron-builder \
  -v /Volumes/Certificates/solar:/root/Certs \
  electronuserland/builder:wine-mono bash -c 'npm config set script-shell bash && npm install && npm run build:win:signed'
- ```
- 
- **Note:** We have seen weird module resolution troubles with Parcel. In this case make sure to `rm -rf node_modules/` **on the host**, then try again.
+```
+
+**Note:** We have seen weird module resolution troubles with Parcel. In this case make sure to `rm -rf node_modules/` **on the host**, then try again.
 
 ### Signed binaries
 
-To sign the binaries, make sure you have the code signing certificates on your local filesystem as a `.p12` file and have the password for them. Make sure not to save the certificates in the Solar directory in order to not accidentally bundling them into the app installer!
+To sign the binaries, make sure you have the code signing certificates on your local filesystem as a `.p12` file and have the password for them. Make sure not to save the certificates in the AstraX directory in order to not accidentally bundling them into the app installer!
 
 You can create a `signing-mac.env` and a `signing-win.env` file, pointing `electron-builder` to the right certificate to use for each target platform:
 

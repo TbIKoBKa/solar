@@ -6,15 +6,15 @@ import Radio from "@material-ui/core/Radio"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Horizon } from "stellar-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { Address } from "~Generic/components/PublicKey"
 
 interface SignerSelectorProps {
   accounts: Account[]
-  onSelect: (signer: Horizon.AccountSigner) => void
-  selected: Horizon.AccountSigner | undefined
-  signers: Horizon.AccountSigner[]
+  onSelect: (signer: Frontier.AccountSigner) => void
+  selected: Frontier.AccountSigner | undefined
+  signers: Frontier.AccountSigner[]
   testnet: boolean
 }
 

@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Operation, Transaction, Server } from "stellar-sdk"
+import { Operation, Transaction, Server } from "xdb-digitalbits-sdk"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import Switch from "@material-ui/core/Switch"
@@ -10,7 +10,7 @@ import WarnIcon from "@material-ui/icons/Warning"
 import AccountSelectionList from "~Account/components/AccountSelectionList"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { createTransaction } from "~Generic/lib/transaction"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useIsMobile, useIsSmallMobile } from "~Generic/hooks/userinterface"
 import { ActionButton, ConfirmDialog, DialogActionsBox } from "~Generic/components/DialogActions"
 import MainTitle from "~Generic/components/MainTitle"
@@ -90,7 +90,7 @@ interface Warning {
 
 interface AccountDeletionDialogProps {
   account: Account
-  horizon: Server
+  frontier: Server
   onClose: () => void
   onDelete: () => void
   sendTransaction: (transaction: Transaction) => void
@@ -98,7 +98,7 @@ interface AccountDeletionDialogProps {
 
 function AccountDeletionDialog(props: AccountDeletionDialogProps) {
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
-  const horizon = props.horizon
+  const frontier = props.frontier
 
   const { accounts } = React.useContext(AccountsContext)
   const [mergeAccountEnabled, setMergeAccountEnabled] = React.useState(false)
@@ -127,7 +127,7 @@ function AccountDeletionDialog(props: AccountDeletionDialogProps) {
             withMuxing: true
           })
         ],
-        { accountData, horizon, walletAccount: props.account }
+        { accountData, frontier, walletAccount: props.account }
       )
 
       await props.sendTransaction(transaction)

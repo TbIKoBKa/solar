@@ -1,5 +1,5 @@
 import {
-  Account as StellarAccount,
+  Account as DigitalBitsAccount,
   Asset,
   Keypair,
   Memo,
@@ -11,13 +11,13 @@ import {
   xdr,
   Networks,
   MuxedAccount
-} from "stellar-sdk"
+} from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { workers } from "~Workers/worker-controller"
 import { WrongPasswordError, CustomError } from "./errors"
 import { applyTimeout } from "./promise"
-import { getAllSources, isNotFoundError } from "./stellar"
-import { isMuxedAddress } from "./stellar-address"
+import { getAllSources, isNotFoundError } from "./digitalbits"
+import { isMuxedAddress } from "./digitalbits-address"
 import { MultisigTransactionResponse } from "./multisig-service"
 
 /** in stroops */
@@ -72,15 +72,15 @@ function getBaseAccountId(key: string) {
     : key
 }
 
-async function accountExists(horizon: Server, publicKey: string) {
+async function accountExists(frontier: Server, publicKey: string) {
   try {
     const accountId = getBaseAccountId(publicKey)
-    const account = await horizon
+    const account = await frontier
       .accounts()
       .accountId(accountId)
       .call()
 
-    // Hack to fix SatoshiPay horizons responding with status 200 and an empty object on non-existent accounts
+    // Hack to fix SatoshiPay frontiers responding with status 200 and an empty object on non-existent accounts
     return Object.keys(account).length > 0
   } catch (error) {
     if (isNotFoundError(error)) {
@@ -98,33 +98,33 @@ function selectTransactionTimeout(accountData: Pick<ServerApi.AccountRecord, "si
 
 interface TxBlueprint {
   accountData: Pick<ServerApi.AccountRecord, "id" | "signers">
-  horizon: Server
+  frontier: Server
   memo?: Memo | null
   minTransactionFee?: number
   walletAccount: Account
 }
 
 export async function createTransaction(operations: Array<xdr.Operation<any>>, options: TxBlueprint) {
-  const { horizon, walletAccount } = options
+  const { frontier, walletAccount } = options
   const { netWorker } = await workers
 
-  const horizonURL = horizon.serverURL.toString()
+  const frontierURL = frontier.serverURL.toString()
   const timeout = selectTransactionTimeout(options.accountData)
 
   const [accountMetadata, timebounds] = await Promise.all([
-    applyTimeout(netWorker.fetchAccountData(horizonURL, walletAccount.accountID, 10), 10000, () =>
+    applyTimeout(netWorker.fetchAccountData(frontierURL, walletAccount.accountID, 10), 10000, () =>
       fail(`Fetching source account data timed out`)
     ),
-    applyTimeout(netWorker.fetchTimebounds(horizonURL, timeout), 10000, () =>
-      fail(`Syncing time bounds with horizon timed out`)
+    applyTimeout(netWorker.fetchTimebounds(frontierURL, timeout), 10000, () =>
+      fail(`Syncing time bounds with frontier timed out`)
     )
   ] as const)
 
   if (!accountMetadata) {
-    throw Error(`Failed to query account from horizon server: ${walletAccount.publicKey}`)
+    throw Error(`Failed to query account from frontier server: ${walletAccount.publicKey}`)
   }
 
-  const account = new StellarAccount(accountMetadata.id, accountMetadata.sequence)
+  const account = new DigitalBitsAccount(accountMetadata.id, accountMetadata.sequence)
   const networkPassphrase = walletAccount.testnet ? Networks.TESTNET : Networks.PUBLIC
   const txFee = Math.max(options.minTransactionFee || 0, maximumFeeToSpend)
 
@@ -147,17 +147,17 @@ interface PaymentOperationBlueprint {
   amount: string
   asset: Asset
   destination: string
-  horizon: Server
+  frontier: Server
 }
 
 export async function createPaymentOperation(options: PaymentOperationBlueprint) {
-  const { amount, asset, destination, horizon } = options
-  const destinationAccountExists = await accountExists(horizon, destination)
+  const { amount, asset, destination, frontier } = options
+  const destinationAccountExists = await accountExists(frontier, destination)
 
   if (!destinationAccountExists && !Asset.native().equals(options.asset)) {
     throw CustomError(
       "NonExistentDestinationError",
-      `Cannot pay in ${asset.code}$, since the destination account does not exist yet. Account creations always need to be done via XLM.`,
+      `Cannot pay in ${asset.code}$, since the destination account does not exist yet. Account creations always need to be done via XDB.`,
       { assetCode: asset.code }
     )
   }
@@ -178,9 +178,9 @@ export async function signTransaction(transaction: Transaction, walletAccount: A
   return signedTransaction
 }
 
-export async function requiresRemoteSignatures(horizon: Server, transaction: Transaction, walletPublicKey: string) {
+export async function requiresRemoteSignatures(frontier: Server, transaction: Transaction, walletPublicKey: string) {
   const { netWorker } = await workers
-  const horizonURL = horizon.serverURL.toString()
+  const frontierURL = frontier.serverURL.toString()
   const sources = getAllSources(transaction)
 
   if (sources.length > 1) {
@@ -189,9 +189,9 @@ export async function requiresRemoteSignatures(horizon: Server, transaction: Tra
 
   const accounts = await Promise.all(
     sources.map(async sourcePublicKey => {
-      const account = await netWorker.fetchAccountData(horizonURL, sourcePublicKey)
+      const account = await netWorker.fetchAccountData(frontierURL, sourcePublicKey)
       if (!account) {
-        throw Error(`Could not fetch account metadata from horizon server: ${sourcePublicKey}`)
+        throw Error(`Could not fetch account metadata from frontier server: ${sourcePublicKey}`)
       }
       return account
     })
@@ -220,7 +220,7 @@ export function isPotentiallyDangerousTransaction(transaction: Transaction, trus
   return dangerous
 }
 
-export function isStellarWebAuthTransaction(transaction: Transaction) {
+export function isDigitalBitsWebAuthTransaction(transaction: Transaction) {
   const firstOperation = transaction.operations[0]
 
   return (

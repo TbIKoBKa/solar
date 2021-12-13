@@ -1,33 +1,27 @@
 import BigNumber from "big.js"
 import fetch from "isomorphic-fetch"
-import {
-  xdr,
-  Asset,
-  Horizon,
-  Keypair,
-  NotFoundError,
-  Server,
-  Transaction,
-  LiquidityPoolAsset,
-  getLiquidityPoolId
-} from "stellar-sdk"
-import { OfferAsset } from "stellar-sdk/lib/types/offer"
-import { AssetRecord } from "../hooks/stellar-ecosystem"
+
+//TODO import { xdr, Asset, Frontier, Keypair, NotFoundError, Server, Transaction, LiquidityPoolAsset, getLiquidityPoolId } from "xdb-digitalbits-sdk"
+import { xdr, Asset, Frontier, Keypair, NotFoundError, Server, Transaction } from "xdb-digitalbits-sdk"
+import { LiquidityPoolAsset, getLiquidityPoolId } from "stellar-sdk"
+
+import { OfferAsset } from "xdb-digitalbits-sdk/lib/types/offer"
+import { AssetRecord } from "../hooks/digitalbits-ecosystem"
 import { AccountData, BalanceLine } from "./account"
 
 const MAX_INT64 = "9223372036854775807"
 
-// Used as a fallback if fetching the friendbot href from horizon fails
-const SDF_FRIENDBOT_HREF = "https://friendbot.stellar.org/{?addr}"
+// Used as a fallback if fetching the friendbot href from frontier fails
+const XDB_FOUNDATION_FRIENDBOT_HREF = "https://friendbot.testnet.digitalbits.io/{?addr}"
 
 const dedupe = <T>(array: T[]) => Array.from(new Set(array))
 
-// FIXME: Needs to be queried from horizon
+// FIXME: Needs to be queried from frontier
 export const BASE_RESERVE = 0.5
 
 export const networkPassphrases = {
-  mainnet: "Public Global Stellar Network ; September 2015",
-  testnet: "Test SDF Network ; September 2015"
+  mainnet: "Public Global DigitalBits Network ; September 2015",
+  testnet: "Test XDB Foundation Network ; September 2015"
 }
 
 export function getAllSources(tx: Transaction) {
@@ -37,7 +31,7 @@ export function getAllSources(tx: Transaction) {
   ])
 }
 
-// FIXME: Wait for proper solution in stellar-sdk: <https://github.com/stellar/js-stellar-sdk/pull/403>
+// FIXME: Wait for proper solution in xdb-digitalbits-sdk: <https://github.com/stellar/js-xdb-digitalbits-sdk/pull/403>
 export function isNotFoundError(error: any): error is NotFoundError {
   return (
     (error && error instanceof Error && error.message === "Request failed with status code 404") ||
@@ -53,7 +47,7 @@ export function balancelineToAsset(balanceline: BalanceLine): Asset {
 
 /** Reversal of stringifyAsset() */
 export function parseAssetID(assetID: string) {
-  if (assetID === "XLM") {
+  if (assetID === "XDB") {
     return Asset.native()
   } else {
     const [issuer, code] = assetID.split(":")
@@ -72,7 +66,7 @@ export function getLiquidityPoolIdFromAsset(asset: Pick<LiquidityPoolAsset, "ass
 
 export function stringifyAssetToReadableString(asset: Asset | LiquidityPoolAsset) {
   if (asset instanceof Asset) {
-    return asset.isNative() ? "XLM" : asset.getCode()
+    return asset.isNative() ? "XDB" : asset.getCode()
   } else {
     return `Liquidity Pool '${asset.assetA.code} <-> ${asset.assetB.code}'`
   }
@@ -81,16 +75,16 @@ export function stringifyAssetToReadableString(asset: Asset | LiquidityPoolAsset
 export function stringifyAsset(assetOrTrustline: Asset | BalanceLine) {
   if (assetOrTrustline instanceof Asset) {
     const asset: Asset = assetOrTrustline
-    return asset.isNative() ? "XLM" : `${asset.getIssuer()}:${asset.getCode()}`
+    return asset.isNative() ? "XDB" : `${asset.getIssuer()}:${asset.getCode()}`
   } else {
     const line: BalanceLine = assetOrTrustline
-    return line.asset_type === "native" ? "XLM" : `${line.asset_issuer}:${line.asset_code}`
+    return line.asset_type === "native" ? "XDB" : `${line.asset_issuer}:${line.asset_code}`
   }
 }
 
-export async function friendbotTopup(horizonURL: string, publicKey: string) {
-  const horizonMetadata = await (await fetch(horizonURL)).json()
-  const templatedFriendbotHref = horizonMetadata._links.friendbot.href || SDF_FRIENDBOT_HREF
+export async function friendbotTopup(frontierURL: string, publicKey: string) {
+  const frontierMetadata = await (await fetch(frontierURL)).json()
+  const templatedFriendbotHref = frontierMetadata._links.friendbot.href || XDB_FOUNDATION_FRIENDBOT_HREF
   const friendBotHref = templatedFriendbotHref.replace(/\{\?.*/, "")
 
   const response = await fetch(friendBotHref + `?addr=${publicKey}`)
@@ -118,7 +112,10 @@ export function getAssetsFromBalances(balances: BalanceLine[]) {
   return balances.map(balance =>
     balance.asset_type === "native"
       ? Asset.native()
-      : new Asset((balance as Horizon.BalanceLineAsset).asset_code, (balance as Horizon.BalanceLineAsset).asset_issuer)
+      : new Asset(
+          (balance as Frontier.BalanceLineAsset).asset_code,
+          (balance as Frontier.BalanceLineAsset).asset_issuer
+        )
   )
 }
 
@@ -126,8 +123,8 @@ export function findMatchingBalanceLine(balances: AccountData["balances"], asset
   return balances.find((balance): balance is BalanceLine => balancelineToAsset(balance).equals(asset))
 }
 
-export function getHorizonURL(horizon: Server) {
-  return horizon.serverURL.toString()
+export function getFrontierURL(frontier: Server) {
+  return frontier.serverURL.toString()
 }
 
 export function isSignedByAnyOf(signature: xdr.DecoratedSignature, publicKeys: string[]) {

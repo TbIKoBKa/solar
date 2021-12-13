@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Operation, ServerApi, Transaction } from "stellar-sdk"
+import { Operation, ServerApi, Transaction } from "xdb-digitalbits-sdk"
 import { OptimisticOfferUpdate } from "../../lib/optimistic-updates"
 
 function createOffer(
@@ -38,7 +38,7 @@ function createOffer(
 }
 
 function handleManageOffer(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.ManageBuyOffer | Operation.ManageSellOffer,
   transaction: Transaction
 ): OptimisticOfferUpdate[] {
@@ -58,7 +58,7 @@ function handleManageOffer(
           return [...offers, createOffer(operation, transaction)]
         },
         effectsAccountID: operation.source || transaction.source,
-        horizonURL,
+        frontierURL,
         title,
         transactionHash: transaction.hash().toString("hex")
       }
@@ -73,7 +73,7 @@ function handleManageOffer(
           return offers.filter(offer => String(offer.id) !== String(operation.offerId))
         },
         effectsAccountID: operation.source || transaction.source,
-        horizonURL,
+        frontierURL,
         title,
         transactionHash: transaction.hash().toString("hex")
       }
@@ -90,7 +90,7 @@ function handleManageOffer(
           })
         },
         effectsAccountID: operation.source || transaction.source,
-        horizonURL,
+        frontierURL,
         title,
         transactionHash: transaction.hash().toString("hex")
       }

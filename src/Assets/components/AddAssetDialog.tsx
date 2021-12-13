@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, AssetType, Horizon, Operation, Server, Transaction } from "stellar-sdk"
+import { Asset, AssetType, Frontier, Operation, Server, Transaction } from "xdb-digitalbits-sdk"
 import Dialog from "@material-ui/core/Dialog"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
@@ -17,11 +17,11 @@ import { SearchField } from "~Generic/components/FormFields"
 import MainTitle from "~Generic/components/MainTitle"
 import ViewLoading from "~Generic/components/ViewLoading"
 import { FixedSizeList } from "~Generic/components/VirtualList"
-import { AssetRecord, useTickerAssets, useWellKnownAccounts } from "~Generic/hooks/stellar-ecosystem"
+import { AssetRecord, useTickerAssets, useWellKnownAccounts } from "~Generic/hooks/digitalbits-ecosystem"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
 import * as popularAssets from "~Generic/lib/popularAssets"
-import { assetRecordToAsset, stringifyAsset } from "~Generic/lib/stellar"
+import { assetRecordToAsset, stringifyAsset } from "~Generic/lib/digitalbits"
 import { createTransaction } from "~Generic/lib/transaction"
 import { VerticalLayout } from "~Layout/components/Box"
 import DialogBody from "~Layout/components/DialogBody"
@@ -39,7 +39,7 @@ function issuerMatches(issuerDetails: AssetRecord["issuer_detail"], search: stri
   return issuerDetails.name.toLowerCase().startsWith(search)
 }
 
-function assetToBalance(asset: Asset): Horizon.BalanceLineAsset {
+function assetToBalance(asset: Asset): Frontier.BalanceLineAsset {
   return {
     asset_code: asset.getCode(),
     asset_issuer: asset.getIssuer(),
@@ -149,7 +149,7 @@ function createSearchResultRow(
               <ListItemText
                 primary={
                   item.issuer === "native" ? (
-                    "stellar.org"
+                    "digitalbits.io"
                   ) : (
                     <AccountName publicKey={item.issuer} testnet={account.testnet} />
                   )
@@ -229,7 +229,7 @@ const useAddAssetStyles = makeStyles({
 interface AddAssetDialogProps {
   account: Account
   accountData: AccountData
-  horizon: Server
+  frontier: Server
   hpadding: number
   itemHPadding: number
   onClose: () => void
@@ -260,7 +260,7 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
     const operations = [Operation.changeTrust({ asset, limit: options.limit, withMuxing: true })]
     return createTransaction(operations, {
       accountData: props.accountData,
-      horizon: props.horizon,
+      frontier: props.frontier,
       walletAccount: props.account
     })
   }
@@ -372,7 +372,7 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
             account={props.account}
             accountData={props.accountData}
             createAddAssetTransaction={createAddAssetTransaction}
-            horizon={props.horizon}
+            frontier={props.frontier}
             onClose={closeCustomTrustlineDialog}
             sendTransaction={sendTransaction}
             txCreationPending={txCreationPending}
@@ -383,11 +383,11 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
   )
 })
 
-function ConnectedAddAssetDialog(props: Omit<AddAssetDialogProps, "horizon" | "sendTransaction">) {
+function ConnectedAddAssetDialog(props: Omit<AddAssetDialogProps, "frontier" | "sendTransaction">) {
   return (
     <TransactionSender account={props.account} onSubmissionCompleted={props.onClose}>
-      {({ horizon, sendTransaction }) => (
-        <AddAssetDialog {...props} horizon={horizon} sendTransaction={sendTransaction} />
+      {({ frontier, sendTransaction }) => (
+        <AddAssetDialog {...props} frontier={frontier} sendTransaction={sendTransaction} />
       )}
     </TransactionSender>
   )

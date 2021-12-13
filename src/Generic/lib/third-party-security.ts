@@ -1,6 +1,6 @@
-import { Server, Transaction, Horizon } from "stellar-sdk"
+import { Server, Transaction, Frontier } from "xdb-digitalbits-sdk"
 import { CustomError } from "./errors"
-import StellarGuardIcon from "~Icons/components/StellarGuard"
+import DigitalBitsGuardIcon from "~Icons/components/DigitalBitsGuard"
 import LobstrVaultIcon from "~Icons/components/LobstrVault"
 import { workers } from "~Workers/worker-controller"
 
@@ -20,8 +20,8 @@ const services: ThirdPartySecurityService[] = [
       mainnet: "https://stellarguard.me/api/transactions",
       testnet: "https://test.stellarguard.me/api/transactions"
     },
-    icon: StellarGuardIcon,
-    name: "StellarGuard",
+    icon: DigitalBitsGuardIcon,
+    name: "DigitalBitsGuard",
     publicKey: "GCVHEKSRASJBD6O2Z532LWH4N2ZLCBVDLLTLKSYCSMBLOYTNMEEGUARD"
   },
   {
@@ -34,18 +34,18 @@ const services: ThirdPartySecurityService[] = [
   }
 ]
 
-export async function isThirdPartyProtected(horizon: Server, accountPubKey: string) {
+export async function isThirdPartyProtected(frontier: Server, accountPubKey: string) {
   const { netWorker } = await workers
-  const horizonURL = horizon.serverURL.toString()
+  const frontierURL = frontier.serverURL.toString()
 
-  const account = await netWorker.fetchAccountData(horizonURL, accountPubKey)
+  const account = await netWorker.fetchAccountData(frontierURL, accountPubKey)
   const signerKeys = (account?.signers || []).map(signer => signer.key)
 
   const enabledService = services.find(service => signerKeys.includes(service.publicKey))
   return enabledService
 }
 
-export function containsThirdPartySigner(signers: Horizon.AccountSigner[]) {
+export function containsThirdPartySigner(signers: Frontier.AccountSigner[]) {
   const signerKeys = signers.map(signer => signer.key)
 
   const enabledService = services.find(service => signerKeys.includes(service.publicKey))

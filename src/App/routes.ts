@@ -18,7 +18,7 @@ export const manageAccountSigners = (accountID: string) => `/account/${accountID
 export const manageAccountSignersDetails = (accountID: string) => `/account/${accountID}/settings/signers/details`
 export const manageTrustedServices = () => "/settings/trusted-services"
 export const newAccount = (testnet: boolean) => `/account/new/${testnet ? "testnet" : "mainnet"}`
-export const purchaseLumens = (accountID: string) => `/account/${accountID}/purchase`
+export const purchaseDigitalbits = (accountID: string) => `/account/${accountID}/purchase`
 export const receivePayment = (accountID: string) => `/account/${accountID}/receive`
 export const settings = () => "/settings"
 export const withdrawAsset = (accountID: string) => `/account/${accountID}/withdraw`

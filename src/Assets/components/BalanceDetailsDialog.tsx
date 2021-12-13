@@ -1,7 +1,7 @@
 import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Horizon, ServerApi } from "stellar-sdk"
+import { Asset, Frontier, ServerApi } from "xdb-digitalbits-sdk"
 import Dialog from "@material-ui/core/Dialog"
 import Divider from "@material-ui/core/Divider"
 import List from "@material-ui/core/List"
@@ -12,12 +12,12 @@ import { FullscreenDialogTransition } from "~App/theme"
 import ButtonListItem from "~Generic/components/ButtonListItem"
 import MainTitle from "~Generic/components/MainTitle"
 import ViewLoading from "~Generic/components/ViewLoading"
-import { useLiveAccountData, useLiveAccountOffers } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData, useLiveAccountOffers } from "~Generic/hooks/digitalbits-subscriptions"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { AccountData, BalanceLine } from "~Generic/lib/account"
 import { sortBalances } from "~Generic/lib/balances"
 import { matchesRoute } from "~Generic/lib/routes"
-import { getAccountMinimumBalance, getSpendableBalance, stringifyAsset } from "~Generic/lib/stellar"
+import { getAccountMinimumBalance, getSpendableBalance, stringifyAsset } from "~Generic/lib/digitalbits"
 import DialogBody from "~Layout/components/DialogBody"
 import AddAssetDialog from "./AddAssetDialog"
 import BalanceDetailsListItem from "./BalanceDetailsListItem"
@@ -75,7 +75,7 @@ const TrustedAssets = React.memo(function TrustedAssets(props: TrustedAssetsProp
 interface NativeBalanceItemsProps {
   account: Account
   accountData: AccountData
-  balance: Horizon.BalanceLineNative
+  balance: Frontier.BalanceLineNative
   hmargin: string | number
   hpadding: string | number
   onOpenAssetDetails: (asset: Asset) => void
@@ -85,7 +85,7 @@ const NativeBalanceItems = React.memo(function NativeBalanceItems(props: NativeB
   return (
     <>
       <BalanceDetailsListItem
-        key="XLM"
+        key="XDB"
         balance={props.balance}
         onClick={() => props.onOpenAssetDetails(Asset.native())}
         style={{
@@ -97,7 +97,7 @@ const NativeBalanceItems = React.memo(function NativeBalanceItems(props: NativeB
         testnet={props.account.testnet}
       />
       <BalanceDetailsListItem
-        key="XLM:spendable"
+        key="XDB:spendable"
         balance={{
           ...props.balance,
           balance: BigNumber(props.balance.balance).eq(0)
@@ -153,11 +153,11 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
     router.history.push(routes.assetDetails(props.account.id, stringifyAsset(asset)))
 
   const trustedAssets = sortBalances(accountData.balances)
-    .filter((balance): balance is Horizon.BalanceLineAsset => balance.asset_type !== "native")
+    .filter((balance): balance is Frontier.BalanceLineAsset => balance.asset_type !== "native")
     .map(balance => new Asset(balance.asset_code, balance.asset_issuer))
 
   const nativeBalance = accountData.balances.find(
-    (balance): balance is Horizon.BalanceLineNative => balance.asset_type === "native"
+    (balance): balance is Frontier.BalanceLineNative => balance.asset_type === "native"
   )
 
   const hpadding = isSmallScreen ? 0 : 8

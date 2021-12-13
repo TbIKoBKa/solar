@@ -36,13 +36,13 @@
   },
   "inputs": {
     "import": {
-      "helper-text": "La clave secreta Stellar tiene 56 caracteres alfanuméricos y empieza con una S.",
+      "helper-text": "La clave secreta DigitalBits tiene 56 caracteres alfanuméricos y empieza con una S.",
       "placeholder": "SABCDEFGH ...",
       "label": "Clave secreta",
       "title": "Importar existente"
     },
     "multisig-account": {
-      "explanation-long": "Asegúrate de que la cuenta a agregar tenga al menos 2 XLM, así puedes ser agregado como co-firmante.",
+      "explanation-long": "Asegúrate de que la cuenta a agregar tenga al menos 2 XDB, así puedes ser agregado como co-firmante.",
       "explanation-short": "Asegúrate de que la cuenta tiene fondos.",
       "helper-text": "La dirección de la cuenta Multisig (clave pública)",
       "placeholder": "GABCDEFGH…",
@@ -77,7 +77,7 @@
     }
   },
   "validation": {
-    "invalid-key": "Clave privada Stellar no es válida.",
+    "invalid-key": "Clave privada DigitalBits no es válida.",
     "no-account-name": "No se ha introducido nombre de cuenta.",
     "no-password": "No se ha introducido contraseña.",
     "password-no-match": "Las contraseñas no coinciden.",

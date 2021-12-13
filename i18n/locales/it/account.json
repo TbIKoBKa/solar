@@ -32,10 +32,10 @@
     "title": "Aggiungi risorsa"
   },
   "asset-details": {
-    "lumen": {
+    "digitalbit": {
       "description": {
         "label": "Descrizione",
-        "text": "Il token nativo della rete Stellar.\n\n Ogni account della rete ha un saldo di lumens. I Lumens sono usati per pagare le commissioni sulle transazioni."
+        "text": "Il token nativo della rete DigitalBits.\n\n Ogni account della rete ha un saldo di digitalbits. I Digitalbits sono usati per pagare le commissioni sulle transazioni."
       }
     },
     "general": {
@@ -108,7 +108,7 @@
         "primary": "Riserva di campi dati",
         "secondary": "Campi dati dell'account"
       },
-      "headline": "Importi in XLM",
+      "headline": "Importi in XDB",
       "open-orders-reserve": {
         "primary": "Riserva ordini aperti",
         "secondary": "Riserva per ordine"
@@ -134,7 +134,7 @@
       },
       "trustline-reserve": {
         "primary": "Riserva di fiducia",
-        "secondary": "Per ogni saldo non XLM"
+        "secondary": "Per ogni saldo non XDB"
       }
     }
   },
@@ -158,7 +158,7 @@
       "label": "Ritira"
     }
   },
-  "purchase-lumens": {
+  "purchase-digitalbits": {
     "legal-confirmation": {
       "action": {
         "confirm": "Capisco"
@@ -167,11 +167,11 @@
     "moonpay": {
       "text": {
         "primary": "MoonPay",
-        "secondary": "Acquista Stellar Lumens immediatamente utilizzando la tua carta di debito / credito o Apple Pay"
+        "secondary": "Acquista digitalbits immediatamente utilizzando la tua carta di debito / credito o Apple Pay"
       },
       "legal-confirmation": "Verrai reindirizzato a moonpay.io, un servizio di terze parti. Il processo di deposito è gestito da Moon Pay Ltd, non da AstraX. <1 /> <2 /> Contatta l'assistenza di moonpay.io per domande relative al tuo deposito."
     },
-    "title": "Acquista Stellar lumen"
+    "title": "Acquista digitalbit"
   },
   "remove-trustline": {
     "action": {
@@ -187,7 +187,7 @@
   "transactions": {
     "action": {
       "friendbot": {
-        "description": "Ottieni alcuni lumen di testnet gratuiti",
+        "description": "Ottieni alcuni digitalbit di testnet gratuiti",
         "label": "Chiedi all'amicobot"
       },
       "navigate-to-deposit": {
@@ -316,7 +316,7 @@
     },
     "validation": {
       "no-account-data": "Violazione invariante: impossibile trovare i dati dell'account di origine della transazione nel set di sottoscrizioni dei dati dell'account.",
-      "no-manage-data-operation": "Violazione invariante: la transazione di autenticazione web stellare deve contenere un'operazione di manage_data.",
+      "no-manage-data-operation": "Violazione invariante: la transazione di autenticazione web digitalbite deve contenere un'operazione di manage_data.",
       "password-required": "Password richiesta"
     }
   },

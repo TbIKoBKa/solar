@@ -21,10 +21,10 @@
       "cordova-plugin-device": {},
       "cordova-plugin-safariviewcontroller": {},
       "cordova-plugin-fingerprint-aio": {
-        "FACEID_USAGE_DESCRIPTION": "Unlock Solar…"
+        "FACEID_USAGE_DESCRIPTION": "Unlock AstraX…"
       },
       "cordova-plugin-customurlscheme": {
-        "URL_SCHEME": "web+stellar",
+        "URL_SCHEME": "web+digitalbits",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"

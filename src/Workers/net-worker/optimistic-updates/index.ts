@@ -1,4 +1,4 @@
-import { Horizon, Operation, ServerApi, Transaction } from "stellar-sdk"
+import { Frontier, Operation, ServerApi, Transaction } from "xdb-digitalbits-sdk"
 import {
   accountDataUpdates,
   offerUpdates,
@@ -11,41 +11,41 @@ import handleSetOptions from "./set-options"
 
 export { accountDataUpdates, offerUpdates, OptimisticAccountUpdate, OptimisticOfferUpdate }
 
-function ingestOperation(horizonURL: string, operation: Operation, transaction: Transaction) {
+function ingestOperation(frontierURL: string, operation: Operation, transaction: Transaction) {
   if (operation.type === "changeTrust") {
-    accountDataUpdates.addUpdates(handleChangeTrust(horizonURL, operation, transaction))
+    accountDataUpdates.addUpdates(handleChangeTrust(frontierURL, operation, transaction))
   } else if (operation.type === "setOptions") {
-    accountDataUpdates.addUpdates(handleSetOptions(horizonURL, operation, transaction))
+    accountDataUpdates.addUpdates(handleSetOptions(frontierURL, operation, transaction))
   } else if (operation.type === "manageBuyOffer" || operation.type === "manageSellOffer") {
-    offerUpdates.addUpdates(handleManageOffer(horizonURL, operation, transaction))
+    offerUpdates.addUpdates(handleManageOffer(frontierURL, operation, transaction))
   }
 }
 
-export function handleSubmittedTransaction(horizonURL: string, transaction: Transaction) {
+export function handleSubmittedTransaction(frontierURL: string, transaction: Transaction) {
   for (const operation of transaction.operations) {
-    ingestOperation(horizonURL, operation, transaction)
+    ingestOperation(frontierURL, operation, transaction)
   }
 }
 
 export function optimisticallyUpdateAccountData(
-  horizonURL: string,
-  accountData: Horizon.AccountResponse
-): Horizon.AccountResponse {
-  const optimisticUpdates = accountDataUpdates.getUpdates(horizonURL, accountData.account_id)
+  frontierURL: string,
+  accountData: Frontier.AccountResponse
+): Frontier.AccountResponse {
+  const optimisticUpdates = accountDataUpdates.getUpdates(frontierURL, accountData.account_id)
   return optimisticUpdates.reduce((updatedAccountData, update) => update.apply(updatedAccountData), accountData)
 }
 
 export function optimisticallyUpdateOffers(
-  horizonURL: string,
+  frontierURL: string,
   accountID: string,
   openOffers: ServerApi.OfferRecord[]
 ): ServerApi.OfferRecord[] {
-  const optimisticUpdates = offerUpdates.getUpdates(horizonURL, accountID)
+  const optimisticUpdates = offerUpdates.getUpdates(frontierURL, accountID)
   const updated = optimisticUpdates.reduce((updatedOffers, update) => update.apply(updatedOffers), openOffers)
   return updated
 }
 
-export function removeStaleOptimisticUpdates(horizonURL: string, latestTransactionHashs: string[]) {
-  accountDataUpdates.removeStaleUpdates(horizonURL, latestTransactionHashs)
-  offerUpdates.removeStaleUpdates(horizonURL, latestTransactionHashs)
+export function removeStaleOptimisticUpdates(frontierURL: string, latestTransactionHashs: string[]) {
+  accountDataUpdates.removeStaleUpdates(frontierURL, latestTransactionHashs)
+  offerUpdates.removeStaleUpdates(frontierURL, latestTransactionHashs)
 }

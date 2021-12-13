@@ -4,7 +4,7 @@ import { storiesOf } from "@storybook/react"
 import { Account } from "~App/contexts/accounts"
 import TransactionList from "../components/TransactionList"
 import { TransactionHistory } from "~Generic/hooks/_caches"
-import { useLiveRecentTransactions } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveRecentTransactions } from "~Generic/hooks/digitalbits-subscriptions"
 
 const account: Account = {
   accountID: "GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W",

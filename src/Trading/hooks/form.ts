@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Asset, Horizon } from "stellar-sdk"
+import { Asset, Frontier } from "xdb-digitalbits-sdk"
 import { AccountData, BalanceLine } from "~Generic/lib/account"
 import { formatBalance, BalanceFormattingOptions } from "~Generic/lib/balances"
 import { FormBigNumber, isValidAmount } from "~Generic/lib/form"
@@ -9,7 +9,7 @@ import {
   findMatchingBalanceLine,
   getAccountMinimumBalance,
   getSpendableBalance
-} from "~Generic/lib/stellar"
+} from "~Generic/lib/digitalbits"
 import { useConversionOffers } from "./conversion"
 
 export const bigNumberToInputValue = (bignum: BigNumber, overrides?: BalanceFormattingOptions) =>
@@ -17,7 +17,7 @@ export const bigNumberToInputValue = (bignum: BigNumber, overrides?: BalanceForm
 
 function getSpendableBalanceWithoutBaseReserve(accountMinimumBalance: BigNumber, balanceLine: BalanceLine) {
   const spendableBalance = getSpendableBalance(accountMinimumBalance, balanceLine).minus(
-    // subtract base-reserve when asset_type is native because placing a new order requires 1 * base-reserve XLM
+    // subtract base-reserve when asset_type is native because placing a new order requires 1 * base-reserve XDB
     BigNumber(balanceLine.asset_type === "native" ? BASE_RESERVE : BigNumber(0))
   )
 
@@ -46,10 +46,10 @@ interface CalculationResults {
   maxPrimaryAmount: BigNumber
   minAccountBalance: BigNumber
   primaryAmount: BigNumber
-  primaryBalance: Horizon.BalanceLine | undefined
+  primaryBalance: Frontier.BalanceLine | undefined
   relativeSpread: number
   secondaryAmount: BigNumber
-  secondaryBalance: Horizon.BalanceLine | undefined
+  secondaryBalance: Frontier.BalanceLine | undefined
   spendablePrimaryBalance: BigNumber
   spendableSecondaryBalance: BigNumber
 }

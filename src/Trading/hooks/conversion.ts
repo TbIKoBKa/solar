@@ -9,7 +9,7 @@ export function useConversionOffers(
   amount: BigNumber,
   invertOfferAmounts: boolean = false
 ) {
-  // Best offers always returned first by horizon
+  // Best offers always returned first by frontier
   const bestOffers = invertOfferAmounts
     ? offers.map(offer => ({
         ...offer,

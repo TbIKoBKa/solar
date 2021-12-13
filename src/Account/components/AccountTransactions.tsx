@@ -6,12 +6,12 @@ import UpdateIcon from "@material-ui/icons/Update"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import { SignatureDelegationContext } from "~App/contexts/signatureDelegation"
-import { useHorizonURLs } from "~Generic/hooks/stellar"
+import { useFrontierURLs } from "~Generic/hooks/digitalbits"
 import {
   useLiveRecentTransactions,
   useLiveAccountData,
   useOlderTransactions
-} from "~Generic/hooks/stellar-subscriptions"
+} from "~Generic/hooks/digitalbits-subscriptions"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { useLoadingState } from "~Generic/hooks/util"
 import * as routes from "~App/routes"
@@ -69,7 +69,7 @@ function AccountTransactions(props: { account: Account }) {
   const { account } = props
   const { t } = useTranslation()
   const accountData = useLiveAccountData(account.accountID, account.testnet)
-  const horizonURLs = useHorizonURLs(account.testnet)
+  const frontierURLs = useFrontierURLs(account.testnet)
   const isSmallScreen = useIsMobile()
   const [moreTxsLoadingState, handleMoreTxsFetch] = useLoadingState()
   const recentTxs = useLiveRecentTransactions(account.accountID, account.testnet)
@@ -113,7 +113,7 @@ function AccountTransactions(props: { account: Account }) {
           >
             {account.testnet ? (
               <FriendbotButton
-                horizonURL={horizonURLs[0]}
+                frontierURL={frontierURLs[0]}
                 publicKey={account.publicKey}
                 style={{ marginBottom: isSmallScreen ? 16 : 32 }}
               />

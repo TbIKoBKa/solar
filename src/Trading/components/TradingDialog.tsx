@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Horizon, Server, Transaction } from "stellar-sdk"
+import { Asset, Frontier, Server, Transaction } from "xdb-digitalbits-sdk"
 import Box from "@material-ui/core/Box"
 import Typography from "@material-ui/core/Typography"
 import { Account } from "~App/contexts/accounts"
@@ -12,10 +12,10 @@ import Portal from "~Generic/components/Portal"
 import ScrollableBalances from "~Generic/components/ScrollableBalances"
 import TestnetBadge from "~Generic/components/TestnetBadge"
 import ViewLoading from "~Generic/components/ViewLoading"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useDialogActions, useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"
-import { parseAssetID, stringifyAsset } from "~Generic/lib/stellar"
+import { parseAssetID, stringifyAsset } from "~Generic/lib/digitalbits"
 import { getLastArgumentFromURL } from "~Generic/lib/url"
 import Carousel from "~Layout/components/Carousel"
 import DialogBody from "~Layout/components/DialogBody"
@@ -25,7 +25,7 @@ import TradingForm from "./TradingForm"
 
 interface TradingDialogProps {
   account: Account
-  horizon: Server
+  frontier: Server
   onClose: () => void
   sendTransaction: (transaction: Transaction) => void
 }
@@ -54,7 +54,7 @@ function TradingDialog(props: TradingDialogProps) {
 
   const trustlines = React.useMemo(
     () =>
-      accountData.balances.filter((balance): balance is Horizon.BalanceLineAsset => balance.asset_type !== "native"),
+      accountData.balances.filter((balance): balance is Frontier.BalanceLineAsset => balance.asset_type !== "native"),
     [accountData.balances]
   )
 

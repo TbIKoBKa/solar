@@ -2,9 +2,9 @@ import React from "react"
 import ButtonBase from "@material-ui/core/ButtonBase"
 import Typography from "@material-ui/core/Typography"
 import { AccountsContext } from "~App/contexts/accounts"
-import { useFederationLookup } from "../hooks/stellar"
+import { useFederationLookup } from "../hooks/digitalbits"
 import { useClipboard } from "../hooks/userinterface"
-import { isPublicKey } from "../lib/stellar-address"
+import { isPublicKey } from "../lib/digitalbits-address"
 
 type Variant = "full" | "short" | "shorter"
 
@@ -88,7 +88,7 @@ export const PublicKey = React.memo(function PublicKey(props: PublicKeyProps) {
 })
 
 interface AddressProps {
-  /** Account ID (public key) or stellar address (alice*example.com) */
+  /** Account ID (public key) or digitalbits address (alice*example.com) */
   address: string
   variant?: Variant
   style?: React.CSSProperties
@@ -97,7 +97,7 @@ interface AddressProps {
 
 // tslint:disable-next-line no-shadowed-variable
 export const Address = React.memo(function Address(props: AddressProps) {
-  const { lookupStellarAddress } = useFederationLookup()
+  const { lookupDigitalBitsAddress } = useFederationLookup()
 
   const style: React.CSSProperties = {
     userSelect: "text",
@@ -106,16 +106,18 @@ export const Address = React.memo(function Address(props: AddressProps) {
   }
 
   if (isPublicKey(props.address)) {
-    const stellarAddress = lookupStellarAddress(props.address)
+    const digitalbitsAddress = lookupDigitalBitsAddress(props.address)
 
-    if (stellarAddress) {
-      const formattedStellarAddress =
-        props.variant === "full" ? stellarAddress : shortenName(stellarAddress, props.variant === "shorter" ? 8 : 14)
+    if (digitalbitsAddress) {
+      const formattedDigitalBitsAddress =
+        props.variant === "full"
+          ? digitalbitsAddress
+          : shortenName(digitalbitsAddress, props.variant === "shorter" ? 8 : 14)
 
       return (
         <span style={style}>
-          {formattedStellarAddress} ({<PublicKey publicKey={props.address} testnet={props.testnet} variant="shorter" />}
-          )
+          {formattedDigitalBitsAddress} (
+          {<PublicKey publicKey={props.address} testnet={props.testnet} variant="shorter" />})
         </span>
       )
     } else {

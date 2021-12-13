@@ -3,10 +3,10 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 import Dialog from "@material-ui/core/Dialog"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
-import { Operation, Transaction } from "stellar-sdk"
+import { Operation, Transaction } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
-import { isStellarWebAuthTransaction } from "~Generic/lib/transaction"
+import { isDigitalBitsWebAuthTransaction } from "~Generic/lib/transaction"
 import { useDialogActions, useIsMobile } from "~Generic/hooks/userinterface"
 import { FullscreenDialogTransition, CompactDialogTransition } from "~App/theme"
 import DialogBody from "~Layout/components/DialogBody"
@@ -40,7 +40,7 @@ function useTitle() {
       return t("account.transaction-review.title.payment")
     } else if (transaction.operations.every(isOfferDeletionOperation)) {
       return t("account.transaction-review.title.delete-orders-operation")
-    } else if (isStellarWebAuthTransaction(transaction)) {
+    } else if (isDigitalBitsWebAuthTransaction(transaction)) {
       return t("account.transaction-review.title.web-auth")
     } else {
       return t("account.transaction-review.title.transaction")

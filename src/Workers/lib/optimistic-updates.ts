@@ -1,25 +1,25 @@
 // tslint:disable member-ordering
 import { Observable, Subject } from "observable-fns"
-import { Horizon, ServerApi } from "stellar-sdk"
+import { Frontier, ServerApi } from "xdb-digitalbits-sdk"
 
 export interface OptimisticUpdate<T> {
   apply(base: T): T
   effectsAccountID: string
-  horizonURL: string
+  frontierURL: string
   title: string
   transactionHash: string
 }
 
-export type OptimisticAccountUpdate = OptimisticUpdate<Horizon.AccountResponse & { home_domain?: string }>
+export type OptimisticAccountUpdate = OptimisticUpdate<Frontier.AccountResponse & { home_domain?: string }>
 export type OptimisticOfferUpdate = OptimisticUpdate<ServerApi.OfferRecord[]>
 
-const createAccountCacheKeyByFilter = (horizonURL: string, accountID: string) => `${horizonURL}/accounts/${accountID}`
+const createAccountCacheKeyByFilter = (frontierURL: string, accountID: string) => `${frontierURL}/accounts/${accountID}`
 const createAccountCacheKey = (update: OptimisticAccountUpdate) =>
-  createAccountCacheKeyByFilter(update.horizonURL, update.effectsAccountID)
+  createAccountCacheKeyByFilter(update.frontierURL, update.effectsAccountID)
 
 const createOfferCacheKeyByFilter = createAccountCacheKeyByFilter
 const createOfferCacheKey = (update: OptimisticOfferUpdate) =>
-  createOfferCacheKeyByFilter(update.horizonURL, update.effectsAccountID)
+  createOfferCacheKeyByFilter(update.frontierURL, update.effectsAccountID)
 
 function OptimisticUpdateCache<Update extends OptimisticUpdate<any>, FilterArgs extends any[]>(
   createCacheKey: (update: Update) => string,
@@ -45,12 +45,12 @@ function OptimisticUpdateCache<Update extends OptimisticUpdate<any>, FilterArgs 
     observe() {
       return Observable.from(subject)
     },
-    removeStaleUpdates(horizonURL: string, latestTransactionHashs: string[]) {
+    removeStaleUpdates(frontierURL: string, latestTransactionHashs: string[]) {
       for (const selector of updates.keys()) {
         const prevOptimisticUpdates = updates.get(selector)!
         const nextOptimisticUpdates = prevOptimisticUpdates.filter(
           optUpdate =>
-            !(optUpdate.horizonURL === horizonURL && latestTransactionHashs.indexOf(optUpdate.transactionHash) > -1)
+            !(optUpdate.frontierURL === frontierURL && latestTransactionHashs.indexOf(optUpdate.transactionHash) > -1)
         )
 
         if (nextOptimisticUpdates.length !== prevOptimisticUpdates.length) {

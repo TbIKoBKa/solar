@@ -43,7 +43,7 @@ function LegalConfirmation(props: Props) {
       <DialogActionsBox className={classes.root} smallDialog transparent>
         <Fade enter={isSmallScreen} exit={isSmallScreen} in={props.open}>
           <ActionButton onClick={props.onConfirm} type="primary">
-            {t("account.purchase-lumens.legal-confirmation.action.confirm")}
+            {t("account.purchase-digitalbits.legal-confirmation.action.confirm")}
           </ActionButton>
         </Fade>
       </DialogActionsBox>

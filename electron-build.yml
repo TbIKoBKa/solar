@@ -1,11 +1,11 @@
 # Don't change the appId! See <https://www.electron.build/configuration/nsis#guid-vs-application-name>
 appId: io.astrax.app
-productName: Solar Wallet
+productName: AstraX Wallet
 copyright: Copyright © 2021 SatoshiPay Ltd
 
 protocols:
-  name: Stellar transaction / payment requests URL,
-  schemes: [web+stellar]
+  name: DigitalBits transaction / payment requests URL,
+  schemes: [web+digitalBits]
 
 directories:
   buildResources: ./electron/build
@@ -34,7 +34,7 @@ mac:
 
 linux:
   #  must not contain a whitespace for the .desktop file
-  artifactName: Solar-Wallet-${version}.${ext}
+  artifactName: AstraX-Wallet-${version}.${ext}
   category: Utility
 
 afterPack: ./scripts/electron-builder-afterpack.js

@@ -1,13 +1,13 @@
 import React from "react"
 import Async from "react-promise"
-import { xdr, AccountResponse, Asset, Memo, Networks, Operation, Server, TransactionBuilder } from "stellar-sdk"
+import { xdr, AccountResponse, Asset, Memo, Networks, Operation, Server, TransactionBuilder } from "xdb-digitalbits-sdk"
 import { storiesOf } from "@storybook/react"
 import { TransactionReviewDialogBody } from "../components/TransactionReviewDialog"
 import { Account } from "~App/contexts/accounts"
-import { useWebAuth } from "~Generic/hooks/stellar"
+import { useWebAuth } from "~Generic/hooks/digitalbits"
 
 const eurt = new Asset("EURT", "GAP5LETOV6YIE62YAM56STDANPRDO7ZFDBGSNHJQIYGGKSMOZAHOOS2S")
-const testnetHorizon = new Server("https://frontier.testnet.digitalbits.io")
+const testnetFrontier = new Server("https://frontier.testnet.digitalbits.io")
 
 const doNothing = () => undefined
 
@@ -50,14 +50,14 @@ interface SampleWebAuthProps {
 
 function SampleWebAuth(props: SampleWebAuthProps) {
   // https://horizon.stellar.org || https://horizon-testnet.stellar.org
-  const horizon = new Server("https://frontier.livenet.digitalbits.io")
+  const frontier = new Server("https://frontier.livenet.digitalbits.io")
   const WebAuth = useWebAuth()
 
   const promise = React.useMemo(
     () =>
       (async () => {
-        const account = await horizon.loadAccount(props.accountID)
-        const webauthMetadata = await WebAuth.fetchWebAuthData(String(horizon.serverURL), props.issuerID)
+        const account = await frontier.loadAccount(props.accountID)
+        const webauthMetadata = await WebAuth.fetchWebAuthData(String(frontier.serverURL), props.issuerID)
 
         const transaction = await WebAuth.fetchChallenge(
           webauthMetadata!.endpointURL,
@@ -67,7 +67,7 @@ function SampleWebAuth(props: SampleWebAuthProps) {
         )
         return transaction
       })(),
-    [WebAuth, horizon, props.accountID, props.issuerID]
+    [WebAuth, frontier, props.accountID, props.issuerID]
   )
 
   return <>{props.children(promise)}</>
@@ -76,7 +76,7 @@ function SampleWebAuth(props: SampleWebAuthProps) {
 storiesOf("TransactionReviewDialog", module)
   .add("Payment", () => {
     const promise = (async () => {
-      const account = await testnetHorizon.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
+      const account = await testnetFrontier.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
       return buildTransaction(account, [
         Operation.payment({
           amount: "1.5",
@@ -105,7 +105,7 @@ storiesOf("TransactionReviewDialog", module)
   })
   .add("Payment with memo", () => {
     const promise = (async () => {
-      const account = await testnetHorizon.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
+      const account = await testnetFrontier.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
       return buildTransaction(
         account,
         [
@@ -138,7 +138,7 @@ storiesOf("TransactionReviewDialog", module)
   })
   .add("Account creation & Inflation destination", () => {
     const promise = (async () => {
-      const account = await testnetHorizon.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
+      const account = await testnetFrontier.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
       return buildTransaction(account, [
         Operation.createAccount({
           startingBalance: "1.0",
@@ -170,7 +170,7 @@ storiesOf("TransactionReviewDialog", module)
   })
   .add("Create trustline", () => {
     const promise = (async () => {
-      const account = await testnetHorizon.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
+      const account = await testnetFrontier.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
       return buildTransaction(account, [
         Operation.changeTrust({
           asset: eurt,
@@ -195,7 +195,7 @@ storiesOf("TransactionReviewDialog", module)
       />
     )
   })
-  .add("Stellar web auth", () => {
+  .add("DigitalBits web auth", () => {
     return (
       <SampleWebAuth
         accountID="GDOOMATUOJPLIQMQ4WWXBEWR5UMKJW65CFKJJW3LV7XZYIEQHZPDQCBI"
@@ -221,7 +221,7 @@ storiesOf("TransactionReviewDialog", module)
   })
   .add("Merge account", () => {
     const promise = (async () => {
-      const account = await testnetHorizon.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
+      const account = await testnetFrontier.loadAccount("GBPBFWVBADSESGADWEGC7SGTHE3535FWK4BS6UW3WMHX26PHGIH5NF4W")
       return buildTransaction(account, [
         Operation.accountMerge({
           source: "GCCD6AJOYZCUAQLX32ZJF2MKFFAUJ53PVCFQI3RHWKL3V47QYE2BNAUT",

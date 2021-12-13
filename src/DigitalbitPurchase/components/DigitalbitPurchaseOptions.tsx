@@ -12,17 +12,17 @@ import LegalConfirmation from "./LegalConfirmation"
 function createMoonPayURLForAccount(account: Account) {
   const baseURL = "https://buy.moonpay.io/"
   const apiKEY = account.testnet ? "pk_test_RPUOOEJ7ZiAWlLFG6lbohDF9d2SqICX" : "pk_live_Xly1jO3hHE46AyMJO50lwoAk2VUCon"
-  const currencyCode = "XLM"
+  const currencyCode = "XDB"
   const colorCode = "1c8fea"
   return `${baseURL}?apiKey=${apiKEY}&currencyCode=${currencyCode}&enabledPaymentMethods=credit_debit_card,sepa_bank_transfer&walletAddress=${account.accountID}&colorCode=%23${colorCode}`
 }
 
-interface LumenDepositOptionsProps {
+interface DigitalbitDepositOptionsProps {
   account: Account
   onCloseDialog: () => void
 }
 
-function LumenDepositOptions(props: LumenDepositOptionsProps) {
+function DigitalbitDepositOptions(props: DigitalbitDepositOptionsProps) {
   const { account, onCloseDialog } = props
   const [isLegalNoteOpen, setIsLegalNoteOpen] = React.useState(false)
   const { t } = useTranslation()
@@ -39,8 +39,8 @@ function LumenDepositOptions(props: LumenDepositOptionsProps) {
     <List style={{ margin: "16px auto", maxWidth: 600 }}>
       <ListItem button onClick={openLegalNote}>
         <ListItemText
-          primary={t("account.purchase-lumens.moonpay.text.primary")}
-          secondary={t("account.purchase-lumens.moonpay.text.secondary")}
+          primary={t("account.purchase-digitalbits.moonpay.text.primary")}
+          secondary={t("account.purchase-digitalbits.moonpay.text.secondary")}
         />
         <ListItemIcon style={{ minWidth: 24, marginLeft: 12 }}>
           <OpenInNewIcon />
@@ -48,7 +48,7 @@ function LumenDepositOptions(props: LumenDepositOptionsProps) {
       </ListItem>
       <LegalConfirmation
         message={
-          <Trans i18nKey="account.purchase-lumens.moonpay.legal-confirmation">
+          <Trans i18nKey="account.purchase-digitalbits.moonpay.legal-confirmation">
             You will be redirected to moonpay.io, a third-party service. The depositing process is operated by Moon Pay
             Ltd, not by AstraX or SatoshiPay Ltd.
             <br />
@@ -64,4 +64,4 @@ function LumenDepositOptions(props: LumenDepositOptionsProps) {
   )
 }
 
-export default React.memo(LumenDepositOptions)
+export default React.memo(DigitalbitDepositOptions)

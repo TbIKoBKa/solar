@@ -1,9 +1,9 @@
 import React from "react"
-import { Horizon } from "stellar-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useDialogActions, useRouter } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
 import { CustomError } from "~Generic/lib/errors"
@@ -18,14 +18,14 @@ import PresetSelector from "./PresetSelector"
 
 function getUpdatedSigners(
   accountData: AccountData,
-  signersToAdd: Horizon.AccountSigner[],
-  signersToRemove: Horizon.AccountSigner[]
+  signersToAdd: Frontier.AccountSigner[],
+  signersToRemove: Frontier.AccountSigner[]
 ) {
   const signersPubKeysToAdd = signersToAdd.map(signer => signer.key)
   const signersPubKeysToRemove = signersToRemove.map(signer => signer.key)
 
-  const isNotToBeAdded = (signer: Horizon.AccountSigner) => signersPubKeysToAdd.indexOf(signer.key) === -1
-  const isNotToBeRemoved = (signer: Horizon.AccountSigner) => signersPubKeysToRemove.indexOf(signer.key) === -1
+  const isNotToBeAdded = (signer: Frontier.AccountSigner) => signersPubKeysToAdd.indexOf(signer.key) === -1
+  const isNotToBeRemoved = (signer: Frontier.AccountSigner) => signersPubKeysToRemove.indexOf(signer.key) === -1
 
   const updatedSigners = [...accountData.signers.filter(isNotToBeAdded).filter(isNotToBeRemoved), ...signersToAdd]
 
@@ -35,7 +35,7 @@ function getUpdatedSigners(
   ]
 }
 
-function getWeightThreshold(preset: MultisigPreset, signers: Horizon.AccountSigner[]): number {
+function getWeightThreshold(preset: MultisigPreset, signers: Frontier.AccountSigner[]): number {
   if (preset.type === MultisigPresets.Type.SingleSignature) {
     return 0
   } else if (preset.type === MultisigPresets.Type.OneOutOfN) {
@@ -47,7 +47,7 @@ function getWeightThreshold(preset: MultisigPreset, signers: Horizon.AccountSign
   }
 }
 
-function validate(updatedSigners: Horizon.AccountSigner[], weightThreshold: number) {
+function validate(updatedSigners: Frontier.AccountSigner[], weightThreshold: number) {
   const totalKeyWeight = updatedSigners.reduce((total, signer) => total + signer.weight, 0)
 
   if (weightThreshold < 0 || (weightThreshold < 1 && updatedSigners.length > 1)) {
@@ -168,8 +168,8 @@ interface ManageSignersDialogProps {
 function ManageSignersDialog(props: ManageSignersDialogProps) {
   return (
     <TransactionSender account={props.account}>
-      {({ horizon, sendTransaction }) => (
-        <MultisigEditorProvider account={props.account} horizon={horizon} sendTransaction={sendTransaction}>
+      {({ frontier, sendTransaction }) => (
+        <MultisigEditorProvider account={props.account} frontier={frontier} sendTransaction={sendTransaction}>
           <ManageSignersDialogContent account={props.account} onCancel={props.onClose} />
         </MultisigEditorProvider>
       )}

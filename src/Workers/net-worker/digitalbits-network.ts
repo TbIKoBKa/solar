@@ -4,11 +4,11 @@ import throttle from "lodash.throttle"
 import { filter, flatMap, map, merge, multicast, Observable } from "observable-fns"
 import PromiseQueue from "p-queue"
 import qs from "qs"
-import { Asset, Horizon, Networks, Server, ServerApi, Transaction } from "stellar-sdk"
+import { Asset, Frontier, Networks, Server, ServerApi, Transaction } from "xdb-digitalbits-sdk"
 import pkg from "../../../package.json"
 import { Cancellation, CustomError } from "~Generic/lib/errors"
 import { observableFromAsyncFactory } from "~Generic/lib/observables"
-import { parseAssetID } from "~Generic/lib/stellar"
+import { parseAssetID } from "~Generic/lib/digitalbits"
 import { max } from "~Generic/lib/strings"
 import { createReconnectingSSE } from "../lib/event-source"
 import { parseJSONResponse } from "../lib/rest"
@@ -68,30 +68,30 @@ interface FeeStats {
   max_fee: FeeStatsDetails
 }
 
-const accountSubscriptionCache = new Map<string, Observable<Horizon.AccountResponse>>()
+const accountSubscriptionCache = new Map<string, Observable<Frontier.AccountResponse>>()
 const effectsSubscriptionCache = new Map<string, Observable<ServerApi.EffectRecord>>()
 const orderbookSubscriptionCache = new Map<string, Observable<ServerApi.OrderbookRecord>>()
 const ordersSubscriptionCache = new Map<string, Observable<ServerApi.OfferRecord[]>>()
-const transactionsSubscriptionCache = new Map<string, Observable<Horizon.TransactionResponse>>()
+const transactionsSubscriptionCache = new Map<string, Observable<Frontier.TransactionResponse>>()
 
-const accountDataCache = new Map<string, Horizon.AccountResponse | null>()
+const accountDataCache = new Map<string, Frontier.AccountResponse | null>()
 const accountDataWaitingCache = new Map<string, ReturnType<typeof waitForAccountDataUncached>>()
 
 // Rate-limit concurrent fetches
-const fetchQueuesByHorizon = new Map<string, PromiseQueue>()
+const fetchQueuesByFrontier = new Map<string, PromiseQueue>()
 
 const identification = {
-  "X-Client-Name": "Solar",
+  "X-Client-Name": "AstraX",
   "X-Client-Version": pkg.version
 }
 
-const createAccountCacheKey = (horizonURLs: string[], accountID: string) =>
-  `${horizonURLs.map(url => `${url}:`)}${accountID}`
-// const createAccountCacheKey = (horizonURL: string, accountID: string) => `${horizonURL}:${accountID}`
-const createOrderbookCacheKey = (horizonURLs: string[], sellingAsset: string, buyingAsset: string) =>
-  `${horizonURLs.map(url => `${url}:`)}${sellingAsset}:${buyingAsset}`
+const createAccountCacheKey = (frontierURLs: string[], accountID: string) =>
+  `${frontierURLs.map(url => `${url}:`)}${accountID}`
+// const createAccountCacheKey = (frontierURL: string, accountID: string) => `${frontierURL}:${accountID}`
+const createOrderbookCacheKey = (frontierURLs: string[], sellingAsset: string, buyingAsset: string) =>
+  `${frontierURLs.map(url => `${url}:`)}${sellingAsset}:${buyingAsset}`
 
-const debugHorizonSelection = DebugLogger("net-worker:select-horizon")
+const debugFrontierSelection = DebugLogger("net-worker:select-frontier")
 const debugSubscriptionReset = DebugLogger("net-worker:reset-subscriptions")
 
 function delay(ms: number) {
@@ -99,14 +99,14 @@ function delay(ms: number) {
 }
 
 let roundRobinIndex = 0
-function getRandomURL(horizonURLs: string[]) {
-  const url = horizonURLs[roundRobinIndex % horizonURLs.length]
+function getRandomURL(frontierURLs: string[]) {
+  const url = frontierURLs[roundRobinIndex % frontierURLs.length]
   roundRobinIndex += 1
   return url
 }
 
-function getFetchQueue(horizonURL: string): PromiseQueue {
-  if (!fetchQueuesByHorizon.has(horizonURL)) {
+function getFetchQueue(frontierURL: string): PromiseQueue {
+  if (!fetchQueuesByFrontier.has(frontierURL)) {
     const fetchQueue = new PromiseQueue({
       concurrency: 4,
       interval: 1000,
@@ -114,14 +114,14 @@ function getFetchQueue(horizonURL: string): PromiseQueue {
       timeout: 10000,
       throwOnTimeout: true
     })
-    fetchQueuesByHorizon.set(horizonURL, fetchQueue)
+    fetchQueuesByFrontier.set(frontierURL, fetchQueue)
   }
 
-  return fetchQueuesByHorizon.get(horizonURL)!
+  return fetchQueuesByFrontier.get(frontierURL)!
 }
 
-function getServiceID(horizonURL: string): ServiceID {
-  return /testnet/.test(horizonURL) ? ServiceID.HorizonTestnet : ServiceID.HorizonPublic
+function getServiceID(frontierURL: string): ServiceID {
+  return /testnet/.test(frontierURL) ? ServiceID.FrontierTestnet : ServiceID.FrontierPublic
 }
 
 function cachify<T, Args extends any[]>(
@@ -143,35 +143,35 @@ function cachify<T, Args extends any[]>(
   }
 }
 
-export async function checkHorizonOrFailover(primaryHorizonURL: string, secondaryHorizonURL: string) {
-  const debug = debugHorizonSelection
+export async function checkFrontierOrFailover(primaryFrontierURL: string, secondaryFrontierURL: string) {
+  const debug = debugFrontierSelection
   // Account ID of friendbot (account exists on pubnet, too)
   const testAccountID = "GAIH3ULLFQ4DGSECF2AR555KZ4KNDGEKN4AFI4SU2M7B43MGK3QJZNSR"
 
   try {
     // fetch dynamic data to check database access
     const primaryResponse = await Promise.race([
-      fetch(new URL(`/accounts/${testAccountID}`, primaryHorizonURL).href),
+      fetch(new URL(`/accounts/${testAccountID}`, primaryFrontierURL).href),
       delay(2500).then(() => {
-        throw Error(`Horizon health check timed out. Trying failover…`)
+        throw Error(`Frontier health check timed out. Trying failover…`)
       })
     ])
 
     if (primaryResponse.status < 300 || primaryResponse.status === 404) {
-      // consider request successful on 404 as well (account might be missing but horizon is working)
-      debug(`Primary horizon server seems fine:`, primaryHorizonURL)
-      return primaryHorizonURL
+      // consider request successful on 404 as well (account might be missing but frontier is working)
+      debug(`Primary frontier server seems fine:`, primaryFrontierURL)
+      return primaryFrontierURL
     }
   } catch (error) {
     // tslint:disable-next-line no-console
     console.error(error)
   }
 
-  const secondaryResponse = await fetch(new URL(`/accounts/${testAccountID}`, secondaryHorizonURL).href)
+  const secondaryResponse = await fetch(new URL(`/accounts/${testAccountID}`, secondaryFrontierURL).href)
   const serverToUse =
-    secondaryResponse.status < 300 || secondaryResponse.status === 404 ? secondaryHorizonURL : primaryHorizonURL
+    secondaryResponse.status < 300 || secondaryResponse.status === 404 ? secondaryFrontierURL : primaryFrontierURL
 
-  debug(`Primary horizon server check failed. Using ${serverToUse}`)
+  debug(`Primary frontier server check failed. Using ${serverToUse}`)
   return serverToUse
 }
 
@@ -186,9 +186,9 @@ export function resetAllSubscriptions() {
   resetSubscriptions()
 }
 
-export async function submitTransaction(horizonURL: string, txEnvelopeXdr: string, network: Networks) {
-  const fetchQueue = getFetchQueue(horizonURL)
-  const url = new URL(`/transactions?${qs.stringify({ tx: txEnvelopeXdr })}`, horizonURL)
+export async function submitTransaction(frontierURL: string, txEnvelopeXdr: string, network: Networks) {
+  const fetchQueue = getFetchQueue(frontierURL)
+  const url = new URL(`/transactions?${qs.stringify({ tx: txEnvelopeXdr })}`, frontierURL)
 
   const response = await fetchQueue.add(
     () => {
@@ -199,8 +199,10 @@ export async function submitTransaction(horizonURL: string, txEnvelopeXdr: strin
     { priority: 20 }
   )
 
+  //ERROR
+
   if (response.status === 200) {
-    handleSubmittedTransaction(horizonURL, new Transaction(txEnvelopeXdr, network))
+    handleSubmittedTransaction(frontierURL, new Transaction(txEnvelopeXdr, network))
   }
 
   return {
@@ -209,8 +211,8 @@ export async function submitTransaction(horizonURL: string, txEnvelopeXdr: strin
   }
 }
 
-async function waitForAccountDataUncached(horizonURL: string, accountID: string, shouldCancel?: () => boolean) {
-  const fetchQueue = getFetchQueue(horizonURL)
+async function waitForAccountDataUncached(frontierURL: string, accountID: string, shouldCancel?: () => boolean) {
+  const fetchQueue = getFetchQueue(frontierURL)
   const debug = DebugLogger(`net-worker:wait-for-account:${accountID}`)
 
   let accountData = null
@@ -222,11 +224,11 @@ async function waitForAccountDataUncached(horizonURL: string, accountID: string,
       throw Cancellation("Stopping to wait for account to become present in network.")
     }
 
-    const url = new URL(`/accounts/${accountID}?${qs.stringify(identification)}`, horizonURL)
+    const url = new URL(`/accounts/${accountID}?${qs.stringify(identification)}`, frontierURL)
     const response = await fetchQueue.add(() => fetch(String(url)))
 
     if (response.status === 200) {
-      accountData = await parseJSONResponse<Horizon.AccountResponse>(response)
+      accountData = await parseJSONResponse<Frontier.AccountResponse>(response)
       break
     } else if (response.status === 404) {
       initialFetchFailed = true
@@ -247,16 +249,16 @@ async function waitForAccountDataUncached(horizonURL: string, accountID: string,
   }
 }
 
-async function waitForAccountData(horizonURLs: string[], accountID: string, shouldCancel?: () => boolean) {
+async function waitForAccountData(frontierURLs: string[], accountID: string, shouldCancel?: () => boolean) {
   // Cache promise to make sure we don't poll the same account twice simultaneously
-  const cacheKey = createAccountCacheKey(horizonURLs, accountID)
+  const cacheKey = createAccountCacheKey(frontierURLs, accountID)
   const pending = accountDataWaitingCache.get(cacheKey)
-  const horizonURL = getRandomURL(horizonURLs)
+  const frontierURL = getRandomURL(frontierURLs)
 
   if (pending) {
     return pending
   } else {
-    const justStarted = waitForAccountDataUncached(horizonURL, accountID, shouldCancel)
+    const justStarted = waitForAccountDataUncached(frontierURL, accountID, shouldCancel)
     accountDataWaitingCache.set(cacheKey, justStarted)
     justStarted.then(
       () => accountDataWaitingCache.delete(cacheKey),
@@ -266,11 +268,11 @@ async function waitForAccountData(horizonURLs: string[], accountID: string, shou
   }
 }
 
-function subscribeToAccountEffectsUncached(horizonURLs: string[], accountID: string) {
-  const horizonURL = getRandomURL(horizonURLs)
-  const fetchQueue = getFetchQueue(horizonURL)
+function subscribeToAccountEffectsUncached(frontierURLs: string[], accountID: string) {
+  const frontierURL = getRandomURL(frontierURLs)
+  const fetchQueue = getFetchQueue(frontierURL)
   const debug = DebugLogger(`net-worker:subscriptions:account-effects:${accountID}`)
-  const serviceID = getServiceID(horizonURL)
+  const serviceID = getServiceID(frontierURL)
 
   let latestCursor: string | undefined
   let latestEffectCreatedAt: string | undefined
@@ -287,18 +289,18 @@ function subscribeToAccountEffectsUncached(horizonURLs: string[], accountID: str
         if (streamedUpdate) {
           return streamedUpdate
         } else {
-          const effect = await fetchLatestAccountEffect(horizonURL, accountID)
+          const effect = await fetchLatestAccountEffect(frontierURL, accountID)
           return effect || undefined
         }
       },
       async init() {
         debug(`Subscribing to account effects…`)
-        let effect = await fetchLatestAccountEffect(horizonURL, accountID)
+        let effect = await fetchLatestAccountEffect(frontierURL, accountID)
 
         if (!effect) {
           debug(`Waiting for account to be created on the network…`)
-          await waitForAccountData(horizonURLs, accountID)
-          effect = await fetchLatestAccountEffect(horizonURL, accountID)
+          await waitForAccountData(frontierURLs, accountID)
+          effect = await fetchLatestAccountEffect(frontierURL, accountID)
         }
 
         latestCursor = effect ? effect.paging_token : latestCursor
@@ -317,7 +319,7 @@ function subscribeToAccountEffectsUncached(horizonURLs: string[], accountID: str
             ...identification,
             cursor: latestCursor || "now"
           }
-          return String(new URL(`/accounts/${accountID}/effects?${qs.stringify(query)}`, horizonURL))
+          return String(new URL(`/accounts/${accountID}/effects?${qs.stringify(query)}`, frontierURL))
         }
 
         return multicast(
@@ -363,18 +365,18 @@ export const subscribeToAccountEffects = cachify(
   createAccountCacheKey
 )
 
-function subscribeToAccountUncached(horizonURLs: string[], accountID: string) {
+function subscribeToAccountUncached(frontierURLs: string[], accountID: string) {
   const debug = DebugLogger(`net-worker:subscriptions:account:${accountID}`)
-  const horizonURL = getRandomURL(horizonURLs)
-  const serviceID = getServiceID(horizonURL)
+  const frontierURL = getRandomURL(frontierURLs)
+  const serviceID = getServiceID(frontierURL)
 
   let latestSnapshot: string | undefined
 
-  const cacheKey = createAccountCacheKey(horizonURLs, accountID)
-  const createSnapshot = (accountData: Horizon.AccountResponse) =>
+  const cacheKey = createAccountCacheKey(frontierURLs, accountID)
+  const createSnapshot = (accountData: Frontier.AccountResponse) =>
     JSON.stringify([accountData.sequence, accountData.balances])
 
-  return subscribeToUpdatesAndPoll<Horizon.AccountResponse | null>(
+  return subscribeToUpdatesAndPoll<Frontier.AccountResponse | null>(
     {
       async applyUpdate(update) {
         if (update) {
@@ -386,7 +388,7 @@ function subscribeToAccountUncached(horizonURLs: string[], accountID: string) {
       },
       async fetchUpdate() {
         debug(`Fetching update…`)
-        const accountData = await fetchAccountData(horizonURLs, accountID)
+        const accountData = await fetchAccountData(frontierURLs, accountID)
         return accountData || undefined
       },
       async init() {
@@ -397,7 +399,7 @@ function subscribeToAccountUncached(horizonURLs: string[], accountID: string) {
           latestSnapshot = createSnapshot(lastKnownAccountData)
           return lastKnownAccountData
         } else {
-          const { accountData: initialAccountData } = await waitForAccountData(horizonURLs, accountID)
+          const { accountData: initialAccountData } = await waitForAccountData(frontierURLs, accountID)
 
           accountDataCache.set(cacheKey, initialAccountData)
           // Don't set `latestSnapshot` yet or the value will initially not be emitted
@@ -412,15 +414,15 @@ function subscribeToAccountUncached(horizonURLs: string[], accountID: string) {
         const handleNewOptimisticUpdate = (newOptimisticUpdate: OptimisticAccountUpdate) => {
           const accountData = accountDataCache.get(cacheKey)
 
-          if (newOptimisticUpdate.effectsAccountID === accountID && newOptimisticUpdate.horizonURL === horizonURL) {
-            return accountData ? optimisticallyUpdateAccountData(horizonURL, accountData) : accountData
+          if (newOptimisticUpdate.effectsAccountID === accountID && newOptimisticUpdate.frontierURL === frontierURL) {
+            return accountData ? optimisticallyUpdateAccountData(frontierURL, accountData) : accountData
           } else {
             return accountData
           }
         }
         return merge(
           // Update whenever we receive an account effect push notification
-          subscribeToAccountEffects(horizonURLs, accountID).pipe(map(() => fetchAccountData(horizonURLs, accountID))),
+          subscribeToAccountEffects(frontierURLs, accountID).pipe(map(() => fetchAccountData(frontierURLs, accountID))),
           // Update on new optimistic updates
           accountDataUpdates.observe().pipe(
             map(handleNewOptimisticUpdate),
@@ -430,7 +432,7 @@ function subscribeToAccountUncached(horizonURLs: string[], accountID: string) {
           Observable.from([0]).pipe(
             map(async () => {
               await delay(1000)
-              return fetchAccountData(horizonURLs, accountID)
+              return fetchAccountData(frontierURLs, accountID)
             })
           )
         )
@@ -442,13 +444,13 @@ function subscribeToAccountUncached(horizonURLs: string[], accountID: string) {
 
 export const subscribeToAccount = cachify(accountSubscriptionCache, subscribeToAccountUncached, createAccountCacheKey)
 
-function subscribeToAccountTransactionsUncached(horizonURLs: string[], accountID: string) {
+function subscribeToAccountTransactionsUncached(frontierURLs: string[], accountID: string) {
   const debug = DebugLogger(`net-worker:subscriptions:account-transactions:${accountID}`)
 
   let latestCursor: string | undefined
 
   const fetchInitial = async () => {
-    const page = await fetchAccountTransactions(horizonURLs, accountID, {
+    const page = await fetchAccountTransactions(frontierURLs, accountID, {
       limit: 1,
       order: "desc"
     })
@@ -464,10 +466,10 @@ function subscribeToAccountTransactionsUncached(horizonURLs: string[], accountID
       debug(`Fetching latest transactions…`)
 
       if (latestCursor) {
-        const page = await fetchAccountTransactions(horizonURLs, accountID, { cursor: latestCursor, limit: 10 })
+        const page = await fetchAccountTransactions(frontierURLs, accountID, { cursor: latestCursor, limit: 10 })
         return [page, "asc"] as const
       } else {
-        const page = await fetchAccountTransactions(horizonURLs, accountID, { limit: 10, order: "desc" })
+        const page = await fetchAccountTransactions(frontierURLs, accountID, { limit: 10, order: "desc" })
         return [page, "desc"] as const
       }
     },
@@ -483,8 +485,8 @@ function subscribeToAccountTransactionsUncached(horizonURLs: string[], accountID
   })
 
   return multicast(
-    subscribeToAccountEffects(horizonURLs, accountID).pipe(
-      flatMap(async function*(): AsyncIterableIterator<Horizon.TransactionResponse> {
+    subscribeToAccountEffects(frontierURLs, accountID).pipe(
+      flatMap(async function*(): AsyncIterableIterator<Frontier.TransactionResponse> {
         for (let i = 0; i < 3; i++) {
           const [page, order] = await fetchLatestTxs()
           const newTxs = order === "asc" ? page._embedded.records : page._embedded.records.reverse()
@@ -498,7 +500,7 @@ function subscribeToAccountTransactionsUncached(horizonURLs: string[], accountID
             latestCursor = latestTx.paging_token
           }
 
-          // There might be race conditions between the different horizon endpoints
+          // There might be race conditions between the different frontier endpoints
           // Wait 350ms, then fetch again, in case the previous fetch didn't return the latest txs yet
           await delay(350)
         }
@@ -513,10 +515,10 @@ export const subscribeToAccountTransactions = cachify(
   createAccountCacheKey
 )
 
-function subscribeToOpenOrdersUncached(horizonURLs: string[], accountID: string) {
+function subscribeToOpenOrdersUncached(frontierURLs: string[], accountID: string) {
   const debug = DebugLogger(`net-worker:subscriptions:account-orders:${accountID}`)
-  const horizonURL = getRandomURL(horizonURLs)
-  const serviceID = getServiceID(horizonURL)
+  const frontierURL = getRandomURL(frontierURLs)
+  const serviceID = getServiceID(frontierURL)
 
   let latestCursor: string | undefined
   let latestSet: ServerApi.OfferRecord[] = []
@@ -526,7 +528,7 @@ function subscribeToOpenOrdersUncached(horizonURLs: string[], accountID: string)
 
     // Don't use latest cursor as we want to fetch all open orders
     // (otherwise we could not handle order deletions)
-    const page = await fetchAccountOpenOrders(horizonURLs, accountID, { order: "desc" })
+    const page = await fetchAccountOpenOrders(frontierURLs, accountID, { order: "desc" })
     return page._embedded.records
   }
 
@@ -569,8 +571,8 @@ function subscribeToOpenOrdersUncached(horizonURLs: string[], accountID: string)
       },
       subscribeToUpdates() {
         const handleNewOptimisticUpdate = (newOptimisticUpdate: OptimisticOfferUpdate) => {
-          if (newOptimisticUpdate.effectsAccountID === accountID && newOptimisticUpdate.horizonURL === horizonURL) {
-            return optimisticallyUpdateOffers(horizonURL, accountID, latestSet)
+          if (newOptimisticUpdate.effectsAccountID === accountID && newOptimisticUpdate.frontierURL === frontierURL) {
+            return optimisticallyUpdateOffers(frontierURL, accountID, latestSet)
           } else {
             return latestSet
           }
@@ -580,7 +582,7 @@ function subscribeToOpenOrdersUncached(horizonURLs: string[], accountID: string)
         // unreliable and the account effects stream only indicates a trade
         // happening, not the creation/cancellation of one
         return merge(
-          subscribeToAccountEffects(horizonURLs, accountID).pipe(map(() => fetchUpdate())),
+          subscribeToAccountEffects(frontierURLs, accountID).pipe(map(() => fetchUpdate())),
           offerUpdates.observe().pipe(map(handleNewOptimisticUpdate))
         )
       }
@@ -627,7 +629,7 @@ function createEmptyOrderbookRecord(base: Asset, counter: Asset): ServerApi.Orde
   }
 }
 
-function subscribeToOrderbookUncached(horizonURLs: string[], sellingAsset: string, buyingAsset: string) {
+function subscribeToOrderbookUncached(frontierURLs: string[], sellingAsset: string, buyingAsset: string) {
   const debug = DebugLogger(`net-worker:subscriptions:orderbook:${buyingAsset}-${sellingAsset}`)
 
   const buying = parseAssetID(buyingAsset)
@@ -638,13 +640,13 @@ function subscribeToOrderbookUncached(horizonURLs: string[], sellingAsset: strin
     return Observable.from<ServerApi.OrderbookRecord>([createEmptyOrderbookRecord(buying, buying)])
   }
 
-  const horizonURL = getRandomURL(horizonURLs)
-  const createURL = () => String(new URL(`/order_book?${qs.stringify({ ...query, cursor: "now" })}`, horizonURL))
-  const fetchUpdate = () => fetchOrderbookRecord(horizonURLs, sellingAsset, buyingAsset)
+  const frontierURL = getRandomURL(frontierURLs)
+  const createURL = () => String(new URL(`/order_book?${qs.stringify({ ...query, cursor: "now" })}`, frontierURL))
+  const fetchUpdate = () => fetchOrderbookRecord(frontierURLs, sellingAsset, buyingAsset)
 
   let latestKnownSnapshot = ""
-  const fetchQueue = getFetchQueue(horizonURL)
-  const serviceID = getServiceID(horizonURL)
+  const fetchQueue = getFetchQueue(frontierURL)
+  const serviceID = getServiceID(frontierURL)
 
   // TODO: Optimize - Make UpdateT = ValueT & { [$snapshot]: string }
 
@@ -704,35 +706,35 @@ export interface PaginationOptions {
 }
 
 export async function fetchAccountData(
-  horizonURLs: string | string[],
+  frontierURLs: string | string[],
   accountID: string,
   priority: number = 2
-): Promise<(Horizon.AccountResponse & { home_domain?: string | undefined }) | null> {
-  const horizonURL = Array.isArray(horizonURLs) ? getRandomURL(horizonURLs) : horizonURLs
-  const fetchQueue = getFetchQueue(horizonURL)
-  const url = new URL(`/accounts/${accountID}?${qs.stringify(identification)}`, horizonURL)
+): Promise<(Frontier.AccountResponse & { home_domain?: string | undefined }) | null> {
+  const frontierURL = Array.isArray(frontierURLs) ? getRandomURL(frontierURLs) : frontierURLs
+  const fetchQueue = getFetchQueue(frontierURL)
+  const url = new URL(`/accounts/${accountID}?${qs.stringify(identification)}`, frontierURL)
   const response = await fetchQueue.add(() => fetch(String(url)), { priority })
 
   if (response.status === 404) {
     return null
   }
 
-  const accountData = await parseJSONResponse<Horizon.AccountResponse & { home_domain: string | undefined }>(response)
+  const accountData = await parseJSONResponse<Frontier.AccountResponse & { home_domain: string | undefined }>(response)
   // FIXME: Add support for liquidity pools
   // Remove liquidity pools from account data
   accountData.balances = accountData.balances.filter(b => b.asset_type !== "liquidity_pool_shares")
-  return optimisticallyUpdateAccountData(horizonURL, accountData)
+  return optimisticallyUpdateAccountData(frontierURL, accountData)
 }
 
-export async function fetchLatestAccountEffect(horizonURL: string, accountID: string) {
-  const fetchQueue = getFetchQueue(horizonURL)
+export async function fetchLatestAccountEffect(frontierURL: string, accountID: string) {
+  const fetchQueue = getFetchQueue(frontierURL)
   const url = new URL(
     `/accounts/${accountID}/effects?${qs.stringify({
       ...identification,
       limit: 1,
       order: "desc"
     })}`,
-    horizonURL
+    frontierURL
   )
 
   const response = await fetchQueue.add(() => fetch(String(url)), { priority: 2 })
@@ -749,12 +751,12 @@ export interface FetchTransactionsOptions extends PaginationOptions {
 }
 
 export async function fetchAccountTransactions(
-  horizonURLs: string[],
+  frontierURLs: string[],
   accountID: string,
   options: FetchTransactionsOptions = {}
-): Promise<CollectionPage<Horizon.TransactionResponse>> {
-  const horizonURL = getRandomURL(horizonURLs)
-  const fetchQueue = getFetchQueue(horizonURL)
+): Promise<CollectionPage<Frontier.TransactionResponse>> {
+  const frontierURL = getRandomURL(frontierURLs)
+  const fetchQueue = getFetchQueue(frontierURL)
   const pagination = {
     cursor: options.cursor,
     limit: options.limit,
@@ -762,7 +764,7 @@ export async function fetchAccountTransactions(
   }
   const url = new URL(
     `/accounts/${accountID}/transactions?${qs.stringify({ ...identification, ...pagination })}`,
-    horizonURL
+    frontierURL
   )
   const response = await fetchQueue.add(() => fetch(String(url)), { priority: 1 })
 
@@ -779,32 +781,32 @@ export async function fetchAccountTransactions(
     }
   }
 
-  const collection = await parseJSONResponse<CollectionPage<Horizon.TransactionResponse>>(response)
+  const collection = await parseJSONResponse<CollectionPage<Frontier.TransactionResponse>>(response)
 
   removeStaleOptimisticUpdates(
-    horizonURL,
+    frontierURL,
     collection._embedded.records.map(record => record.hash)
   )
   return collection
 }
 
 export async function fetchAccountOpenOrders(
-  horizonURLs: string[],
+  frontierURLs: string[],
   accountID: string,
   options: PaginationOptions = {}
 ) {
-  const horizonURL = getRandomURL(horizonURLs)
-  const fetchQueue = getFetchQueue(horizonURL)
-  const url = new URL(`/accounts/${accountID}/offers?${qs.stringify({ ...identification, ...options })}`, horizonURL)
+  const frontierURL = getRandomURL(frontierURLs)
+  const fetchQueue = getFetchQueue(frontierURL)
+  const url = new URL(`/accounts/${accountID}/offers?${qs.stringify({ ...identification, ...options })}`, frontierURL)
 
   const response = await fetchQueue.add(() => fetch(String(url)), { priority: 1 })
 
   return parseJSONResponse<CollectionPage<ServerApi.OfferRecord>>(response)
 }
 
-export async function fetchFeeStats(horizonURL: string): Promise<FeeStats> {
-  const fetchQueue = getFetchQueue(horizonURL)
-  const url = new URL("/fee_stats", horizonURL)
+export async function fetchFeeStats(frontierURL: string): Promise<FeeStats> {
+  const fetchQueue = getFetchQueue(frontierURL)
+  const url = new URL("/fee_stats", frontierURL)
 
   const response = await fetchQueue.add(() => fetch(url.toString()), {
     priority: 10
@@ -819,24 +821,24 @@ export async function fetchFeeStats(horizonURL: string): Promise<FeeStats> {
   return response.json()
 }
 
-export async function fetchOrderbookRecord(horizonURLs: string[], sellingAsset: string, buyingAsset: string) {
+export async function fetchOrderbookRecord(frontierURLs: string[], sellingAsset: string, buyingAsset: string) {
   if (buyingAsset === sellingAsset) {
     return createEmptyOrderbookRecord(parseAssetID(buyingAsset), parseAssetID(buyingAsset))
   }
-  const horizonURL = getRandomURL(horizonURLs)
-  const fetchQueue = getFetchQueue(horizonURL)
+  const frontierURL = getRandomURL(frontierURLs)
+  const fetchQueue = getFetchQueue(frontierURL)
   const query = createOrderbookQuery(parseAssetID(sellingAsset), parseAssetID(buyingAsset))
-  const url = new URL(`/order_book?${qs.stringify({ ...identification, ...query })}`, horizonURL)
+  const url = new URL(`/order_book?${qs.stringify({ ...identification, ...query })}`, frontierURL)
 
   const response = await fetchQueue.add(() => fetch(String(url)), { priority: 1 })
   return parseJSONResponse<ServerApi.OrderbookRecord>(response)
 }
 
-export async function fetchTimebounds(horizonURL: string, timeout: number) {
-  const fetchQueue = getFetchQueue(horizonURL)
-  const horizon = new Server(horizonURL)
+export async function fetchTimebounds(frontierURL: string, timeout: number) {
+  const fetchQueue = getFetchQueue(frontierURL)
+  const frontier = new Server(frontierURL)
 
-  return fetchQueue.add(() => horizon.fetchTimebounds(timeout), {
+  return fetchQueue.add(() => frontier.fetchTimebounds(timeout), {
     priority: 10
   })
 }

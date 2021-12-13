@@ -4,12 +4,12 @@ import Store from "electron-store"
 import { createStore } from "key-store"
 import generateID from "nanoid/generate"
 import * as path from "path"
-import { Keypair, Networks, Transaction } from "stellar-sdk"
+import { Keypair, Networks, Transaction } from "xdb-digitalbits-sdk"
 import { expose } from "./_ipc"
 import { Messages } from "../shared/ipc"
 
 // Use legacy path to not break backwards-compatibility
-const storeDirectoryPath = path.join(app.getPath("appData"), "satoshipay-stellar-wallet")
+const storeDirectoryPath = path.join(app.getPath("appData"), "astrax-wallet")
 
 // Use different key stores for development and production
 const mainStore = new Store({

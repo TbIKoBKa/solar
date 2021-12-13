@@ -2,10 +2,10 @@ import BigNumber from "big.js"
 import { TFunction } from "i18next"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, ServerApi } from "stellar-sdk"
-import { Trade } from "stellar-sdk/lib/types/trade"
-import { useHorizonURLs } from "~Generic/hooks/stellar"
-import { useLiveAccountEffects } from "~Generic/hooks/stellar-subscriptions"
+import { Asset, ServerApi } from "xdb-digitalbits-sdk"
+import { Trade } from "xdb-digitalbits-sdk/lib/types/trade"
+import { useFrontierURLs } from "~Generic/hooks/digitalbits"
+import { useLiveAccountEffects } from "~Generic/hooks/digitalbits-subscriptions"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { useSingleton } from "~Generic/hooks/util"
 import { useNetWorker } from "~Generic/hooks/workers"
@@ -18,7 +18,7 @@ import { Account, AccountsContext } from "../contexts/accounts"
 import { trackError } from "../contexts/notifications"
 import { SignatureDelegationContext } from "../contexts/signatureDelegation"
 import * as routes from "../routes"
-import { AccountCredited } from "stellar-sdk/lib/types/effects"
+import { AccountCredited } from "xdb-digitalbits-sdk/lib/types/effects"
 
 const isTradeEffect = (effect: ServerApi.EffectRecord): effect is Trade => effect.type === "trade"
 const isPaymentEffect = (effect: ServerApi.EffectRecord) =>
@@ -27,8 +27,8 @@ const isPaymentEffect = (effect: ServerApi.EffectRecord) =>
 function createEffectHandlers(
   router: ReturnType<typeof useRouter>,
   netWorker: NetWorker,
-  mainnetHorizonURLs: string[],
-  testnetHorizonURLs: string[],
+  mainnetFrontierURLs: string[],
+  testnetFrontierURLs: string[],
   t: TFunction
 ) {
   return {
@@ -42,8 +42,8 @@ function createEffectHandlers(
           ? new Asset(effect.sold_asset_code, effect.sold_asset_issuer)
           : Asset.native()
 
-      const horizonURL = account.testnet ? testnetHorizonURLs : mainnetHorizonURLs
-      const openOffers = await netWorker.fetchAccountOpenOrders(horizonURL, account.accountID)
+      const frontierURL = account.testnet ? testnetFrontierURLs : mainnetFrontierURLs
+      const openOffers = await netWorker.fetchAccountOpenOrders(frontierURL, account.accountID)
 
       const orderOnlyPartiallyExecuted = openOffers._embedded.records.find(
         offer => String(offer.id) === String(effect.offer_id)
@@ -76,10 +76,10 @@ function createEffectHandlers(
         })
         const notificationBody = t(
           "app.notification.desktop.received-payment.body",
-          `Received ${formatBalance(paymentEffect.amount)} ${paymentEffect.asset_code || "XLM"}`,
+          `Received ${formatBalance(paymentEffect.amount)} ${paymentEffect.asset_code || "XDB"}`,
           {
             amount: formatBalance(paymentEffect.amount),
-            assetCode: paymentEffect.asset_code || "XLM"
+            assetCode: paymentEffect.asset_code || "XDB"
           }
         )
 
@@ -93,14 +93,14 @@ function DesktopNotifications() {
   const { accounts } = React.useContext(AccountsContext)
   const { subscribeToNewSignatureRequests } = React.useContext(SignatureDelegationContext)
 
-  const mainnetHorizonURLs = useHorizonURLs(false)
-  const testnetHorizonURLs = useHorizonURLs(true)
+  const mainnetFrontierURLs = useFrontierURLs(false)
+  const testnetFrontierURLs = useFrontierURLs(true)
   const netWorker = useNetWorker()
   const router = useRouter()
   const { t } = useTranslation()
 
   const effectHandlers = useSingleton(() =>
-    createEffectHandlers(router, netWorker, mainnetHorizonURLs, testnetHorizonURLs, t)
+    createEffectHandlers(router, netWorker, mainnetFrontierURLs, testnetFrontierURLs, t)
   )
 
   const handleNewSignatureRequest = React.useCallback(

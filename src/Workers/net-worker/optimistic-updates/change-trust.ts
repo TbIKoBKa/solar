@@ -1,16 +1,24 @@
 import BigNumber from "big.js"
-import { Asset, Horizon, LiquidityPoolAsset, Operation, Transaction } from "stellar-sdk"
-import { balancelineToAsset, getLiquidityPoolIdFromAsset, stringifyAssetToReadableString } from "~Generic/lib/stellar"
+
+//TODO import { Asset, Frontier, LiquidityPoolAsset, Operation, Transaction } from "xdb-digitalbits-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
+import { Asset, LiquidityPoolAsset, Operation, Transaction } from "stellar-base"
+
+import {
+  balancelineToAsset,
+  getLiquidityPoolIdFromAsset,
+  stringifyAssetToReadableString
+} from "~Generic/lib/digitalbits"
 import { OptimisticAccountUpdate } from "../../lib/optimistic-updates"
 
 function addTrustline(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.ChangeTrust,
   transaction: Transaction
 ): OptimisticAccountUpdate {
   return {
     apply(prevAccountData) {
-      const newBalance: Horizon.BalanceLineAsset | Horizon.BalanceLineLiquidityPool =
+      const newBalance: Frontier.BalanceLineAsset | Frontier.BalanceLineLiquidityPool =
         operation.line.getAssetType() === "liquidity_pool_shares"
           ? {
               asset_type: "liquidity_pool_shares",
@@ -59,14 +67,14 @@ function addTrustline(
       }
     },
     effectsAccountID: operation.source || transaction.source,
-    horizonURL,
+    frontierURL,
     title: `Remove trustline for ${stringifyAssetToReadableString(operation.line)}`,
     transactionHash: transaction.hash().toString("hex")
   }
 }
 
 function removeTrustline(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.ChangeTrust,
   transaction: Transaction
 ): OptimisticAccountUpdate {
@@ -94,21 +102,21 @@ function removeTrustline(
       }
     },
     effectsAccountID: operation.source || transaction.source,
-    horizonURL,
+    frontierURL,
     title: `Remove trustline for ${stringifyAssetToReadableString(operation.line)}`,
     transactionHash: transaction.hash().toString("hex")
   }
 }
 
 function changeTrust(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.ChangeTrust,
   transaction: Transaction
 ): OptimisticAccountUpdate[] {
   if (BigNumber(operation.limit).eq(0)) {
-    return [removeTrustline(horizonURL, operation, transaction)]
+    return [removeTrustline(frontierURL, operation, transaction)]
   } else {
-    return [addTrustline(horizonURL, operation, transaction)]
+    return [addTrustline(frontierURL, operation, transaction)]
   }
 }
 

@@ -30,7 +30,7 @@ export function createMessageDeduplicator<MessageType>() {
     const serialized = JSON.stringify(message)
 
     if (serialized !== lastMessageJson) {
-      // Deduplicate messages. Every few seconds horizon streams yield a new message with an unchanged value.
+      // Deduplicate messages. Every few seconds frontier streams yield a new message with an unchanged value.
       lastMessageJson = serialized
       handler(message)
     }

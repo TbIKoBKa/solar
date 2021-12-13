@@ -6,8 +6,6 @@ interface TxSubmissionResponse {
   status: number
 }
 
-// See <https://github.com/stellar/horizon/blob/master/src/github.com/stellar/horizon/codes/main.go>
-// See <https://www.stellar.org/developers/guides/concepts/transactions.html#possible-errors>
 export function explainSubmissionErrorResponse(response: TxSubmissionResponse | undefined, t: TFunction) {
   if (!response) {
     return CustomError("UnknownError", t("generic.error.unknown-error"))

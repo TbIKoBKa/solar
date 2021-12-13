@@ -1,13 +1,13 @@
 import BigNumber from "big.js"
 import React from "react"
-import { Asset, Transaction } from "stellar-sdk"
+import { Asset, Transaction } from "xdb-digitalbits-sdk"
 import { getServiceSigningKey, getWebAuthEndpointURL, WebauthData } from "@satoshipay/stellar-sep-10"
 import { fetchTransaction, fetchTransferInfos, TransferServer } from "@satoshipay/stellar-transfer"
 import { Account } from "~App/contexts/accounts"
 import { SigningKeyCacheContext } from "~App/contexts/caches"
 import { trackError } from "~App/contexts/notifications"
-import { stellarTomlCache } from "~Generic/hooks/_caches"
-import { useWebAuth } from "~Generic/hooks/stellar"
+import { digitalbitsTomlCache } from "~Generic/hooks/_caches"
+import { useWebAuth } from "~Generic/hooks/digitalbits"
 import { useNetWorker } from "~Generic/hooks/workers"
 import { CustomError } from "~Generic/lib/errors"
 import { signTransaction } from "~Generic/lib/transaction"
@@ -65,13 +65,13 @@ export function useTransferState(account: Account, closeDialog: () => void) {
   const initiateWebAuth = async (
     transferServer: TransferServer
   ): Promise<[undefined, undefined] | [WebauthData, string | undefined]> => {
-    const stellarTomlCacheItem = stellarTomlCache.get(transferServer.domain)
-    const stellarTomlData =
-      stellarTomlCacheItem && stellarTomlCacheItem[0]
-        ? stellarTomlCacheItem[1]
-        : await netWorker.fetchStellarToml(transferServer.domain)
+    const digitalbitsTomlCacheItem = digitalbitsTomlCache.get(transferServer.domain)
+    const digitalbitsTomlData =
+      digitalbitsTomlCacheItem && digitalbitsTomlCacheItem[0]
+        ? digitalbitsTomlCacheItem[1]
+        : await netWorker.fetchDigitalBitsToml(transferServer.domain)
 
-    const endpointURL = getWebAuthEndpointURL(stellarTomlData)
+    const endpointURL = getWebAuthEndpointURL(digitalbitsTomlData)
 
     if (!endpointURL) {
       return [undefined, undefined]
@@ -80,7 +80,7 @@ export function useTransferState(account: Account, closeDialog: () => void) {
     const webauthMetadata: WebauthData = {
       domain: transferServer.domain,
       endpointURL,
-      signingKey: getServiceSigningKey(stellarTomlData) || null
+      signingKey: getServiceSigningKey(digitalbitsTomlData) || null
     }
 
     if (webauthMetadata.signingKey) {

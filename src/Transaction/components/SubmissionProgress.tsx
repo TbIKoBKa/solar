@@ -8,7 +8,7 @@ import ErrorIcon from "~Icons/components/Error"
 import RetryIcon from "@material-ui/icons/Replay"
 import SuccessIcon from "~Icons/components/Success"
 import { Box, VerticalLayout } from "~Layout/components/Box"
-import { explainSubmissionErrorResponse } from "~Generic/lib/horizonErrors"
+import { explainSubmissionErrorResponse } from "~Generic/lib/frontierErrors"
 import { getErrorTranslation } from "~Generic/lib/errors"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 

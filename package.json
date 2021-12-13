@@ -1,7 +1,7 @@
 {
   "name": "io.astrax.app",
   "version": "1.0.0",
-  "description": "Wallet for the Stellar payment network by SatoshiPay.",
+  "description": "Wallet for the DigitalBits payment network.",
   "license": "MIT",
   "private": true,
   "author": {
@@ -56,7 +56,9 @@
     "lodash.pick": "^4.4.0",
     "nanoid": "^2.1.1",
     "react-hook-form": "^5.0.3",
-    "stellar-sdk": "^9.0.1"
+    "stellar-sdk": "^9.0.1",
+    "xdb-digitalbits-base": "^5.3.0",
+    "xdb-digitalbits-sdk": "^8.2.2"
   },
   "devDependencies": {
     "@material-ui/core": "^4.5.1",

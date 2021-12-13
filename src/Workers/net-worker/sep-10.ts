@@ -1,5 +1,5 @@
 import JWT from "jsonwebtoken"
-import { Networks, Server, Transaction } from "stellar-sdk"
+import { Networks, Server, Transaction } from "xdb-digitalbits-sdk"
 import * as WebAuth from "@satoshipay/stellar-sep-10"
 
 export async function fetchWebAuthChallenge(
@@ -15,9 +15,9 @@ export async function fetchWebAuthChallenge(
     .toString("base64")
 }
 
-export async function fetchWebAuthData(horizonURL: string, issuerAccountID: string) {
-  const horizon = new Server(horizonURL)
-  return WebAuth.fetchWebAuthData(horizon, issuerAccountID)
+export async function fetchWebAuthData(frontierURL: string, issuerAccountID: string) {
+  const frontier = new Server(frontierURL)
+  return WebAuth.fetchWebAuthData(frontier, issuerAccountID)
 }
 
 export async function postWebAuthResponse(endpointURL: string, transactionXdrBase64: string, network: Networks) {

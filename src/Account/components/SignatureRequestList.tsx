@@ -1,7 +1,7 @@
 import ListSubheader from "@material-ui/core/ListSubheader"
 import { TransactionStellarUri } from "@stellarguard/stellar-uri"
 import React from "react"
-import { Transaction } from "stellar-sdk"
+import { Transaction } from "xdb-digitalbits-sdk"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"
 import * as routes from "~App/routes"
@@ -68,8 +68,8 @@ export const SignatureRequestList = React.memo(function SignatureRequestList(pro
         const signatureRequest = props.signatureRequests.find(sr => sr.hash === hash)
 
         if (signatureRequest) {
-          const stellarUri = new TransactionStellarUri(signatureRequest.req)
-          sendTransaction(stellarUri.getTransaction(), signatureRequest)
+          const digitalbitsUri = new TransactionStellarUri(signatureRequest.req)
+          sendTransaction(digitalbitsUri.getTransaction(), signatureRequest)
         }
       }
     }

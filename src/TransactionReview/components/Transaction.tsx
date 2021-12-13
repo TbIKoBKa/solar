@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Horizon, Memo, Transaction, Networks } from "stellar-sdk"
+import { Frontier, Memo, Transaction, Networks } from "xdb-digitalbits-sdk"
 import Tooltip from "@material-ui/core/Tooltip"
 import CheckIcon from "@material-ui/icons/Check"
 import UpdateIcon from "@material-ui/icons/Update"
@@ -32,7 +32,7 @@ function SignerStatus(props: { hasSigned: boolean; style?: React.CSSProperties }
 // tslint:disable-next-line no-shadowed-variable
 const Signer = React.memo(function Signer(props: {
   hasSigned: boolean
-  signer: Horizon.AccountSigner | { key: string; weight: number }
+  signer: Frontier.AccountSigner | { key: string; weight: number }
   style?: React.CSSProperties
   transaction: Transaction
 }) {

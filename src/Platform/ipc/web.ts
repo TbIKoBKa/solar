@@ -1,5 +1,5 @@
 import { createStore, KeysData } from "key-store"
-import { Networks, Keypair, Transaction } from "stellar-sdk"
+import { Networks, Keypair, Transaction } from "xdb-digitalbits-sdk"
 import { Messages } from "../../shared/ipc"
 import { WrongPasswordError } from "../../Generic/lib/errors"
 
@@ -184,12 +184,12 @@ function initSettings() {
 
 function subscribeToDeepLinkURLs(callback: (url: string) => void) {
   window.navigator.registerProtocolHandler(
-    "web+stellar",
+    "web+digitalbits",
     `${window.location.origin}/?uri=%s`,
-    "Stellar request handler"
+    "DigitalBits request handler"
   )
 
-  // check if a stellar uri has been passed already
+  // check if a digitalbits uri has been passed already
   const uri = new URLSearchParams(window.location.search).get("uri")
   if (uri) {
     callback(uri)

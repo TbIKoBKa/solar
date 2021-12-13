@@ -1,7 +1,7 @@
 import BigNumber from "big.js"
 import React from "react"
 import { Trans, useTranslation } from "react-i18next"
-import { Operation, Server, ServerApi, Transaction } from "stellar-sdk"
+import { Operation, Server, ServerApi, Transaction } from "xdb-digitalbits-sdk"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
@@ -17,12 +17,12 @@ import { Account } from "~App/contexts/accounts"
 import { breakpoints } from "~App/theme"
 import { trackError } from "~App/contexts/notifications"
 import { ActionButton } from "~Generic/components/DialogActions"
-import { useHorizon } from "~Generic/hooks/stellar"
+import { useFrontier } from "~Generic/hooks/digitalbits"
 import { useLoadingState } from "~Generic/hooks/util"
-import { useLiveAccountData, useLiveAccountOffers, useOlderOffers } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData, useLiveAccountOffers, useOlderOffers } from "~Generic/hooks/digitalbits-subscriptions"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
-import { offerAssetToAsset } from "~Generic/lib/stellar"
+import { offerAssetToAsset } from "~Generic/lib/digitalbits"
 import { createTransaction } from "~Generic/lib/transaction"
 import { HorizontalLayout } from "~Layout/components/Box"
 import { List } from "~Layout/components/List"
@@ -30,7 +30,7 @@ import TransactionSender from "~Transaction/components/TransactionSender"
 import { SingleBalance } from "./AccountBalances"
 
 function createDismissalTransaction(
-  horizon: Server,
+  frontier: Server,
   account: Account,
   accountData: AccountData,
   offer: ServerApi.OfferRecord
@@ -50,7 +50,7 @@ function createDismissalTransaction(
           withMuxing: true
         })
       ],
-      { accountData, horizon, walletAccount: account }
+      { accountData, frontier, walletAccount: account }
     )
   } else {
     return createTransaction(
@@ -64,7 +64,7 @@ function createDismissalTransaction(
           withMuxing: true
         })
       ],
-      { accountData, horizon, walletAccount: account }
+      { accountData, frontier, walletAccount: account }
     )
   }
 }
@@ -91,9 +91,9 @@ const OfferListItem = React.memo(function OfferListItem(props: OfferListItemProp
       </ListItemIcon>
       <ListItemText
         primary={
-          // Horizon seems to always returns open offers in the format of us
+          // Frontier seems to always returns open offers in the format of us
           // on the seller side, no matter if we submitted a buy or sell order,
-          // so we use the philosophy "i never 'sell XLM', 'i buy the <other asset>'"
+          // so we use the philosophy "i never 'sell XDB', 'i buy the <other asset>'"
           props.offer.seller === props.accountPublicKey && !selling.isNative() ? (
             <span style={{ fontWeight: "bold" }}>
               <Trans i18nKey="account.transactions.offer-list.text.sell">
@@ -218,7 +218,7 @@ const useStyles = makeStyles({
 function OfferList(props: Props & { sendTransaction: (tx: Transaction) => Promise<void> }) {
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
   const classes = useStyles()
-  const horizon = useHorizon(props.account.testnet)
+  const frontier = useFrontier(props.account.testnet)
   const offerHistory = useLiveAccountOffers(props.account.publicKey, props.account.testnet)
   const [moreTxsLoadingState, handleMoreTxsFetch] = useLoadingState()
   const fetchMoreOffers = useOlderOffers(props.account.publicKey, props.account.testnet)
@@ -232,7 +232,7 @@ function OfferList(props: Props & { sendTransaction: (tx: Transaction) => Promis
 
   const onCancel = async (offer: ServerApi.OfferRecord) => {
     try {
-      const tx = await createDismissalTransaction(horizon, props.account, accountData, offer)
+      const tx = await createDismissalTransaction(frontier, props.account, accountData, offer)
       await props.sendTransaction(tx)
     } catch (error) {
       trackError(error)

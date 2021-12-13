@@ -46,7 +46,7 @@
       }
     }
   },
-  "no-assets-info": "Questo account non utilizza ancora risorse diverse da Stellar Lumens.",
+  "no-assets-info": "Questo account non utilizza ancora risorse diverse da digitalbits.",
   "title": "Negozia",
   "trading-price": {
     "default-label": "Prezzo (limite)",

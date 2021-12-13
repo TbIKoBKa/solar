@@ -1,22 +1,22 @@
 import React from "react"
-import { Horizon, Operation, Server, Transaction, xdr } from "stellar-sdk"
+import { Frontier, Operation, Server, Transaction, xdr } from "xdb-digitalbits-sdk"
 import { trackError } from "~App/contexts/notifications"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext, SettingsContextType } from "~App/contexts/settings"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { AccountData } from "~Generic/lib/account"
 import { createTransaction } from "~Generic/lib/transaction"
 import { initializeEditorState, SignersEditorState } from "../lib/editor"
 
 export interface SignersEditorOptions {
   account: Account
-  horizon: Server
+  frontier: Server
   sendTransaction: (tx: Transaction) => void
 }
 
 export interface SignersUpdate {
-  signersToAdd: Horizon.AccountSigner[]
-  signersToRemove: Horizon.AccountSigner[]
+  signersToAdd: Frontier.AccountSigner[]
+  signersToRemove: Frontier.AccountSigner[]
   weightThreshold: number
 }
 
@@ -103,7 +103,7 @@ export function useSignersEditor(options: SignersEditorOptions) {
 
       const tx = await createTransaction(operations, {
         accountData,
-        horizon: options.horizon,
+        frontier: options.frontier,
         walletAccount: options.account
       })
 

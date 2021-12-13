@@ -1,12 +1,12 @@
 import { TransferServerInfo } from "@satoshipay/stellar-transfer"
 import { multicast, Observable, ObservableLike } from "observable-fns"
-import { Asset, Horizon, ServerApi } from "stellar-sdk"
+import { Asset, Frontier, ServerApi } from "xdb-digitalbits-sdk"
 import { trackError } from "~App/contexts/notifications"
 import { AccountData } from "../lib/account"
 import { FixedOrderbookRecord } from "../lib/orderbook"
-import { stringifyAsset } from "../lib/stellar"
-import { AccountRecord } from "../lib/stellar-expert"
-import { AssetRecord } from "../lib/stellar-ticker"
+import { stringifyAsset } from "../lib/digitalbits"
+import { AccountRecord } from "../lib/digitalbits-expert"
+import { AssetRecord } from "../lib/digitalbits-ticker"
 import { max } from "../lib/strings"
 
 function createCache<SelectorT, DataT, UpdateT>(
@@ -90,17 +90,17 @@ function createCache<SelectorT, DataT, UpdateT>(
   return cache
 }
 
-function createAccountCacheKey([horizonURLs, accountID]: readonly [string[], string]) {
-  return `${horizonURLs.map(url => `${url}:`)}${accountID}`
+function createAccountCacheKey([frontierURLs, accountID]: readonly [string[], string]) {
+  return `${frontierURLs.map(url => `${url}:`)}${accountID}`
 }
 
-function createAssetPairCacheKey([horizonURLs, selling, buying]: readonly [string[], Asset, Asset]) {
-  return `${horizonURLs.map(url => `${url}:`)}${stringifyAsset(selling)}:${stringifyAsset(buying)}`
+function createAssetPairCacheKey([frontierURLs, selling, buying]: readonly [string[], Asset, Asset]) {
+  return `${frontierURLs.map(url => `${url}:`)}${stringifyAsset(selling)}:${stringifyAsset(buying)}`
 }
 
 export interface TransactionHistory {
   olderTransactionsAvailable: boolean
-  transactions: Horizon.TransactionResponse[]
+  transactions: Frontier.TransactionResponse[]
 }
 
 export interface OfferHistory {
@@ -160,7 +160,7 @@ export const accountOpenOrdersCache = createCache<readonly [string[], string], O
 export const accountTransactionsCache = createCache<
   readonly [string[], string],
   TransactionHistory,
-  Horizon.TransactionResponse
+  Frontier.TransactionResponse
 >(createAccountCacheKey, areTransactionsNewer)
 
 export const orderbookCache = createCache<
@@ -169,9 +169,9 @@ export const orderbookCache = createCache<
   FixedOrderbookRecord
 >(createAssetPairCacheKey)
 
-// Storing the array [isPresent, stellarTomlData] is important for distinguishing between
+// Storing the array [isPresent, digitalbitsTomlData] is important for distinguishing between
 // "the data has not yet been fetched" and "we fetched, but the site doesn't provide any data"
-export const stellarTomlCache = createCache<string, [boolean, any], any>(domain => domain)
+export const digitalbitsTomlCache = createCache<string, [boolean, any], any>(domain => domain)
 
 export const transferInfosCache = createCache<string, [TransferServerInfo] | [], TransferServerInfo>(domain => domain)
 export const tickerAssetsCache = createCache<boolean, AssetRecord[], AssetRecord[]>(testnet =>

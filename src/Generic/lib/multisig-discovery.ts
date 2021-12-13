@@ -1,6 +1,6 @@
 import { CustomError } from "./errors"
 import { workers } from "../../Workers/worker-controller"
-import { StellarToml } from "~shared/types/stellar-toml"
+import { DigitalBitsToml } from "~shared/types/digitalbits-toml"
 
 const multisigCoordinatorResolutionCache = new Map<string, string>()
 const multisigCoordinatorResolutionPending = new Map<string, Promise<string>>()
@@ -14,8 +14,8 @@ export async function resolveMultiSignatureCoordinator(domain: string): Promise<
     const { netWorker } = await workers
     const allowHttp = domain.startsWith("localhost:") && process.env.NODE_ENV !== "production"
 
-    const pending = netWorker.fetchStellarToml(domain, { allowHttp, timeout: 10000 }).then(
-      (toml: StellarToml | undefined) => {
+    const pending = netWorker.fetchDigitalBitsToml(domain, { allowHttp, timeout: 10000 }).then(
+      (toml: DigitalBitsToml | undefined) => {
         const resolved = toml?.MULTISIG_ENDPOINT
         if (!resolved) {
           throw CustomError("MultiSigServiceNotLocatable", `Multi-signature service cannot be located: ${domain}`, {

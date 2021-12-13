@@ -1,4 +1,4 @@
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 
 export const mainnet = [
   new Asset("USDC", "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"),

@@ -1,10 +1,10 @@
 import React from "react"
-import { Asset, Server, Transaction } from "stellar-sdk"
+import { Asset, Server, Transaction } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { useTransferInfos } from "~Generic/hooks/transfer-server"
 import { useIsMobile, useDialogActions } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
-import { getAssetsFromBalances } from "~Generic/lib/stellar"
+import { getAssetsFromBalances } from "~Generic/lib/digitalbits"
 import Carousel from "~Layout/components/Carousel"
 import VirtualizedFader from "~Layout/components/VirtualizedFader"
 import ViewLoading from "~Generic/components/ViewLoading"
@@ -39,7 +39,7 @@ const TransferContent = withFallback(PureTransferContent, <ViewLoading />)
 export interface TransferDialogProps {
   account: Account
   accountData: AccountData
-  horizon: Server
+  frontier: Server
   onClose: () => void
   sendTransaction: (transaction: Transaction) => Promise<any>
   type: "deposit" | "withdrawal"

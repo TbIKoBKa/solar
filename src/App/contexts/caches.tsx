@@ -1,7 +1,7 @@
 import debounce from "lodash.debounce"
 import LRUCache from "lru-cache"
 import React from "react"
-import { FederationServer } from "stellar-sdk"
+import { FederationServer } from "xdb-digitalbits-sdk"
 import { useSingleton } from "~Generic/hooks/util"
 
 // Just to make the cache types more readable
@@ -9,7 +9,7 @@ type CacheKey = string
 type Domain = string
 type JWT = string
 type PublicKey = string
-type StellarAddress = string
+type DigitalBitsAddress = string
 
 interface CacheContextType<K, V> {
   cache: LRUCache<K, V>
@@ -18,8 +18,8 @@ interface CacheContextType<K, V> {
 }
 
 export type SigningKeyContextType = CacheContextType<PublicKey, Domain>
-export type StellarAddressContextType = CacheContextType<StellarAddress, FederationServer.Record>
-export type StellarAddressReverseContextType = CacheContextType<PublicKey, StellarAddress>
+export type DigitalBitsAddressContextType = CacheContextType<DigitalBitsAddress, FederationServer.Record>
+export type DigitalBitsAddressReverseContextType = CacheContextType<PublicKey, DigitalBitsAddress>
 export type WebAuthTokenContextType = CacheContextType<CacheKey, JWT>
 
 function useCachingContext<K, V>(cache: LRUCache<K, V>): CacheContextType<K, V> {
@@ -51,8 +51,8 @@ const emptyContextValue: CacheContextType<any, any> = {
 }
 
 export const SigningKeyCacheContext = React.createContext<SigningKeyContextType>(emptyContextValue)
-export const StellarAddressCacheContext = React.createContext<StellarAddressContextType>(emptyContextValue)
-export const StellarAddressReverseCacheContext = React.createContext<StellarAddressReverseContextType>(
+export const DigitalBitsAddressCacheContext = React.createContext<DigitalBitsAddressContextType>(emptyContextValue)
+export const DigitalBitsAddressReverseCacheContext = React.createContext<DigitalBitsAddressReverseContextType>(
   emptyContextValue
 )
 export const WebAuthTokenCacheContext = React.createContext<WebAuthTokenContextType>(emptyContextValue)
@@ -72,33 +72,35 @@ export function SigningKeyCachingProvider(props: Props) {
   return <SigningKeyCacheContext.Provider value={contextValue}>{props.children}</SigningKeyCacheContext.Provider>
 }
 
-export function StellarAddressesCachingProvider(props: Props) {
+export function DigitalBitsAddressesCachingProvider(props: Props) {
   const cache = useSingleton(
     () =>
-      new LRUCache<StellarAddress, FederationServer.Record>({
+      new LRUCache<DigitalBitsAddress, FederationServer.Record>({
         max: 1000,
         maxAge: 10 * 60 * 1000 // 10 mins
       })
   )
   const contextValue = useCachingContext(cache)
   return (
-    <StellarAddressCacheContext.Provider value={contextValue}>{props.children}</StellarAddressCacheContext.Provider>
+    <DigitalBitsAddressCacheContext.Provider value={contextValue}>
+      {props.children}
+    </DigitalBitsAddressCacheContext.Provider>
   )
 }
 
-export function StellarAddressesReverseCachingProvider(props: Props) {
+export function DigitalBitsAddressesReverseCachingProvider(props: Props) {
   const cache = useSingleton(
     () =>
-      new LRUCache<PublicKey, StellarAddress>({
+      new LRUCache<PublicKey, DigitalBitsAddress>({
         max: 1000,
         maxAge: 60 * 60 * 1000 // 60 mins (long TTL, since reverse lookup is purely informational)
       })
   )
   const contextValue = useCachingContext(cache)
   return (
-    <StellarAddressReverseCacheContext.Provider value={contextValue}>
+    <DigitalBitsAddressReverseCacheContext.Provider value={contextValue}>
       {props.children}
-    </StellarAddressReverseCacheContext.Provider>
+    </DigitalBitsAddressReverseCacheContext.Provider>
   )
 }
 
@@ -116,11 +118,11 @@ export function WebAuthCachingProvider(props: Props) {
 export function CachingProviders(props: Props) {
   return (
     <SigningKeyCachingProvider>
-      <StellarAddressesCachingProvider>
-        <StellarAddressesReverseCachingProvider>
+      <DigitalBitsAddressesCachingProvider>
+        <DigitalBitsAddressesReverseCachingProvider>
           <WebAuthCachingProvider>{props.children}</WebAuthCachingProvider>
-        </StellarAddressesReverseCachingProvider>
-      </StellarAddressesCachingProvider>
+        </DigitalBitsAddressesReverseCachingProvider>
+      </DigitalBitsAddressesCachingProvider>
     </SigningKeyCachingProvider>
   )
 }

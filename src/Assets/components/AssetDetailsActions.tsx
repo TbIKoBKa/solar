@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Operation, Server, Transaction } from "stellar-sdk"
+import { Asset, Operation, Server, Transaction } from "xdb-digitalbits-sdk"
 import Dialog from "@material-ui/core/Dialog"
 import ClearIcon from "@material-ui/icons/Clear"
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
@@ -8,10 +8,10 @@ import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import * as routes from "~App/routes"
 import { CompactDialogTransition } from "~App/theme"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { createTransaction } from "~Generic/lib/transaction"
-import { stringifyAsset } from "~Generic/lib/stellar"
+import { stringifyAsset } from "~Generic/lib/digitalbits"
 import { DialogActionsBox, ActionButton } from "~Generic/components/DialogActions"
 import TransactionSender, { SendTransaction } from "~Transaction/components/TransactionSender"
 import RemoveTrustlineDialog from "./RemoveTrustline"
@@ -23,7 +23,7 @@ const dialogActionsBoxStyle: React.CSSProperties = {
 interface Props {
   account: Account
   asset: Asset
-  horizon: Server
+  frontier: Server
   sendTransaction: SendTransaction
 }
 
@@ -44,7 +44,7 @@ function AssetDetailsActions(props: Props) {
     const operations = [Operation.changeTrust({ asset, limit: options.limit, withMuxing: true })]
     return createTransaction(operations, {
       accountData,
-      horizon: props.horizon,
+      frontier: props.frontier,
       walletAccount: props.account
     })
   }
@@ -107,11 +107,11 @@ function AssetDetailsActions(props: Props) {
   )
 }
 
-function ConnectedAssetDetailsActions(props: Omit<Props, "horizon" | "sendTransaction">) {
+function ConnectedAssetDetailsActions(props: Omit<Props, "frontier" | "sendTransaction">) {
   return (
     <TransactionSender account={props.account}>
-      {({ horizon, sendTransaction }) => (
-        <AssetDetailsActions {...props} horizon={horizon} sendTransaction={sendTransaction} />
+      {({ frontier, sendTransaction }) => (
+        <AssetDetailsActions {...props} frontier={frontier} sendTransaction={sendTransaction} />
       )}
     </TransactionSender>
   )

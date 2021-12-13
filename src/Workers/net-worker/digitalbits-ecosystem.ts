@@ -1,9 +1,10 @@
-import { FederationServer, StellarTomlResolver } from "stellar-sdk"
-import { AccountRecord } from "~Generic/lib/stellar-expert"
-import { AssetRecord } from "~Generic/lib/stellar-ticker"
+import { FederationServer, DigitalBitsTomlResolver } from "xdb-digitalbits-sdk"
+import { AccountRecord } from "~Generic/lib/digitalbits-expert"
+import { AssetRecord } from "~Generic/lib/digitalbits-ticker"
 import { CustomError } from "~Generic/lib/errors"
 
 export async function fetchWellknownAccounts(testnet: boolean): Promise<AccountRecord[]> {
+  //TODO digitalbits explorer
   const requestURL = testnet
     ? "https://api.stellar.expert/api/explorer/testnet/directory"
     : "https://api.stellar.expert/api/explorer/public/directory"
@@ -11,9 +12,9 @@ export async function fetchWellknownAccounts(testnet: boolean): Promise<AccountR
   const response = await fetch(requestURL)
 
   if (response.status >= 400) {
-    throw CustomError("BadResponseError", `Bad response (${response.status}) from stellar.expert server`, {
+    throw CustomError("BadResponseError", `Bad response (${response.status}) from digitalbits.expert server`, {
       status: response.status,
-      server: "stellar.expert"
+      server: "digitalbits.expert"
     })
   }
 
@@ -47,9 +48,9 @@ export async function fetchAllAssets(tickerURL: string): Promise<AssetRecord[]> 
   const response = await fetch(String(requestURL))
 
   if (response.status >= 400) {
-    throw CustomError("BadResponseError", `Bad response (${response.status}) from stellar.expert server`, {
+    throw CustomError("BadResponseError", `Bad response (${response.status}) from digitalbits.expert server`, {
       status: response.status,
-      server: "stellar.expert"
+      server: "digitalbits.expert"
     })
   }
 
@@ -59,19 +60,19 @@ export async function fetchAllAssets(tickerURL: string): Promise<AssetRecord[]> 
   return abbreviatedAssets
 }
 
-export async function fetchStellarToml(
+export async function fetchDigitalBitsToml(
   domain: string,
-  options: StellarTomlResolver.StellarTomlResolveOptions = {}
+  options: DigitalBitsTomlResolver.DigitalBitsTomlResolveOptions = {}
 ): Promise<any> {
   try {
-    return await StellarTomlResolver.resolve(domain, options)
+    return await DigitalBitsTomlResolver.resolve(domain, options)
   } catch (error) {
     // tslint:disable-next-line no-console
-    console.warn(`Could not resolve stellar.toml data for domain ${domain}:`, error)
+    console.warn(`Could not resolve digitalbits.toml data for domain ${domain}:`, error)
     return undefined
   }
 }
 
-export function resolveStellarAddress(address: string, options?: FederationServer.Options) {
+export function resolveDigitalBitsAddress(address: string, options?: FederationServer.Options) {
   return FederationServer.resolve(address, options)
 }

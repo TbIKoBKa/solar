@@ -4,11 +4,11 @@ import { CachingProviders } from "../contexts/caches"
 import { NotificationsProvider } from "../contexts/notifications"
 import { SettingsProvider } from "../contexts/settings"
 import { SignatureDelegationProvider } from "../contexts/signatureDelegation"
-import { StellarProvider } from "../contexts/stellar"
+import { DigitalBitsProvider } from "../contexts/digitalbits"
 
 export function ContextProviders(props: { children: React.ReactNode }) {
   return (
-    <StellarProvider>
+    <DigitalBitsProvider>
       <AccountsProvider>
         <SettingsProvider>
           <CachingProviders>
@@ -18,6 +18,6 @@ export function ContextProviders(props: { children: React.ReactNode }) {
           </CachingProviders>
         </SettingsProvider>
       </AccountsProvider>
-    </StellarProvider>
+    </DigitalBitsProvider>
   )
 }

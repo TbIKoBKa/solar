@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Asset, Operation, Transaction } from "stellar-sdk"
+import { Asset, Operation, Transaction } from "xdb-digitalbits-sdk"
 
 export type PaymentSummary = Array<{
   asset: Asset

@@ -1,6 +1,6 @@
 {
-  "name": "stellar-wallet-web",
-  "description": "SatoshiPay wallet for the Stellar payment network.",
+  "name": "digitalbits-wallet-web",
+  "description": "SatoshiPay wallet for the digitalbits payment network.",
   "version": "0.0.0",
   "private": true,
   "author": {

@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Horizon } from "stellar-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
 import { BalanceLine } from "./account"
 
 function addThousandsSeparators(digits: string, thousandsSeparator: string) {
@@ -70,7 +70,7 @@ export function formatBalance(input: BigNumber | string, options: BalanceFormatt
 }
 
 export function sortBalances(balances: BalanceLine[]) {
-  const sorter = (balance1: Horizon.BalanceLineAsset, balance2: Horizon.BalanceLineAsset) => {
+  const sorter = (balance1: Frontier.BalanceLineAsset, balance2: Frontier.BalanceLineAsset) => {
     if (Number.parseFloat(balance1.balance) === 0 && Number.parseFloat(balance2.balance) !== 0) {
       return 1
     } else if (Number.parseFloat(balance1.balance) !== 0 && Number.parseFloat(balance2.balance) === 0) {
@@ -83,7 +83,7 @@ export function sortBalances(balances: BalanceLine[]) {
   const nativeBalance = balances.find(balance => balance.asset_type === "native")
 
   return [
-    ...balances.filter((balance): balance is Horizon.BalanceLineAsset => balance.asset_type !== "native").sort(sorter),
+    ...balances.filter((balance): balance is Frontier.BalanceLineAsset => balance.asset_type !== "native").sort(sorter),
     ...(nativeBalance ? [nativeBalance] : [])
   ]
 }

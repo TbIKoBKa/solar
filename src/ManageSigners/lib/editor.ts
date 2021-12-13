@@ -1,4 +1,4 @@
-import { Horizon } from "stellar-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
 import { AccountData } from "~Generic/lib/account"
 
 export namespace MultisigPresets {
@@ -10,7 +10,7 @@ export namespace MultisigPresets {
   }
 
   export interface Custom {
-    thresholds: Horizon.AccountThresholds
+    thresholds: Frontier.AccountThresholds
     type: Type.Custom
   }
 
@@ -36,8 +36,8 @@ export type MultisigPreset =
 
 export interface SignersEditorState {
   preset: MultisigPreset
-  signersToAdd: Horizon.AccountSigner[]
-  signersToRemove: Horizon.AccountSigner[]
+  signersToAdd: Frontier.AccountSigner[]
+  signersToRemove: Frontier.AccountSigner[]
 }
 
 export function initializeEditorState(accountData: AccountData): SignersEditorState {

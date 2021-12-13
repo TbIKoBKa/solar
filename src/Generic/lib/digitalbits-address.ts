@@ -1,21 +1,21 @@
 import LRUCache from "lru-cache"
-import { FederationServer } from "stellar-sdk"
+import { FederationServer } from "xdb-digitalbits-sdk"
 import { workers } from "~Workers/worker-controller"
 import { CustomError } from "./errors"
-import { isNotFoundError } from "./stellar"
+import { isNotFoundError } from "./digitalbits"
 
 export const isPublicKey = (str: string) => Boolean(str.match(/^G[A-Z0-9]{55}$/))
 export const isMuxedAddress = (str: string) => Boolean(str.match(/^M[A-Z0-9]{68}$/))
-export const isStellarAddress = (str: string) =>
+export const isDigitalBitsAddress = (str: string) =>
   Boolean(str.match(/^[^\*> \t\n\r]+\*[^\*\.> \t\n\r]+\.[^\*> \t\n\r]+$/))
 
 export async function lookupFederationRecord(
-  stellarAddress: string,
+  digitalbitsAddress: string,
   lookupCache: LRUCache<string, FederationServer.Record>,
   reverseLookupCache: LRUCache<string, string>
 ) {
   const { netWorker } = await workers
-  const cached = lookupCache.get(stellarAddress)
+  const cached = lookupCache.get(digitalbitsAddress)
 
   if (cached) {
     return cached
@@ -23,25 +23,25 @@ export async function lookupFederationRecord(
 
   let resolved: FederationServer.Record
   try {
-    resolved = await netWorker.resolveStellarAddress(stellarAddress)
+    resolved = await netWorker.resolveDigitalBitsAddress(digitalbitsAddress)
   } catch (error) {
     if (error && error.request && !error.response) {
       throw CustomError(
-        "StellarAddressRequestFailedError",
-        `Request for resolving the stellar address failed: ${stellarAddress}`,
+        "DigitalBitsAddressRequestFailedError",
+        `Request for resolving the digitalbits address failed: ${digitalbitsAddress}`,
         {
-          address: stellarAddress
+          address: digitalbitsAddress
         }
       )
     } else if (isNotFoundError(error)) {
-      throw CustomError("StellarAddressNotFoundError", `Stellar address not found: ${stellarAddress}`, {
-        address: stellarAddress
+      throw CustomError("DigitalBitsAddressNotFoundError", `DigitalBits address not found: ${digitalbitsAddress}`, {
+        address: digitalbitsAddress
       })
     } else {
       throw error
     }
   }
-  lookupCache.set(stellarAddress, resolved)
-  reverseLookupCache.set(resolved.account_id, stellarAddress)
+  lookupCache.set(digitalbitsAddress, resolved)
+  reverseLookupCache.set(resolved.account_id, digitalbitsAddress)
   return resolved
 }

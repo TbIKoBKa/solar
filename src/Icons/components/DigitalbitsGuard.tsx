@@ -1,7 +1,7 @@
 import * as React from "react"
 import SvgIcon from "@material-ui/core/SvgIcon"
 
-const StellarGuardIcon = (props: {
+const DigitalBitsGuardIcon = (props: {
   className?: string
   onClick?: () => void
   role?: string
@@ -14,4 +14,4 @@ const StellarGuardIcon = (props: {
   </SvgIcon>
 )
 
-export default StellarGuardIcon
+export default DigitalBitsGuardIcon

@@ -1,7 +1,7 @@
 import nanoid from "nanoid"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 import Collapse from "@material-ui/core/Collapse"
 import MenuItem from "@material-ui/core/MenuItem"
 import TextField from "@material-ui/core/TextField"
@@ -116,7 +116,7 @@ function TransferInitial(props: TransferInitialProps) {
       event.preventDefault()
 
       if (props.type === "deposit" && formValues.asset && formValues.asset.isNative()) {
-        return (actions as DepositActions).selectXLMDeposit()
+        return (actions as DepositActions).selectXDBDeposit()
       }
 
       if (!formValues.asset) {
@@ -160,7 +160,7 @@ function TransferInitial(props: TransferInitialProps) {
           }
           margin="normal"
           onChange={handleAssetSelection}
-          showXLM={props.type === "deposit"}
+          showXDB={props.type === "deposit"}
           testnet={account.testnet}
           value={formValues.asset || undefined}
         >

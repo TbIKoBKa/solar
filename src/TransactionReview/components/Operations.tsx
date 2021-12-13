@@ -2,14 +2,18 @@ import BigNumber from "big.js"
 import { TFunction } from "i18next"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Operation, Transaction, Networks } from "stellar-sdk"
+import { Asset, Operation, Transaction, Networks } from "xdb-digitalbits-sdk"
 import { SingleBalance } from "~Account/components/AccountBalances"
-import { useLiveAccountOffers } from "~Generic/hooks/stellar-subscriptions"
-import { useAccountHomeDomainSafe } from "~Generic/hooks/stellar"
+import { useLiveAccountOffers } from "~Generic/hooks/digitalbits-subscriptions"
+import { useAccountHomeDomainSafe } from "~Generic/hooks/digitalbits"
 import { useIsSmallMobile } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
 import { formatBalance } from "~Generic/lib/balances"
-import { offerAssetToAsset, stringifyAssetToReadableString, trustlineLimitEqualsUnlimited } from "~Generic/lib/stellar"
+import {
+  offerAssetToAsset,
+  stringifyAssetToReadableString,
+  trustlineLimitEqualsUnlimited
+} from "~Generic/lib/digitalbits"
 import { CopyableAddress } from "~Generic/components/PublicKey"
 import { SummaryItem, SummaryDetailsField } from "./SummaryItem"
 
@@ -151,7 +155,7 @@ function CreateAccountOperation(props: OperationProps<Operation.CreateAccount>) 
       />
       <SummaryDetailsField
         label={t("operations.create-account.summary.funding-amount")}
-        value={<SingleBalance assetCode="XLM" balance={String(startingBalance)} untrimmed />}
+        value={<SingleBalance assetCode="XDB" balance={String(startingBalance)} untrimmed />}
       />
       {source ? (
         <SummaryDetailsField

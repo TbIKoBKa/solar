@@ -1,7 +1,15 @@
 import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, FeeBumpTransaction, Horizon, Networks, Operation, Transaction, TransactionBuilder } from "stellar-sdk"
+import {
+  Asset,
+  FeeBumpTransaction,
+  Frontier,
+  Networks,
+  Operation,
+  Transaction,
+  TransactionBuilder
+} from "xdb-digitalbits-sdk"
 import HumanTime from "react-human-time"
 import Collapse from "@material-ui/core/Collapse"
 import List from "@material-ui/core/List"
@@ -27,7 +35,7 @@ import { InlineErrorBoundary } from "~Generic/components/ErrorBoundaries"
 import { PublicKey } from "~Generic/components/PublicKey"
 import { formatBalance } from "~Generic/lib/balances"
 import { matchesRoute } from "~Generic/lib/routes"
-import { stringifyAssetToReadableString } from "~Generic/lib/stellar"
+import { stringifyAssetToReadableString } from "~Generic/lib/digitalbits"
 import MemoMessage from "~Transaction/components/MemoMessage"
 import TransactionReviewDialog from "~TransactionReview/components/TransactionReviewDialog"
 import { useOperationTitle } from "~TransactionReview/components/Operations"
@@ -494,7 +502,7 @@ interface TransactionListProps {
   onFetchMoreTransactions: () => void
   testnet: boolean
   title: React.ReactNode
-  transactions: Horizon.TransactionResponse[]
+  transactions: Frontier.TransactionResponse[]
 }
 
 function TransactionList(props: TransactionListProps) {

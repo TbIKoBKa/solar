@@ -1,5 +1,5 @@
 import BigNumber from "big.js"
-import { Networks, Transaction } from "stellar-sdk"
+import { Networks, Transaction } from "xdb-digitalbits-sdk"
 import { WebauthData } from "@satoshipay/stellar-sep-10"
 import {
   fetchTransferInfos,
@@ -12,7 +12,7 @@ import {
 } from "@satoshipay/stellar-transfer"
 import { Account } from "~App/contexts/accounts"
 import { CustomError } from "~Generic/lib/errors"
-import { useWebAuth } from "~Generic/hooks/stellar"
+import { useWebAuth } from "~Generic/hooks/digitalbits"
 import { Action, TransferStates } from "../util/statemachine"
 import { useTransferState } from "./useTransferState"
 import { parseAmount } from "../util/util"
@@ -29,8 +29,8 @@ export function useDepositState(account: Account, closeDialog: () => void) {
   const WebAuth = useWebAuth()
   const { dispatch, machineState, transfer } = useTransferState(account, closeDialog)
 
-  const selectXLMDeposit = () => {
-    dispatch(Action.selectXLMDeposit())
+  const selectXDBDeposit = () => {
+    dispatch(Action.selectXDBDeposit())
   }
 
   const requestDeposit = async (deposit: Deposit, authToken?: string, transaction?: DepositTransaction) => {
@@ -148,7 +148,7 @@ export function useDepositState(account: Account, closeDialog: () => void) {
     didRedirectToKYC: transfer.didRedirectToKYC,
     navigateBack: transfer.navigateBack,
     performWebAuth,
-    selectXLMDeposit,
+    selectXDBDeposit,
     submitTransferFieldValues,
     submitTransferSelection: transfer.submitTransferSelection
   }

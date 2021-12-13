@@ -14,7 +14,7 @@ import SettingsIcon from "@material-ui/icons/Settings"
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContextType } from "~App/contexts/settings"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import ContextMenu, { AnchorRenderProps } from "~Generic/components/ContextMenu"
 
@@ -64,7 +64,7 @@ interface MenuProps {
   onAccountTransactions?: () => void
   onDeposit?: () => void
   onManageAssets?: () => void
-  onPurchaseLumens?: () => void
+  onPurchaseDigitalbits?: () => void
   onTrade?: () => void
   onWithdraw?: () => void
   settings: SettingsContextType
@@ -94,7 +94,7 @@ function LiveAccountContextMenuItems(
         disabled={!isSigner || !props.onDeposit}
         icon={<CallReceivedIcon />}
         label={t("account.context-menu.deposit.label")}
-        onClick={closeAndCall(accountData.balances.length > 1 ? props.onDeposit : props.onPurchaseLumens)}
+        onClick={closeAndCall(accountData.balances.length > 1 ? props.onDeposit : props.onPurchaseDigitalbits)}
       />
       <AccountContextMenuItem
         disabled={!activated || !props.onWithdraw}

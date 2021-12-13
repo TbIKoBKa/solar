@@ -1,4 +1,4 @@
-import { Transaction } from "stellar-sdk"
+import { Transaction } from "xdb-digitalbits-sdk"
 import { Messages } from "../shared/ipc"
 import { call } from "./ipc"
 

@@ -1,12 +1,12 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset, Server, Transaction } from "stellar-sdk"
+import { Asset, Server, Transaction } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
-import { useLiveAccountData, useLiveAccountOffers } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData, useLiveAccountOffers } from "~Generic/hooks/digitalbits-subscriptions"
 import { useDialogActions } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
-import { getAssetsFromBalances } from "~Generic/lib/stellar"
+import { getAssetsFromBalances } from "~Generic/lib/digitalbits"
 import DialogBody from "~Layout/components/DialogBody"
 import TestnetBadge from "~Generic/components/TestnetBadge"
 import { Box } from "~Layout/components/Box"
@@ -18,7 +18,7 @@ import PaymentForm from "./PaymentForm"
 interface Props {
   account: Account
   accountData: AccountData
-  horizon: Server
+  frontier: Server
   onClose: () => void
   openOrdersCount: number
   sendTransaction: (transaction: Transaction) => Promise<any>
@@ -31,10 +31,10 @@ function PaymentDialog(props: Props) {
   const [txCreationPending, setTxCreationPending] = React.useState(false)
 
   const handleSubmit = React.useCallback(
-    async (createTx: (horizon: Server, account: Account) => Promise<Transaction>) => {
+    async (createTx: (frontier: Server, account: Account) => Promise<Transaction>) => {
       try {
         setTxCreationPending(true)
-        const tx = await createTx(props.horizon, props.account)
+        const tx = await createTx(props.frontier, props.account)
         setTxCreationPending(false)
         await sendTransaction(tx)
       } catch (error) {
@@ -43,7 +43,7 @@ function PaymentDialog(props: Props) {
         setTxCreationPending(false)
       }
     },
-    [props.account, props.horizon, sendTransaction]
+    [props.account, props.frontier, sendTransaction]
   )
 
   const trustedAssets = React.useMemo(() => getAssetsFromBalances(props.accountData.balances) || [Asset.native()], [
@@ -89,11 +89,11 @@ function ConnectedPaymentDialog(props: Pick<Props, "account" | "onClose">) {
 
   return (
     <TransactionSender account={props.account} onSubmissionCompleted={props.onClose}>
-      {({ horizon, sendTransaction }) => (
+      {({ frontier, sendTransaction }) => (
         <PaymentDialog
           {...props}
           accountData={accountData}
-          horizon={horizon}
+          frontier={frontier}
           openOrdersCount={openOrders.length}
           sendTransaction={sendTransaction}
         />

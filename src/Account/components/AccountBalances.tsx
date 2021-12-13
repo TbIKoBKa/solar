@@ -1,9 +1,9 @@
 import BigNumber from "big.js"
 import React from "react"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { BalanceLine } from "~Generic/lib/account"
 import { formatBalance, sortBalances, BalanceFormattingOptions } from "~Generic/lib/balances"
-import { balancelineToAsset, stringifyAsset } from "~Generic/lib/stellar"
+import { balancelineToAsset, stringifyAsset } from "~Generic/lib/digitalbits"
 
 interface SingleBalanceProps {
   assetCode: string
@@ -76,7 +76,7 @@ export const MultipleBalances = React.memo(function MultipleBalances(props: Mult
       {balances.map((balance: BalanceLine, index) => (
         <React.Fragment key={stringifyAsset(balancelineToAsset(balance))}>
           <Balance
-            assetCode={balance.asset_type === "native" ? "XLM" : balance.asset_code}
+            assetCode={balance.asset_type === "native" ? "XDB" : balance.asset_code}
             balance={balance.balance}
             inline={props.inline}
             style={{ marginRight: index < balances.length - 1 ? "1.2em" : undefined }}
@@ -87,7 +87,7 @@ export const MultipleBalances = React.memo(function MultipleBalances(props: Mult
   )
 })
 
-const zeroXLMBalance = {
+const zeroXDBBalance = {
   asset_type: "native",
   balance: "0"
 }
@@ -103,7 +103,7 @@ function AccountBalances(props: {
   return accountData.balances.length > 0 ? (
     <MultipleBalances balances={accountData.balances} component={props.component} onClick={props.onClick} />
   ) : (
-    <MultipleBalances balances={[zeroXLMBalance] as any} component={props.component} onClick={props.onClick} />
+    <MultipleBalances balances={[zeroXDBBalance] as any} component={props.component} onClick={props.onClick} />
   )
 }
 

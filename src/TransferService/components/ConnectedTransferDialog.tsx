@@ -8,7 +8,7 @@
  */
 
 import React from "react"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import TransactionSender from "~Transaction/components/TransactionSender"
 import ViewLoading from "~Generic/components/ViewLoading"
 import { TransferDialogProps } from "./TransferDialog"
@@ -21,7 +21,7 @@ function ConnectedTransferDialog(props: Pick<TransferDialogProps, "account" | "o
 
   return (
     <TransactionSender account={props.account}>
-      {({ horizon, sendTransaction }) => (
+      {({ frontier, sendTransaction }) => (
         <React.Suspense
           fallback={
             <TransferDialogLayout
@@ -34,7 +34,7 @@ function ConnectedTransferDialog(props: Pick<TransferDialogProps, "account" | "o
             </TransferDialogLayout>
           }
         >
-          <TransferDialog {...props} accountData={accountData} horizon={horizon} sendTransaction={sendTransaction} />
+          <TransferDialog {...props} accountData={accountData} frontier={frontier} sendTransaction={sendTransaction} />
         </React.Suspense>
       )}
     </TransactionSender>

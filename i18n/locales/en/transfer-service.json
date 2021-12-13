@@ -16,7 +16,7 @@
       "deposit-pending": "Deposit pending",
       "info": {
         "1": "{{domain}} is waiting for your deposit.",
-        "2": "The funds will be credited to your Stellar account when the deposit is credited to the asset issuer."
+        "2": "The funds will be credited to your DigitalBits account when the deposit is credited to the asset issuer."
       }
     },
     "sidebar": {
@@ -57,7 +57,7 @@
       "deposit": {
         "headline": "Fund your account",
         "info": {
-          "1": "Purchase Stellar lumens (XLM) or deposit assets to fund your account. Send USD from your bank account, ETH from your Ethereum wallet, etc.",
+          "1": "Purchase DigitalBits (XDB) or deposit assets to fund your account. Send USD from your bank account, ETH from your Ethereum wallet, etc.",
           "2": "AstraX acts as a client to the service offered by the asset issuer only."
         }
       },
@@ -100,12 +100,12 @@
       "no-withdrawable-assets": "This account holds no withdrawable assets."
     }
   },
-  "purchase-lumens": {
+  "purchase-digitalbits": {
     "sidebar": {
-      "headline": "Buy Stellar lumens",
+      "headline": "Buy digitalbits",
       "info": {
-        "1": "We offer options to buy lumens that do not involve a Stellar asset issuer.",
-        "2": " Stellar lumens (XLM) are the native tokens on the Stellar network. They are used to pay transaction fees, among other things."
+        "1": "We offer options to buy digitalbits that do not involve a DigitalBits asset issuer.",
+        "2": " Digitalbits (XDB) are the native tokens on the DigitalBits network. They are used to pay transaction fees, among other things."
       }
     }
   },
@@ -199,7 +199,7 @@
       "withdrawal-in-progress": "Withdrawal in progress",
       "info": {
         "1": "{{domain}} is conducting the withdrawal.",
-        "2": "The funds have been deducted from your Stellar account and should be credited to the withdrawal destination shortly."
+        "2": "The funds have been deducted from your DigitalBits account and should be credited to the withdrawal destination shortly."
       }
     },
     "sidebar": {

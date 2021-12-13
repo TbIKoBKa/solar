@@ -262,7 +262,7 @@ function setupBioAuthAvailableHandler() {
 function openUrl(contentWindow: Window, url: string) {
   SafariViewController.isAvailable(available => {
     if (available) {
-      // Make the app stop all horizon event streams
+      // Make the app stop all frontier event streams
       contentWindow.postMessage("app:pause", "*")
       refreshLastNativeInteractionTime()
 
@@ -277,7 +277,7 @@ function openUrl(contentWindow: Window, url: string) {
           refreshLastNativeInteractionTime()
 
           if (result.event === "closed") {
-            // Make the app reset all horizon event streams
+            // Make the app reset all frontier event streams
             contentWindow.postMessage("app:resume", "*")
           }
         },

@@ -1,19 +1,19 @@
 import BigNumber from "big.js"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Operation, Transaction } from "stellar-sdk"
+import { Operation, Transaction } from "xdb-digitalbits-sdk"
 import Collapse from "@material-ui/core/Collapse"
 import Divider from "@material-ui/core/Divider"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { useTheme } from "@material-ui/core/styles"
 import { Account, AccountsContext } from "~App/contexts/accounts"
 import { SigningKeyCacheContext } from "~App/contexts/caches"
-import { useLiveAccountDataSet } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountDataSet } from "~Generic/hooks/digitalbits-subscriptions"
 import { useDeferredState } from "~Generic/hooks/util"
 import { AccountData } from "~Generic/lib/account"
 import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
-import { getAllSources } from "~Generic/lib/stellar"
-import { isPotentiallyDangerousTransaction, isStellarWebAuthTransaction } from "~Generic/lib/transaction"
+import { getAllSources } from "~Generic/lib/digitalbits"
+import { isPotentiallyDangerousTransaction, isDigitalBitsWebAuthTransaction } from "~Generic/lib/transaction"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import { AccountName } from "~Generic/components/Fetchers"
 import { VerticalLayout } from "~Layout/components/Box"
@@ -160,7 +160,7 @@ function DefaultTransactionSummary(props: DefaultTransactionSummaryProps) {
           <SummaryItem>
             <SummaryDetailsField
               label={t("account.transaction-review.summary.item.max-fee.label")}
-              value={<SingleBalance assetCode="XLM" balance={fee.toString()} inline />}
+              value={<SingleBalance assetCode="XDB" balance={fee.toString()} inline />}
             />
             {transaction.created_at ? (
               <SummaryDetailsField
@@ -256,7 +256,7 @@ function TransactionSummary(props: TransactionSummaryProps) {
   const wideScreen = useMediaQuery("(min-width:900px)")
   const widthStyling = wideScreen ? { maxWidth: 700, minWidth: 320 } : { minWidth: "66vw" }
 
-  if (isStellarWebAuthTransaction(props.transaction)) {
+  if (isDigitalBitsWebAuthTransaction(props.transaction)) {
     return <WebAuthTransactionSummary style={widthStyling} testnet={props.testnet} transaction={props.transaction} />
   } else {
     return (

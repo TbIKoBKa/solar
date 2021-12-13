@@ -12,15 +12,15 @@ interface TimestampedError {
 }
 
 const connectionErrorMessages: Record<Service, string> = {
-  HorizonPublic: "Stellar connection issue",
-  HorizonTestnet: "Stellar testnet connection issue",
+  FrontierPublic: "DigitalBits connection issue",
+  FrontierTestnet: "DigitalBits testnet connection issue",
   MultiSignature: "Multi-signature connection issue"
 }
 
 const connectionErrorPriorities: Record<Service, number> = {
-  HorizonTestnet: 1,
+  FrontierTestnet: 1,
   MultiSignature: 2,
-  HorizonPublic: 3
+  FrontierPublic: 3
 }
 
 const removeFromErrors = (error: TimestampedError) => (recentErrors: TimestampedError[]) => {

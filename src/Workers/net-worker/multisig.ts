@@ -1,6 +1,6 @@
 import { Observable, Subject } from "observable-fns"
 import qs from "qs"
-import { Networks, Transaction } from "stellar-sdk"
+import { Networks, Transaction } from "xdb-digitalbits-sdk"
 import { CustomError } from "~Generic/lib/errors"
 import {
   createSignatureRequestURI,
@@ -36,11 +36,11 @@ const dedupe = <T>(array: T[]) => Array.from(new Set(array))
 const toArray = <T>(thing: T | T[]) => (Array.isArray(thing) ? thing : [thing])
 
 function parseRequestURI(requestURI: string) {
-  if (!requestURI.startsWith("web+stellar:")) {
-    throw CustomError("WrongRequestStartError", "Expected request to start with 'web+stellar:'")
+  if (!requestURI.startsWith("web+digitalbits:")) {
+    throw CustomError("WrongRequestStartError", "Expected request to start with 'web+digitalbits:'")
   }
 
-  const [operation, queryString] = requestURI.replace(/^web\+stellar:/, "").split("?", 2)
+  const [operation, queryString] = requestURI.replace(/^web\+digitalbits:/, "").split("?", 2)
   const parameters = qs.parse(queryString)
 
   return {
@@ -236,23 +236,23 @@ export async function submitSignature(multisigTx: MultisigTransactionResponse, s
   }
 
   if (responseData.status === "ready") {
-    // Transaction is now sufficiently signed to be submitted to the Stellar network
-    const txSubmissionResponse = await submitMultisigTransactionToStellarNetwork(multisigTx)
+    // Transaction is now sufficiently signed to be submitted to the DigitalBits network
+    const txSubmissionResponse = await submitMultisigTransactionToDigitalBitsNetwork(multisigTx)
 
     return {
       ...txSubmissionResponse,
-      submittedToStellarNetwork: true
+      submittedToDigitalBitsNetwork: true
     }
   } else {
     return {
       data: responseData,
       status: response.status,
-      submittedToStellarNetwork: false
+      submittedToDigitalBitsNetwork: false
     }
   }
 }
 
-export async function submitMultisigTransactionToStellarNetwork(multisigTx: MultisigTransactionResponse) {
+export async function submitMultisigTransactionToDigitalBitsNetwork(multisigTx: MultisigTransactionResponse) {
   const collateEndpointURL = parseRequestURI(multisigTx.req).parameters.callback.replace(/^url:/, "")
   const submissionEndpointURL = collateEndpointURL.replace(
     `/transactions/${multisigTx.hash}/signatures`,
@@ -277,7 +277,7 @@ export async function submitMultisigTransactionToStellarNetwork(multisigTx: Mult
 }
 
 async function handleServerError(response: Response, responseBodyObject: any) {
-  const horizonResponse =
+  const frontierResponse =
     responseBodyObject && responseBodyObject.type === "https://digitalbits.org/frontier-errors/transaction_failed"
       ? responseBodyObject
       : null
@@ -287,7 +287,7 @@ async function handleServerError(response: Response, responseBodyObject: any) {
       ? responseBodyObject
       : responseBodyObject.detail || responseBodyObject.message || responseBodyObject.error
 
-  if (horizonResponse) {
+  if (frontierResponse) {
     // Throw something that can be handled by explainSubmissionError()
     throw Object.assign(
       CustomError(
@@ -301,8 +301,8 @@ async function handleServerError(response: Response, responseBodyObject: any) {
       ),
       {
         response: {
-          status: horizonResponse.status,
-          data: horizonResponse
+          status: frontierResponse.status,
+          data: frontierResponse
         }
       }
     )

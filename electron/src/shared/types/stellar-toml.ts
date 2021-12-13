@@ -1,4 +1,4 @@
-export type StellarTomlIssuer = Partial<{
+export type DigitalBitsTomlIssuer = Partial<{
   ORG_NAME: string
   ORG_DBA: string
   ORG_URL: string
@@ -17,7 +17,7 @@ export type StellarTomlIssuer = Partial<{
   ORG_LICENSE_NUMBER: string
 }>
 
-export type StellarTomlPrincipal = Partial<{
+export type DigitalBitsTomlPrincipal = Partial<{
   name: string
   email: string
   keybase: string
@@ -28,7 +28,7 @@ export type StellarTomlPrincipal = Partial<{
   verification_photo_hash: string
 }>
 
-export type StellarTomlCurrency = Partial<{
+export type DigitalBitsTomlCurrency = Partial<{
   code: string
   code_template: string
   issuer: string
@@ -50,11 +50,11 @@ export type StellarTomlCurrency = Partial<{
   approval_criteria: string
 }>
 
-export type StellarToml = Partial<{
-  CURRENCIES: StellarTomlCurrency[]
-  DOCUMENTATION: StellarTomlIssuer
+export type DigitalBitsToml = Partial<{
+  CURRENCIES: DigitalBitsTomlCurrency[]
+  DOCUMENTATION: DigitalBitsTomlIssuer
   MULTISIG_ENDPOINT: string
-  PRINCIPALS: StellarTomlPrincipal[]
+  PRINCIPALS: DigitalBitsTomlPrincipal[]
   SIGNING_KEY?: string
   TRANSFER_SERVER?: string
   TRANSFER_SERVER_SEP0024?: string

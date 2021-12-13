@@ -4,11 +4,11 @@ import { CustomErrorSerializer } from "../Generic/lib/errors"
 import { ConnectionErrorDescription, ConnectionErrorEvent, Exposed as Errors, ServiceID } from "./net-worker/errors"
 import * as Multisig from "./net-worker/multisig"
 import * as SEP10 from "./net-worker/sep-10"
-import * as Ecosystem from "./net-worker/stellar-ecosystem"
-import * as Network from "./net-worker/stellar-network"
+import * as Ecosystem from "./net-worker/digitalbits-ecosystem"
+import * as Network from "./net-worker/digitalbits-network"
 
-// TODO: resetAllSubscriptions() if a different horizon server has been selected
-// TODO: selectTransactionFeeWithFallback(), horizon.fetchTimebounds() (see createTransaction())
+// TODO: resetAllSubscriptions() if a different frontier server has been selected
+// TODO: selectTransactionFeeWithFallback(), frontier.fetchTimebounds() (see createTransaction())
 
 const Logging = {
   enableLogging(namespaces: string) {

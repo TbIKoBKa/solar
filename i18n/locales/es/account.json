@@ -32,10 +32,10 @@
     "title": "Agregar activo"
   },
   "asset-details": {
-    "lumen": {
+    "digitalbit": {
       "description": {
         "label": "Descripción",
-        "text": "El token nativo de la red Stellar.\n\n Toda cuenta de la red tiene un balance de lúmenes. Estos son usados para pagar el costo de transacción."
+        "text": "El token nativo de la red DigitalBits.\n\n Toda cuenta de la red tiene un balance de lúmenes. Estos son usados para pagar el costo de transacción."
       }
     },
     "general": {
@@ -108,7 +108,7 @@
         "primary": "Reserva campo de datos",
         "secondary": "Campos de datos de la cuenta"
       },
-      "headline": "Valor en XLM",
+      "headline": "Valor en XDB",
       "open-orders-reserve": {
         "primary": "Reserva órdenes abiertas",
         "secondary": "Reserva por orden"
@@ -134,7 +134,7 @@
       },
       "trustline-reserve": {
         "primary": "Reserva de líneas de confianza",
-        "secondary": "Por cada saldo (no XLM)"
+        "secondary": "Por cada saldo (no XDB)"
       }
     }
   },
@@ -158,7 +158,7 @@
       "label": "Retirar"
     }
   },
-  "purchase-lumens": {
+  "purchase-digitalbits": {
     "legal-confirmation": {
       "action": {
         "confirm": "Yo comprendo"
@@ -167,11 +167,11 @@
     "moonpay": {
       "text": {
         "primary": "MoonPay",
-        "secondary": "Comprar inmediatamente Lúmenes Stellar usando tu tarjeta de débito / crédito o Apple Pay"
+        "secondary": "Comprar inmediatamente digitalbits usando tu tarjeta de débito / crédito o Apple Pay"
       },
       "legal-confirmation": " Serás redirigido a moonpay.io, un servicio externo. El proceso de depósito es operado por Moon Pay Ltd, no por AstraX. <1 /> <2 /> Por favor contacte a moonpay.io para consultas sobre tu depósito."
     },
-    "title": "Compra lúmenes Stellar"
+    "title": "Compra digitalbits"
   },
   "remove-trustline": {
     "action": {
@@ -316,7 +316,7 @@
     },
     "validation": {
       "no-account-data": "Violación invariante: Imposible encontrar los datos de la cuenta de origen en el conjunto de suscripciones de datos de cuenta.",
-      "no-manage-data-operation": "Violación invariante: La transacción de autenticación web de Stellar debe contener una operación manage_data.",
+      "no-manage-data-operation": "Violación invariante: La transacción de autenticación web de DigitalBits debe contener una operación manage_data.",
       "password-required": "Contraseña requerida"
     }
   },

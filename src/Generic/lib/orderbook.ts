@@ -1,4 +1,4 @@
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 
 /*
  * Quick orderbook cheat sheet:
@@ -10,10 +10,10 @@ import { Asset } from "stellar-sdk"
  * asks(T') === bids(T).map(offer => ({ ...offer, price = 1 / offer.price }))
  *
  * Since the asks & bids are ordered from closest to last trade price to furthest when
- * returned by horizon server, the order of asks(T) & bids(T') is the same as well.
+ * returned by frontier server, the order of asks(T) & bids(T') is the same as well.
  */
 
-// @types/stellar-sdk types seem wrong
+// @types/xdb-digitalbits-sdk types seem wrong
 export interface FixedOrderbookOffer {
   price_r: {
     n: number
@@ -23,7 +23,7 @@ export interface FixedOrderbookOffer {
   amount: string
 }
 
-// @types/stellar-sdk types seem wrong
+// @types/xdb-digitalbits-sdk types seem wrong
 export interface FixedOrderbookRecord {
   asks: FixedOrderbookOffer[]
   bids: FixedOrderbookOffer[]

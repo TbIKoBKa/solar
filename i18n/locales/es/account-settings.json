@@ -136,7 +136,7 @@
         }
       },
       "new-signer": {
-        "label": "Clave pública o dirección Stellar",
+        "label": "Clave pública o dirección DigitalBits",
         "placeholder": {
           "long": "GABC… o dirección",
           "short": "GABCDEFGHIJK… o alice*example.org"
@@ -149,7 +149,7 @@
       "validation": {
         "existing-signer": "No puede agregar firmante existente.",
         "integer-required": "Debe ser un número entero.",
-        "invalid-stellar-address": "Se espera un clave pública o dirección Stellar"
+        "invalid-digitalbits-address": "Se espera un clave pública o dirección DigitalBits"
       }
     },
     "title": {

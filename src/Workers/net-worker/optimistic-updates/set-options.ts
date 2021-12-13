@@ -1,15 +1,15 @@
-import { Horizon, Operation, Signer, Transaction } from "stellar-sdk"
+import { Frontier, Operation, Signer, Transaction } from "xdb-digitalbits-sdk"
 import { OptimisticUpdate } from "../../lib/optimistic-updates"
 
 function addSigner(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.SetOptions,
   signer: Signer.Ed25519PublicKey,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticUpdate<Frontier.AccountResponse> {
   return {
     apply(prevAccountData) {
-      const allOtherSigners = prevAccountData.signers.filter((existing) => {
+      const allOtherSigners = prevAccountData.signers.filter(existing => {
         return existing.key !== signer.ed25519PublicKey
       })
       return {
@@ -25,18 +25,18 @@ function addSigner(
       }
     },
     effectsAccountID: operation.source || transaction.source,
-    horizonURL,
+    frontierURL,
     title: `Add signer ${signer.ed25519PublicKey} (weight ${signer.weight})`,
     transactionHash: transaction.hash().toString("hex")
   }
 }
 
 function removeSigner(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.SetOptions,
   signer: Signer.Ed25519PublicKey,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticUpdate<Frontier.AccountResponse> {
   return {
     apply(prevAccountData) {
       return {
@@ -47,18 +47,18 @@ function removeSigner(
       }
     },
     effectsAccountID: operation.source || transaction.source,
-    horizonURL,
+    frontierURL,
     title: `Remove signer ${signer.ed25519PublicKey}`,
     transactionHash: transaction.hash().toString("hex")
   }
 }
 
 function setMasterWeight(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.SetOptions,
   masterWeight: number,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticUpdate<Frontier.AccountResponse> {
   const accountID = operation.source || transaction.source
   return {
     apply(prevAccountData) {
@@ -77,17 +77,17 @@ function setMasterWeight(
       }
     },
     effectsAccountID: accountID,
-    horizonURL,
+    frontierURL,
     title: `Set master key weight: ${operation.masterWeight}`,
     transactionHash: transaction.hash().toString("hex")
   }
 }
 
 function setThresholds(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.SetOptions,
   transaction: Transaction
-): OptimisticUpdate<Horizon.AccountResponse> {
+): OptimisticUpdate<Frontier.AccountResponse> {
   return {
     apply(prevAccountData) {
       const thresholds = { ...prevAccountData.thresholds }
@@ -107,34 +107,34 @@ function setThresholds(
       }
     },
     effectsAccountID: operation.source || transaction.source,
-    horizonURL,
+    frontierURL,
     title: `Set thresholds: ${operation.lowThreshold}/${operation.medThreshold}/${operation.highThreshold}`,
     transactionHash: transaction.hash().toString("hex")
   }
 }
 
 function setAccountOptions(
-  horizonURL: string,
+  frontierURL: string,
   operation: Operation.SetOptions,
   transaction: Transaction
-): Array<OptimisticUpdate<Horizon.AccountResponse>> {
-  const updates: Array<OptimisticUpdate<Horizon.AccountResponse>> = []
+): Array<OptimisticUpdate<Frontier.AccountResponse>> {
+  const updates: Array<OptimisticUpdate<Frontier.AccountResponse>> = []
   const { signer } = operation
 
   if (signer && "ed25519PublicKey" in signer && typeof signer.weight === "number" && signer.weight > 0) {
-    updates.push(addSigner(horizonURL, operation, signer, transaction))
+    updates.push(addSigner(frontierURL, operation, signer, transaction))
   } else if (signer && "ed25519PublicKey" in signer && typeof signer.weight === "number" && signer.weight === 0) {
-    updates.push(removeSigner(horizonURL, operation, signer, transaction))
+    updates.push(removeSigner(frontierURL, operation, signer, transaction))
   } else if (
     operation.lowThreshold !== undefined ||
     operation.medThreshold !== undefined ||
     operation.highThreshold !== undefined
   ) {
-    updates.push(setThresholds(horizonURL, operation, transaction))
+    updates.push(setThresholds(frontierURL, operation, transaction))
   }
 
   if (operation.masterWeight !== undefined) {
-    updates.push(setMasterWeight(horizonURL, operation, operation.masterWeight, transaction))
+    updates.push(setMasterWeight(frontierURL, operation, operation.masterWeight, transaction))
   }
 
   return updates

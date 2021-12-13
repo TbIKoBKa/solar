@@ -1,18 +1,18 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 import Avatar from "@material-ui/core/Avatar"
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import { Account } from "~App/contexts/accounts"
-import { useAccountData, useAssetMetadata, useStellarToml } from "~Generic/hooks/stellar"
+import { useAccountData, useAssetMetadata, useDigitalBitsToml } from "~Generic/hooks/digitalbits"
 import { useClipboard, useIsMobile } from "~Generic/hooks/userinterface"
-import { BASE_RESERVE, parseAssetID } from "~Generic/lib/stellar"
+import { BASE_RESERVE, parseAssetID } from "~Generic/lib/digitalbits"
 import { openLink } from "~Platform/links"
 import { breakpoints } from "~App/theme"
-import { StellarTomlCurrency } from "~shared/types/stellar-toml"
+import { DigitalBitsTomlCurrency } from "~shared/types/digitalbits-toml"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import DialogBody from "~Layout/components/DialogBody"
 import { AccountName } from "~Generic/components/Fetchers"
@@ -22,7 +22,7 @@ import MainTitle from "~Generic/components/MainTitle"
 import AssetDetailsActions from "./AssetDetailsActions"
 import AssetLogo from "./AssetLogo"
 import SpendableBalanceBreakdown from "./SpendableBalanceBreakdown"
-import { useLiveAccountData } from "~Generic/hooks/stellar-subscriptions"
+import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 
 const capitalize = (text: string) => text[0].toUpperCase() + text.substr(1)
 
@@ -57,11 +57,11 @@ const useDetailContentStyles = makeStyles({
   }
 })
 
-interface LumenDetailProps {
+interface DigitalbitDetailProps {
   account: Account
 }
 
-const LumenDetails = React.memo(function LumenDetails(props: LumenDetailProps) {
+const DigitalbitDetails = React.memo(function DigitalbitDetails(props: DigitalbitDetailProps) {
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
   const classes = useDetailContentStyles()
   const { t } = useTranslation()
@@ -73,9 +73,9 @@ const LumenDetails = React.memo(function LumenDetails(props: LumenDetailProps) {
           <ReadOnlyTextfield
             disableUnderline
             fullWidth
-            label={t("account.asset-details.lumen.description.label")}
+            label={t("account.asset-details.digitalbit.description.label")}
             multiline
-            value={t("account.asset-details.lumen.description.text")}
+            value={t("account.asset-details.digitalbit.description.text")}
           />
         </CardContent>
       </Card>
@@ -91,12 +91,12 @@ const LumenDetails = React.memo(function LumenDetails(props: LumenDetailProps) {
 interface AssetDetailProps {
   account: Account
   asset: Asset
-  metadata: StellarTomlCurrency | undefined
+  metadata: DigitalBitsTomlCurrency | undefined
 }
 
 const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata }: AssetDetailProps) {
   const issuingAccountData = useAccountData(asset.issuer, account.testnet)
-  const stellarToml = useStellarToml(issuingAccountData.home_domain)
+  const digitalbitsToml = useDigitalBitsToml(issuingAccountData.home_domain)
 
   const classes = useDetailContentStyles()
   const clipboard = useClipboard()
@@ -191,44 +191,44 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
           ) : null}
         </CardContent>
       </Card>
-      {stellarToml && stellarToml.DOCUMENTATION ? (
+      {digitalbitsToml && digitalbitsToml.DOCUMENTATION ? (
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
-            {stellarToml.DOCUMENTATION.ORG_LOGO ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_LOGO ? (
               <Avatar className={classes.cardLogo}>
                 <img
                   alt="Organization logo"
                   className={classes.cardLogoImage}
-                  src={stellarToml.DOCUMENTATION.ORG_LOGO}
+                  src={digitalbitsToml.DOCUMENTATION.ORG_LOGO}
                 />
               </Avatar>
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_NAME ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_NAME ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.name.label")}
                 margin="dense"
-                value={stellarToml.DOCUMENTATION.ORG_NAME}
+                value={digitalbitsToml.DOCUMENTATION.ORG_NAME}
               />
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_DBA ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_DBA ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.dba.label")}
                 margin="dense"
-                value={stellarToml.DOCUMENTATION.ORG_DBA}
+                value={digitalbitsToml.DOCUMENTATION.ORG_DBA}
               />
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_URL ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_URL ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.website.label")}
                 margin="dense"
-                onClick={() => openLink(stellarToml!.DOCUMENTATION!.ORG_URL!)}
-                value={stellarToml.DOCUMENTATION.ORG_URL}
+                onClick={() => openLink(digitalbitsToml!.DOCUMENTATION!.ORG_URL!)}
+                value={digitalbitsToml.DOCUMENTATION.ORG_URL}
                 inputProps={{
                   style: {
                     cursor: "pointer",
@@ -237,24 +237,24 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
                 }}
               />
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_DESCRIPTION ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_DESCRIPTION ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.description.label")}
                 margin="dense"
                 multiline
-                value={stellarToml.DOCUMENTATION.ORG_DESCRIPTION}
+                value={digitalbitsToml.DOCUMENTATION.ORG_DESCRIPTION}
               />
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_PHYSICAL_ADDRESS ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_PHYSICAL_ADDRESS ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.address.label")}
                 margin="dense"
                 multiline
-                value={stellarToml.DOCUMENTATION.ORG_PHYSICAL_ADDRESS}
+                value={digitalbitsToml.DOCUMENTATION.ORG_PHYSICAL_ADDRESS}
                 inputProps={{
                   style: {
                     whiteSpace: "pre"
@@ -262,15 +262,15 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
                 }}
               />
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_OFFICIAL_EMAIL ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_OFFICIAL_EMAIL ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.email.label")}
                 margin="dense"
                 multiline
-                onClick={() => openLink("mailto:" + stellarToml!.DOCUMENTATION!.ORG_OFFICIAL_EMAIL!)}
-                value={stellarToml.DOCUMENTATION.ORG_OFFICIAL_EMAIL}
+                onClick={() => openLink("mailto:" + digitalbitsToml!.DOCUMENTATION!.ORG_OFFICIAL_EMAIL!)}
+                value={digitalbitsToml.DOCUMENTATION.ORG_OFFICIAL_EMAIL}
                 inputProps={{
                   style: {
                     cursor: "pointer",
@@ -279,14 +279,14 @@ const AssetDetails = React.memo(function AssetDetails({ account, asset, metadata
                 }}
               />
             ) : null}
-            {stellarToml.DOCUMENTATION.ORG_PHONE_NUMBER ? (
+            {digitalbitsToml.DOCUMENTATION.ORG_PHONE_NUMBER ? (
               <ReadOnlyTextfield
                 disableUnderline
                 fullWidth
                 label={t("account.asset-details.general.organisation.phone-number.label")}
                 margin="dense"
                 multiline
-                value={stellarToml.DOCUMENTATION.ORG_PHONE_NUMBER}
+                value={digitalbitsToml.DOCUMENTATION.ORG_PHONE_NUMBER}
               />
             ) : null}
           </CardContent>
@@ -359,7 +359,7 @@ function AssetDetailsDialog(props: Props) {
             style={{ position: "relative", zIndex: 1 }}
             title={
               asset.isNative()
-                ? "Stellar Lumens (XLM)"
+                ? "Digitalbits (XDB)"
                 : metadata && metadata.name
                 ? `${metadata.name} (${asset.getCode()})`
                 : asset.getCode()
@@ -373,7 +373,7 @@ function AssetDetailsDialog(props: Props) {
             {balance ? (
               <SingleBalance assetCode={asset.getCode()} balance={balance.balance} />
             ) : asset.isNative() ? (
-              "stellar.org"
+              "digitalbits.io"
             ) : (
               <AccountName publicKey={asset.getIssuer()} testnet={props.account.testnet} />
             )}
@@ -387,7 +387,7 @@ function AssetDetailsDialog(props: Props) {
     >
       <VerticalLayout margin="0 4px" padding={`0 0 ${isSmallScreen ? 68 : 0}px`} shrink={0}>
         {asset.isNative() ? (
-          <LumenDetails account={props.account} />
+          <DigitalbitDetails account={props.account} />
         ) : (
           <AssetDetails account={props.account} asset={asset} metadata={metadata} />
         )}

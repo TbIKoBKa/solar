@@ -1,5 +1,5 @@
 import React from "react"
-import { Asset } from "stellar-sdk"
+import { Asset } from "xdb-digitalbits-sdk"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import MenuItem from "@material-ui/core/MenuItem"
@@ -7,7 +7,7 @@ import TextField, { TextFieldProps } from "@material-ui/core/TextField"
 import { makeStyles } from "@material-ui/core/styles"
 import AssetLogo from "~Assets/components/AssetLogo"
 import { BalanceLine } from "~Generic/lib/account"
-import { balancelineToAsset, stringifyAsset } from "../lib/stellar"
+import { balancelineToAsset, stringifyAsset } from "../lib/digitalbits"
 
 const useAssetItemStyles = makeStyles(theme => ({
   icon: {
@@ -82,7 +82,7 @@ interface AssetSelectorProps {
   minWidth?: number | string
   name?: string
   onChange?: (asset: Asset) => void
-  showXLM?: boolean
+  showXDB?: boolean
   style?: React.CSSProperties
   testnet: boolean
   value?: Asset
@@ -160,7 +160,7 @@ function AssetSelector(props: AssetSelectorProps) {
           Select an asset
         </MenuItem>
       )}
-      {props.showXLM ? (
+      {props.showXDB ? (
         <AssetItem
           asset={Asset.native()}
           disabled={props.disabledAssets && props.disabledAssets.some(someAsset => someAsset.isNative())}

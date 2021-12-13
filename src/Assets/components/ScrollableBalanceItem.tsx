@@ -1,6 +1,6 @@
 import React from "react"
 import makeStyles from "@material-ui/core/styles/makeStyles"
-import { balancelineToAsset } from "~Generic/lib/stellar"
+import { balancelineToAsset } from "~Generic/lib/digitalbits"
 import { breakpoints } from "~App/theme"
 import { SingleBalance } from "~Account/components/AccountBalances"
 import { BalanceLine } from "~Generic/lib/account"
@@ -126,7 +126,7 @@ function BalanceItem(props: BalanceItemProps, ref: React.Ref<any>) {
       <AssetLogo asset={asset} className={classes.logo} testnet={props.testnet} />
       <div className={classes.balance}>
         <span className={classes.assetCode}>
-          {props.balance.asset_type === "native" ? "XLM" : props.balance.asset_code}
+          {props.balance.asset_type === "native" ? "XDB" : props.balance.asset_code}
         </span>
         <SingleBalance assetCode="" balance={props.balance.balance} inline />
       </div>

@@ -1,6 +1,6 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { Horizon } from "stellar-sdk"
+import { Frontier } from "xdb-digitalbits-sdk"
 import IconButton from "@material-ui/core/IconButton"
 import Divider from "@material-ui/core/Divider"
 import List from "@material-ui/core/List"
@@ -15,9 +15,9 @@ import { AccountsContext } from "~App/contexts/accounts"
 import { trackError } from "~App/contexts/notifications"
 import ButtonListItem from "~Generic/components/ButtonListItem"
 import { Address } from "~Generic/components/PublicKey"
-import { useFederationLookup } from "~Generic/hooks/stellar"
+import { useFederationLookup } from "~Generic/hooks/digitalbits"
 import { useIsMobile } from "~Generic/hooks/userinterface"
-import { isPublicKey, isStellarAddress } from "~Generic/lib/stellar-address"
+import { isPublicKey, isDigitalBitsAddress } from "~Generic/lib/digitalbits-address"
 import { requiresSignatureThreshold } from "../lib/editor"
 import { MultisigEditorContext } from "./MultisigEditorContext"
 import NewSignerForm from "./NewSignerForm"
@@ -37,13 +37,13 @@ function useFormValidation() {
   const { t } = useTranslation()
   return function validateNewSignerValues(
     values: SignerFormValues,
-    signers: Horizon.AccountSigner[]
+    signers: Frontier.AccountSigner[]
   ): SignerFormErrors {
     const errors: SignerFormErrors = {}
 
-    if (!isPublicKey(values.publicKey) && !isStellarAddress(values.publicKey)) {
+    if (!isPublicKey(values.publicKey) && !isDigitalBitsAddress(values.publicKey)) {
       errors.publicKey = new Error(
-        t("account-settings.manage-signers.signers-editor.validation.invalid-stellar-address")
+        t("account-settings.manage-signers.signers-editor.validation.invalid-digitalbits-address")
       )
     } else if (signers.find(existingSigner => existingSigner.key === values.publicKey)) {
       errors.publicKey = new Error(t("account-settings.manage-signers.signers-editor.validation.existing-signer"))
@@ -62,7 +62,7 @@ const listItemStyles: React.CSSProperties = {
 }
 
 interface SignersEditorProps {
-  signers: Horizon.AccountSigner[]
+  signers: Frontier.AccountSigner[]
   showKeyWeights?: boolean
   testnet: boolean
 }
@@ -87,13 +87,13 @@ function SignersEditor(props: SignersEditorProps) {
 
   const editNewSigner = React.useCallback(() => setIsEditingNewSigner(true), [setIsEditingNewSigner])
 
-  const addSigner = (signer: Horizon.AccountSigner) =>
+  const addSigner = (signer: Frontier.AccountSigner) =>
     setEditorState(prev => ({
       ...prev,
       signersToAdd: [...prev.signersToAdd, signer]
     }))
 
-  const removeSigner = (signer: Horizon.AccountSigner) => {
+  const removeSigner = (signer: Frontier.AccountSigner) => {
     setEditorState(prev => ({
       ...prev,
       signersToAdd: prev.signersToAdd.filter(someSignerToBeAddd => someSignerToBeAddd.key !== signer.key),

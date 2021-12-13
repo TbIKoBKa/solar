@@ -3,18 +3,18 @@ import nanoid from "nanoid"
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { Asset, Memo, MemoType, Server, Transaction } from "stellar-sdk"
+import { Asset, Memo, MemoType, Server, Transaction } from "xdb-digitalbits-sdk"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import TextField from "@material-ui/core/TextField"
 import SendIcon from "@material-ui/icons/Send"
 import { Account } from "~App/contexts/accounts"
-import { AccountRecord, useWellKnownAccounts } from "~Generic/hooks/stellar-ecosystem"
-import { useFederationLookup } from "~Generic/hooks/stellar"
+import { AccountRecord, useWellKnownAccounts } from "~Generic/hooks/digitalbits-ecosystem"
+import { useFederationLookup } from "~Generic/hooks/digitalbits"
 import { useIsMobile, RefStateObject } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
 import { CustomError } from "~Generic/lib/errors"
-import { findMatchingBalanceLine, getAccountMinimumBalance, getSpendableBalance } from "~Generic/lib/stellar"
-import { isMuxedAddress, isPublicKey, isStellarAddress } from "~Generic/lib/stellar-address"
+import { findMatchingBalanceLine, getAccountMinimumBalance, getSpendableBalance } from "~Generic/lib/digitalbits"
+import { isMuxedAddress, isPublicKey, isDigitalBitsAddress } from "~Generic/lib/digitalbits-address"
 import { createPaymentOperation, createTransaction, multisigMinimumFee } from "~Generic/lib/transaction"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import AssetSelector from "~Generic/components/AssetSelector"
@@ -95,7 +95,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
   )
 
   React.useEffect(() => {
-    if (!isPublicKey(formValues.destination) && !isStellarAddress(formValues.destination)) {
+    if (!isPublicKey(formValues.destination) && !isDigitalBitsAddress(formValues.destination)) {
       if (matchingWellknownAccount) {
         setMatchingWellknownAccount(undefined)
       }
@@ -175,7 +175,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
           validate: value =>
             isPublicKey(value) ||
             isMuxedAddress(value) ||
-            isStellarAddress(value) ||
+            isDigitalBitsAddress(value) ||
             t<string>("payment.validation.invalid-destination")
         })}
         label={form.errors.destination ? form.errors.destination.message : t("payment.inputs.destination.label")}
@@ -195,7 +195,7 @@ const PaymentForm = React.memo(function PaymentForm(props: PaymentFormProps) {
           <AssetSelector
             assets={props.accountData.balances}
             disableUnderline
-            showXLM
+            showXDB
             style={{ alignSelf: "center" }}
             testnet={props.testnet}
             value={formValues.asset}
@@ -336,13 +336,13 @@ interface Props {
   trustedAssets: Asset[]
   txCreationPending?: boolean
   onCancel: () => void
-  onSubmit: (createTx: (horizon: Server, account: Account) => Promise<Transaction>) => any
+  onSubmit: (createTx: (frontier: Server, account: Account) => Promise<Transaction>) => any
 }
 
 function PaymentFormContainer(props: Props) {
   const { lookupFederationRecord } = useFederationLookup()
 
-  const createPaymentTx = async (horizon: Server, account: Account, formValues: ExtendedPaymentFormValues) => {
+  const createPaymentTx = async (frontier: Server, account: Account, formValues: ExtendedPaymentFormValues) => {
     const asset = props.trustedAssets.find(trustedAsset => trustedAsset.equals(formValues.asset))
     const federationRecord =
       formValues.destination.indexOf("*") > -1 ? await lookupFederationRecord(formValues.destination) : null
@@ -368,20 +368,20 @@ function PaymentFormContainer(props: Props) {
       asset: asset || Asset.native(),
       amount: replaceCommaWithDot(formValues.amount),
       destination,
-      horizon
+      frontier
     })
     const tx = await createTransaction([payment], {
       accountData: props.accountData,
       memo: federationMemo.type !== "none" ? federationMemo : userMemo,
       minTransactionFee: isMultisigTx ? multisigMinimumFee : 0,
-      horizon,
+      frontier,
       walletAccount: account
     })
     return tx
   }
 
   const submitForm = (formValues: ExtendedPaymentFormValues) => {
-    props.onSubmit((horizon, account) => createPaymentTx(horizon, account, formValues))
+    props.onSubmit((frontier, account) => createPaymentTx(frontier, account, formValues))
   }
 
   return <PaymentForm {...props} onSubmit={submitForm} />
