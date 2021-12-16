@@ -82,6 +82,8 @@ function LiveAccountContextMenuItems(
   const activated = isFunded && isSigner
   const { t } = useTranslation()
 
+  //TODO Implement after sdk is fixed
+
   return (
     <>
       <AccountContextMenuItem
@@ -90,12 +92,12 @@ function LiveAccountContextMenuItems(
         label={t("account.context-menu.trade.label")}
         onClick={closeAndCall(props.onTrade)}
       />
-      <AccountContextMenuItem
+      {/* <AccountContextMenuItem
         disabled={!isSigner || !props.onDeposit}
         icon={<CallReceivedIcon />}
         label={t("account.context-menu.deposit.label")}
         onClick={closeAndCall(accountData.balances.length > 1 ? props.onDeposit : props.onPurchaseDigitalbits)}
-      />
+      /> */}
       <AccountContextMenuItem
         disabled={!activated || !props.onWithdraw}
         icon={<CallMadeIcon />}

@@ -17,17 +17,20 @@ interface Props {
 function NoWithdrawableAssets(props: Props) {
   const router = useRouter()
   const { t } = useTranslation()
+
+  // TODO Implement after sdk is fixed
+
   return (
     <Box margin={props.margin} textAlign="center">
       <Typography>{t("transfer-service.no-withdrawable-assets.body.no-withdrawable-assets")}</Typography>
       <Portal desktop="inline" target={props.actionsRef.element}>
         <DialogActionsBox>
-          <ActionButton
+          {/* <ActionButton
             onClick={() => router.history.push(routes.manageAccountAssets(props.account.id))}
             type="primary"
           >
             {t("transfer-service.no-withdrawable-assets.action.add-asset")}
-          </ActionButton>
+          </ActionButton> */}
         </DialogActionsBox>
       </Portal>
     </Box>

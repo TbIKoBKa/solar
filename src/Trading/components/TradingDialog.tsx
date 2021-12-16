@@ -114,24 +114,26 @@ function TradingDialog(props: TradingDialogProps) {
     ]
   )
 
+  //TODO Implement after sdk is fixed
+
   const LinkToManageAssets = React.useMemo(
     () => (
       <Box margin="32px 0 0" textAlign="center">
         <Typography>{t("trading.no-assets-info")}</Typography>
         <Portal target={dialogActionsRef.element}>
           <DialogActionsBox>
-            <ActionButton
+            {/* <ActionButton
               autoFocus
               onClick={() => router.history.push(routes.manageAccountAssets(props.account.id))}
               type="primary"
             >
               {t("trading.action.add-asset")}
-            </ActionButton>
+            </ActionButton> */}
           </DialogActionsBox>
         </Portal>
       </Box>
     ),
-    [dialogActionsRef, props.account, router, t]
+    [dialogActionsRef.element, t]
   )
 
   return (
