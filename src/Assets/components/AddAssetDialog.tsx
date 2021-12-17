@@ -324,7 +324,7 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
   return (
     <DialogBody excessWidth={24} top={<MainTitle onBack={props.onClose} title={t("account.add-asset.title")} />}>
       <VerticalLayout grow margin="16px 0 0">
-        <SearchField
+        {/* <SearchField
           autoFocus
           className={classes.searchField}
           inputProps={{
@@ -333,7 +333,7 @@ const AddAssetDialog = React.memo(function AddAssetDialog(props: AddAssetDialogP
           onChange={onSearchFieldChange}
           value={searchFieldValue}
           placeholder={t("account.add-asset.search-field.placeholder")}
-        />
+        /> */}
         <List className={classes.list}>
           <ButtonListItem onClick={openCustomTrustlineDialog}>
             <AddIcon />
