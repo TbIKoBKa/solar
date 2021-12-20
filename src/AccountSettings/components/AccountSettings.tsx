@@ -64,41 +64,41 @@ interface SuspendedItemProps {
   onClick: () => void
 }
 
-function MultiSigItem(props: SuspendedItemProps) {
-  const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
-  const isSmallScreen = useIsMobile()
-  const { t } = useTranslation()
+// function MultiSigItem(props: SuspendedItemProps) {
+//   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
+//   const isSmallScreen = useIsMobile()
+//   const { t } = useTranslation()
 
-  const disabled = Boolean(
-    !accountData.balances.length || !accountData.signers.some(signer => signer.key === props.account.publicKey)
-  )
+//   const disabled = Boolean(
+//     !accountData.balances.length || !accountData.signers.some(signer => signer.key === props.account.publicKey)
+//   )
 
-  const ListItemSecondaryContent = props.account.cosignerOf ? (
-    <>
-      {t("account-settings.settings.multi-sig.text.secondary.cosigner-of")}{" "}
-      <Address address={props.account.cosignerOf} testnet={props.account.testnet} />
-    </>
-  ) : isSmallScreen ? (
-    t("account-settings.settings.multi-sig.text.secondary.short")
-  ) : (
-    t("account-settings.settings.multi-sig.text.secondary.long")
-  )
+//   const ListItemSecondaryContent = props.account.cosignerOf ? (
+//     <>
+//       {t("account-settings.settings.multi-sig.text.secondary.cosigner-of")}{" "}
+//       <Address address={props.account.cosignerOf} testnet={props.account.testnet} />
+//     </>
+//   ) : isSmallScreen ? (
+//     t("account-settings.settings.multi-sig.text.secondary.short")
+//   ) : (
+//     t("account-settings.settings.multi-sig.text.secondary.long")
+//   )
 
-  return (
-    <AccountSettingsItem
-      caret="right"
-      disabled={disabled}
-      icon={<GroupIcon style={{ fontSize: "100%" }} />}
-      onClick={props.onClick}
-    >
-      <ListItemText
-        primary={t("account-settings.settings.multi-sig.text.primary")}
-        secondary={ListItemSecondaryContent}
-        style={props.listItemTextStyle}
-      />
-    </AccountSettingsItem>
-  )
-}
+//   return (
+//     <AccountSettingsItem
+//       caret="right"
+//       disabled={disabled}
+//       icon={<GroupIcon style={{ fontSize: "100%" }} />}
+//       onClick={props.onClick}
+//     >
+//       <ListItemText
+//         primary={t("account-settings.settings.multi-sig.text.primary")}
+//         secondary={ListItemSecondaryContent}
+//         style={props.listItemTextStyle}
+//       />
+//     </AccountSettingsItem>
+//   )
+// }
 
 function DeleteAccountItem(props: SuspendedItemProps) {
   // call useLiveAccountData to make sure this item is suspended until the account data is available
@@ -167,11 +167,11 @@ function AccountSettings(props: Props) {
             style={listItemTextStyle}
           />
         </AccountSettingsItem>
-        {settings.multiSignature ? (
+        {/* {settings.multiSignature ? (
           <React.Suspense fallback={null}>
             <MultiSigItem {...props} listItemTextStyle={listItemTextStyle} onClick={navigateTo.manageSigners} />
           </React.Suspense>
-        ) : null}
+        ) : null} */}
         <AccountSettingsItem
           caret="right"
           icon={<EyeIcon style={{ fontSize: "100%" }} />}

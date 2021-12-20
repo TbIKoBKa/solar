@@ -14,12 +14,12 @@ interface TimestampedError {
 const connectionErrorMessages: Record<Service, string> = {
   FrontierPublic: "DigitalBits connection issue",
   FrontierTestnet: "DigitalBits testnet connection issue",
-  MultiSignature: "Multi-signature connection issue"
+  // MultiSignature: "Multi-signature connection issue"
 }
 
 const connectionErrorPriorities: Record<Service, number> = {
   FrontierTestnet: 1,
-  MultiSignature: 2,
+  // MultiSignature: 2,
   FrontierPublic: 3
 }
 

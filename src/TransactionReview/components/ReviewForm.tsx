@@ -10,7 +10,7 @@ import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import { RefStateObject } from "~Generic/hooks/userinterface"
 import { renderFormFieldError } from "~Generic/lib/errors"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 // import { openLink } from "~Platform/links"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { VerticalLayout } from "~Layout/components/Box"
@@ -33,7 +33,7 @@ interface Props {
   passwordError?: Error | null
   showHash?: boolean
   showSource?: boolean
-  signatureRequest?: MultisigTransactionResponse
+  // signatureRequest?: MultisigTransactionResponse
   transaction: Transaction
   onClose?: () => void
   onConfirm?: (formValues: FormValues) => any
@@ -56,15 +56,15 @@ function TxConfirmationForm(props: Props) {
   const requestDismissalConfirmation = React.useCallback(() => setDismissalConfirmationPending(true), [])
 
   const dismissSignatureRequest = React.useCallback(() => {
-    if (!props.signatureRequest) return
+    // if (!props.signatureRequest) return
 
-    settings.ignoreSignatureRequest(props.signatureRequest.hash)
+    // settings.ignoreSignatureRequest(props.signatureRequest.hash)
     setDismissalConfirmationPending(false)
 
     if (onClose) {
       onClose()
     }
-  }, [onClose, props.signatureRequest, settings])
+  }, [onClose,/* props.signatureRequest, */ settings])
 
   const setFormValue = <Key extends keyof FormValues>(key: keyof FormValues, value: FormValues[Key]) => {
     setFormValues(prevValues => ({
@@ -147,7 +147,7 @@ function TxConfirmationForm(props: Props) {
           canSubmit={!props.disabled}
           showHash={props.showHash === undefined ? props.disabled : props.showHash}
           showSource={props.showSource}
-          signatureRequest={props.signatureRequest}
+          // signatureRequest={props.signatureRequest}
           testnet={props.account.testnet}
           transaction={props.transaction}
         />
@@ -169,12 +169,12 @@ function TxConfirmationForm(props: Props) {
         ) : null}
       </VerticalLayout>
       <Portal desktop="inline" target={props.actionsRef && props.actionsRef.element}>
-        <DialogActionsBox smallDialog={props.disabled && !props.signatureRequest}>
-          {props.signatureRequest ? (
+        <DialogActionsBox smallDialog={props.disabled /* && !props.signatureRequest */}>
+          {/* {props.signatureRequest ? (
             <ActionButton icon={DismissIcon} onClick={requestDismissalConfirmation}>
               {t("account.transaction-review.action.dismiss")}
             </ActionButton>
-          ) : null}
+          ) : null} */}
           {props.disabled ? null : (
             <ActionButton
               icon={ConfirmIcon}

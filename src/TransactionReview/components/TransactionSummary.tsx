@@ -11,7 +11,7 @@ import { SigningKeyCacheContext } from "~App/contexts/caches"
 import { useLiveAccountDataSet } from "~Generic/hooks/digitalbits-subscriptions"
 import { useDeferredState } from "~Generic/hooks/util"
 import { AccountData } from "~Generic/lib/account"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { getAllSources } from "~Generic/lib/digitalbits"
 import { isPotentiallyDangerousTransaction, isDigitalBitsWebAuthTransaction } from "~Generic/lib/transaction"
 import { SingleBalance } from "~Account/components/AccountBalances"
@@ -58,7 +58,7 @@ interface DefaultTransactionSummaryProps {
   showHash?: boolean
   showSigners?: boolean
   showSource?: boolean
-  signatureRequest?: MultisigTransactionResponse
+  // signatureRequest?: MultisigTransactionResponse
   testnet: boolean
   transaction: Transaction
 }
@@ -88,8 +88,8 @@ function DefaultTransactionSummary(props: DefaultTransactionSummaryProps) {
           : [...trusted, account.accountID],
       []
     )
-    return props.signatureRequest && isPotentiallyDangerousTransaction(props.transaction, trustedKeys)
-  }, [accounts, props.signatureRequest, props.transaction])
+    return /* props.signatureRequest && */ isPotentiallyDangerousTransaction(props.transaction, trustedKeys)
+  }, [accounts, props.transaction])
 
   const isAccountCreation = props.transaction.operations.some(op => op.type === "createAccount")
   const isAddingSigner = props.transaction.operations.some(
@@ -129,7 +129,7 @@ function DefaultTransactionSummary(props: DefaultTransactionSummaryProps) {
         <Signers
           accounts={accounts}
           accountData={props.accountData}
-          signatureRequest={props.signatureRequest}
+          // signatureRequest={props.signatureRequest}
           style={noHPaddingStyle}
           transaction={props.transaction}
         />
@@ -224,7 +224,7 @@ interface TransactionSummaryProps {
   canSubmit: boolean
   showHash?: boolean
   showSource?: boolean
-  signatureRequest?: MultisigTransactionResponse
+  // signatureRequest?: MultisigTransactionResponse
   testnet: boolean
   transaction: Transaction
 }
@@ -250,8 +250,8 @@ function TransactionSummary(props: TransactionSummaryProps) {
           : [...trusted, account.accountID],
       []
     )
-    return props.signatureRequest && isPotentiallyDangerousTransaction(props.transaction, trustedKeys)
-  }, [accounts, props.signatureRequest, props.transaction])
+    return /* props.signatureRequest && */ isPotentiallyDangerousTransaction(props.transaction, trustedKeys)
+  }, [accounts, props.transaction])
 
   const wideScreen = useMediaQuery("(min-width:900px)")
   const widthStyling = wideScreen ? { maxWidth: 700, minWidth: 320 } : { minWidth: "66vw" }

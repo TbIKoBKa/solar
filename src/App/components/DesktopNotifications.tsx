@@ -9,7 +9,7 @@ import { useLiveAccountEffects } from "~Generic/hooks/digitalbits-subscriptions"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { useSingleton } from "~Generic/hooks/util"
 import { useNetWorker } from "~Generic/hooks/workers"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { showNotification } from "~Platform/notifications"
 import { formatBalance } from "~Generic/lib/balances"
 import { OfferDetailsString } from "~TransactionReview/components/Operations"
@@ -103,35 +103,35 @@ function DesktopNotifications() {
     createEffectHandlers(router, netWorker, mainnetFrontierURLs, testnetFrontierURLs, t)
   )
 
-  const handleNewSignatureRequest = React.useCallback(
-    (signatureRequest: MultisigTransactionResponse) => {
-      const signersNotHavingSigned = signatureRequest.signers.filter(
-        signer => signatureRequest.signed_by.indexOf(signer) === -1
-      )
-      const accountPublicKeys = accounts.map(account => account.publicKey)
+  // const handleNewSignatureRequest = React.useCallback(
+  //   (signatureRequest: MultisigTransactionResponse) => {
+  //     const signersNotHavingSigned = signatureRequest.signers.filter(
+  //       signer => signatureRequest.signed_by.indexOf(signer) === -1
+  //     )
+  //     const accountPublicKeys = accounts.map(account => account.publicKey)
 
-      // only show notification when a local account has to co-sign
-      if (signersNotHavingSigned.some(signer => accountPublicKeys.includes(signer))) {
-        showNotification(
-          {
-            title: t("app.notification.desktop.new-signature-request.title"),
-            text: t(
-              "app.notification.desktop.new-signature-request.title",
-              `From ${signatureRequest.signed_by.join(", ")}`,
-              { signersHavingSigned: signatureRequest.signed_by.join(", ") }
-            )
-          },
-          () => router.history.push(routes.allAccounts())
-        )
-      }
-    },
-    [accounts, router.history, t]
-  )
+  //     // only show notification when a local account has to co-sign
+  //     if (signersNotHavingSigned.some(signer => accountPublicKeys.includes(signer))) {
+  //       showNotification(
+  //         {
+  //           title: t("app.notification.desktop.new-signature-request.title"),
+  //           text: t(
+  //             "app.notification.desktop.new-signature-request.title",
+  //             `From ${signatureRequest.signed_by.join(", ")}`,
+  //             { signersHavingSigned: signatureRequest.signed_by.join(", ") }
+  //           )
+  //         },
+  //         () => router.history.push(routes.allAccounts())
+  //       )
+  //     }
+  //   },
+  //   [accounts, router.history, t]
+  // )
 
-  React.useEffect(() => {
-    const unsubscribeFromNewSignatureRequests = subscribeToNewSignatureRequests(handleNewSignatureRequest)
-    return unsubscribeFromNewSignatureRequests
-  }, [handleNewSignatureRequest, subscribeToNewSignatureRequests])
+  // React.useEffect(() => {
+  //   const unsubscribeFromNewSignatureRequests = subscribeToNewSignatureRequests(handleNewSignatureRequest)
+  //   return unsubscribeFromNewSignatureRequests
+  // }, [handleNewSignatureRequest, subscribeToNewSignatureRequests])
 
   useLiveAccountEffects(accounts, (account: Account, effect: ServerApi.EffectRecord) => {
     if (isTradeEffect(effect)) {

@@ -7,7 +7,7 @@ storiesOf("SubmissionProgress", module)
     <SubmissionProgress type={SubmissionType.default} promise={new Promise(resolve => undefined)} />
   ))
   .add("success", () => <SubmissionProgress type={SubmissionType.default} promise={Promise.resolve()} />)
-  .add("success-multi-sig", () => <SubmissionProgress type={SubmissionType.multisig} promise={Promise.resolve()} />)
+  // .add("success-multi-sig", () => <SubmissionProgress type={SubmissionType.multisig} promise={Promise.resolve()} />)
   .add("success-stellarguard", () => (
     <SubmissionProgress type={SubmissionType.thirdParty} promise={Promise.resolve()} />
   ))

@@ -25,13 +25,13 @@ interface ContextType {
   ignoredSignatureRequests: string[]
   initialized: boolean
   language: string | undefined
-  multiSignature: boolean
-  multiSignatureCoordinator: string
+  // multiSignature: boolean
+  // multiSignatureCoordinator: string
   setLanguage: (language: string | undefined) => void
   setSetting: (key: keyof Platform.SettingsData, value: any) => void
   showTestnet: boolean
   toggleBiometricLock: () => void
-  toggleMultiSignature: () => void
+  // toggleMultiSignature: () => void
   toggleTestnet: () => void
   toggleHideMemos: () => void
   trustedServices: TrustedService[]
@@ -47,14 +47,14 @@ const initialSettings: SettingsState = {
   biometricLock: false,
   hideMemos: false,
   initialized: false,
-  multisignature: false,
+  // multisignature: false,
   testnet: false,
   trustedServices: []
 }
 
 const initialIgnoredSignatureRequests: string[] = []
 
-const multiSignatureCoordinator = process.env.MULTISIG_SERVICE || "v1.multisig.satoshipay.io"
+// const multiSignatureCoordinator = process.env.MULTISIG_SERVICE || "v1.multisig.satoshipay.io"
 
 const SettingsContext = React.createContext<ContextType>({
   agreedToTermsAt: initialSettings.agreedToTermsAt,
@@ -66,13 +66,13 @@ const SettingsContext = React.createContext<ContextType>({
   ignoredSignatureRequests: initialIgnoredSignatureRequests,
   initialized: false,
   language: undefined,
-  multiSignature: initialSettings.multisignature,
-  multiSignatureCoordinator,
+  // multiSignature: initialSettings.multisignature,
+  // multiSignatureCoordinator,
   setLanguage: () => undefined,
   setSetting: () => undefined,
   showTestnet: initialSettings.testnet,
   toggleBiometricLock: () => undefined,
-  toggleMultiSignature: () => undefined,
+  // toggleMultiSignature: () => undefined,
   toggleTestnet: () => undefined,
   toggleHideMemos: () => undefined,
   trustedServices: initialSettings.trustedServices,
@@ -130,7 +130,7 @@ export function SettingsProvider(props: Props) {
   }
 
   const confirmToC = () => updateSettings({ agreedToTermsAt: new Date().toISOString() })
-  const toggleMultiSignature = () => updateSettings({ multisignature: !settings.multisignature })
+  // const toggleMultiSignature = () => updateSettings({ multisignature: !settings.multisignature })
   const toggleTestnet = () => updateSettings({ testnet: !settings.testnet })
   const toggleHideMemos = () => updateSettings({ hideMemos: !settings.hideMemos })
 
@@ -169,13 +169,13 @@ export function SettingsProvider(props: Props) {
     ignoredSignatureRequests,
     initialized: settings.initialized,
     language: localStorage.getItem("i18nextLng") || undefined,
-    multiSignature: settings.multisignature,
-    multiSignatureCoordinator,
+    // multiSignature: settings.multisignature,
+    // multiSignatureCoordinator,
     setLanguage,
     setSetting,
     showTestnet: settings.testnet,
     toggleBiometricLock,
-    toggleMultiSignature,
+    // toggleMultiSignature,
     toggleTestnet,
     toggleHideMemos,
     trustedServices: settings.trustedServices,

@@ -3,7 +3,7 @@ import { Observable, Subject } from "observable-fns"
 export const enum ServiceID {
   FrontierPublic = "FrontierPublic",
   FrontierTestnet = "FrontierTestnet",
-  MultiSignature = "MultiSignature"
+  // MultiSignature = "MultiSignature"
 }
 
 export interface ConnectionErrorDescription {

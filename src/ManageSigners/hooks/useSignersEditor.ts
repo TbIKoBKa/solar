@@ -47,15 +47,15 @@ function createTxOperations(
     )
   ]
 
-  if (!accountData.data_attr["config.multisig.coordinator"]) {
-    operations.push(
-      Operation.manageData({
-        name: "config.multisig.coordinator",
-        value: settings.multiSignatureCoordinator,
-        withMuxing: true
-      })
-    )
-  }
+  // if (!accountData.data_attr["config.multisig.coordinator"]) {
+  //   operations.push(
+  //     Operation.manageData({
+  //       name: "config.multisig.coordinator",
+  //       value: settings.multiSignatureCoordinator,
+  //       withMuxing: true
+  //     })
+  //   )
+  // }
 
   if (
     update.weightThreshold !== accountData.thresholds.low_threshold &&

@@ -17,7 +17,7 @@ import InlineLoader from "~Generic/components/InlineLoader"
 import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { useRouter } from "~Generic/hooks/userinterface"
 import { containsThirdPartySigner } from "~Generic/lib/third-party-security"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { Box, HorizontalLayout, VerticalLayout } from "~Layout/components/Box"
 import * as routes from "../routes"
 
@@ -91,7 +91,7 @@ function Badges(props: { account: Account }) {
 
 interface AccountCardProps {
   account: Account
-  pendingSignatureRequests: MultisigTransactionResponse[]
+  // pendingSignatureRequests: MultisigTransactionResponse[]
   style?: React.CSSProperties
 }
 
@@ -99,12 +99,12 @@ function AccountCard(props: AccountCardProps) {
   const router = useRouter()
 
   const onClick = () => router.history.push(routes.account(props.account.id))
-  const pendingSignatureRequests = props.pendingSignatureRequests.filter(
-    req =>
-      req.signers.some(signer => signer === props.account.publicKey) &&
-      !req.signed_by.find(signer => signer === props.account.publicKey)
-  )
-  const badgeContent = pendingSignatureRequests.length > 0 ? pendingSignatureRequests.length : null
+  // const pendingSignatureRequests = props.pendingSignatureRequests.filter(
+  //   req =>
+  //     req.signers.some(signer => signer === props.account.publicKey) &&
+  //     !req.signed_by.find(signer => signer === props.account.publicKey)
+  // )
+  const badgeContent = /* pendingSignatureRequests.length > 0 ? pendingSignatureRequests.length : */ null
 
   return (
     <StyledCard elevation={5} onClick={onClick} style={{ background: "#f0f2f6", color: "black" }}>
@@ -164,13 +164,13 @@ interface AccountListProps {
 
 function AccountList(props: AccountListProps) {
   const accounts = props.accounts.filter(account => account.testnet === props.testnet)
-  const { pendingSignatureRequests } = React.useContext(SignatureDelegationContext)
+  // const { pendingSignatureRequests } = React.useContext(SignatureDelegationContext)
 
   return (
     <CardList addInvisibleCard={accounts.length % 2 === 0}>
       <AddAccountCard onClick={props.testnet ? props.onCreateTestnetAccount : props.onCreatePubnetAccount} />
       {accounts.map(account => (
-        <AccountCard key={account.id} account={account} pendingSignatureRequests={pendingSignatureRequests} />
+        <AccountCard key={account.id} account={account} /* pendingSignatureRequests={pendingSignatureRequests} */ />
       ))}
     </CardList>
   )

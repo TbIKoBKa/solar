@@ -7,52 +7,52 @@ import { matchesRoute } from "~Generic/lib/routes"
 import * as routes from "~App/routes"
 import { Account } from "~App/contexts/accounts"
 import { InlineErrorBoundary } from "~Generic/components/ErrorBoundaries"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { List } from "~Layout/components/List"
 import { TransactionListItem } from "./TransactionList"
 import TransactionSender from "~Transaction/components/TransactionSender"
 
 interface SignatureRequestListItemProps {
   icon?: React.ReactElement<any>
-  onOpenTransaction?: (tx: Transaction, signatureRequest: MultisigTransactionResponse) => void
-  signatureRequest: MultisigTransactionResponse
+  onOpenTransaction?: (tx: Transaction, /* signatureRequest: MultisigTransactionResponse */) => void
+  // signatureRequest: MultisigTransactionResponse
   style?: React.CSSProperties
   testnet: boolean
 }
 
-function SignatureRequestListItem(props: SignatureRequestListItemProps) {
-  const { onOpenTransaction, signatureRequest } = props
+// function SignatureRequestListItem(props: SignatureRequestListItemProps) {
+//   const { onOpenTransaction, signatureRequest } = props
 
-  const tx = React.useMemo(() => new TransactionStellarUri(signatureRequest.req).getTransaction(), [
-    signatureRequest.req
-  ])
+//   const tx = React.useMemo(() => new TransactionStellarUri(signatureRequest.req).getTransaction(), [
+//     signatureRequest.req
+//   ])
 
-  const envelopeXdr = React.useMemo(() => tx.toEnvelope().toXDR("base64"), [tx])
+//   const envelopeXdr = React.useMemo(() => tx.toEnvelope().toXDR("base64"), [tx])
 
-  const openTransaction = React.useCallback(
-    onOpenTransaction ? () => onOpenTransaction(tx, signatureRequest) : () => undefined,
-    [onOpenTransaction, signatureRequest, tx]
-  )
+//   const openTransaction = React.useCallback(
+//     onOpenTransaction ? () => onOpenTransaction(tx /*, signatureRequest */) : () => undefined,
+//     [onOpenTransaction, signatureRequest, tx]
+//   )
 
-  return (
-    <TransactionListItem
-      alwaysShowSource
-      accountPublicKey={tx.source}
-      createdAt={signatureRequest.created_at}
-      icon={props.icon}
-      onOpenTransaction={openTransaction}
-      style={props.style}
-      testnet={props.testnet}
-      transactionEnvelopeXdr={envelopeXdr}
-    />
-  )
-}
+//   return (
+//     <TransactionListItem
+//       alwaysShowSource
+//       accountPublicKey={tx.source}
+//       createdAt={signatureRequest.created_at}
+//       icon={props.icon}
+//       onOpenTransaction={openTransaction}
+//       style={props.style}
+//       testnet={props.testnet}
+//       transactionEnvelopeXdr={envelopeXdr}
+//     />
+//   )
+// }
 
 interface SignatureRequestListProps {
   account: Account
   icon?: React.ReactElement<any>
-  sendTransaction: (transaction: Transaction, signatureRequest: MultisigTransactionResponse) => void
-  signatureRequests: MultisigTransactionResponse[]
+  sendTransaction: (transaction: Transaction, /* signatureRequest: MultisigTransactionResponse */) => void
+  // signatureRequests: MultisigTransactionResponse[]
   title: React.ReactNode
 }
 
@@ -65,12 +65,12 @@ export const SignatureRequestList = React.memo(function SignatureRequestList(pro
     const handleNavigation = (pathname: string) => {
       if (matchesRoute(pathname, routes.showTransaction("*", "*"))) {
         const [, , , hash] = pathname.replace(/^\//, "").split("/")
-        const signatureRequest = props.signatureRequests.find(sr => sr.hash === hash)
+        // const signatureRequest = props.signatureRequests.find(sr => sr.hash === hash)
 
-        if (signatureRequest) {
-          const digitalbitsUri = new TransactionStellarUri(signatureRequest.req)
-          sendTransaction(digitalbitsUri.getTransaction(), signatureRequest)
-        }
+        // if (signatureRequest) {
+        //   const digitalbitsUri = new TransactionStellarUri(signatureRequest.req)
+        //   sendTransaction(digitalbitsUri.getTransaction(), signatureRequest)
+        // }
       }
     }
 
@@ -80,22 +80,22 @@ export const SignatureRequestList = React.memo(function SignatureRequestList(pro
       handleNavigation(location.pathname)
     })
     return unsubscribe
-  }, [router.history, router.location.pathname, sendTransaction, props.signatureRequests])
+  }, [router.history, router.location.pathname, sendTransaction, /* props.signatureRequests */])
 
-  const openSignatureRequest = (tx: Transaction, signatureRequest: MultisigTransactionResponse) => {
-    router.history.push(routes.showTransaction(props.account.id, signatureRequest.hash))
-  }
+  // const openSignatureRequest = (tx: Transaction, signatureRequest: MultisigTransactionResponse) => {
+  //   router.history.push(routes.showTransaction(props.account.id, signatureRequest.hash))
+  // }
 
-  if (props.signatureRequests.length === 0) {
-    return null
-  }
+  // if (props.signatureRequests.length === 0) {
+  //   return null
+  // }
   return (
     <>
       <List style={{ background: "transparent" }}>
         <ListSubheader disableSticky style={{ background: "transparent" }}>
           {props.title}
         </ListSubheader>
-        {props.signatureRequests.map(signatureRequest => (
+        {/* {props.signatureRequests.map(signatureRequest => (
           <InlineErrorBoundary height={72} key={signatureRequest.hash}>
             <SignatureRequestListItem
               icon={props.icon}
@@ -107,7 +107,7 @@ export const SignatureRequestList = React.memo(function SignatureRequestList(pro
               testnet={props.account.testnet}
             />
           </InlineErrorBoundary>
-        ))}
+        ))} */}
       </List>
     </>
   )
@@ -117,7 +117,7 @@ export const InteractiveSignatureRequestList = React.memo(
   (props: {
     account: Account
     icon?: React.ReactElement<any>
-    signatureRequests: MultisigTransactionResponse[]
+    // signatureRequests: MultisigTransactionResponse[]
     title: React.ReactNode
   }) => {
     const router = useRouter()
@@ -134,7 +134,7 @@ export const InteractiveSignatureRequestList = React.memo(
             account={props.account}
             icon={props.icon}
             sendTransaction={sendTransaction}
-            signatureRequests={props.signatureRequests}
+            // signatureRequests={props.signatureRequests}
             title={props.title}
           />
         )}

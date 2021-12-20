@@ -5,7 +5,7 @@ import Dialog from "@material-ui/core/Dialog"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import { Operation, Transaction } from "xdb-digitalbits-sdk"
 import { Account } from "~App/contexts/accounts"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { isDigitalBitsWebAuthTransaction } from "~Generic/lib/transaction"
 import { useDialogActions, useIsMobile } from "~Generic/hooks/userinterface"
 import { FullscreenDialogTransition, CompactDialogTransition } from "~App/theme"
@@ -55,7 +55,7 @@ interface TransactionReviewDialogBodyProps {
   showHash?: boolean
   showSource?: boolean
   showSubmissionProgress: boolean
-  signatureRequest?: MultisigTransactionResponse
+  // signatureRequest?: MultisigTransactionResponse
   submissionProgress?: React.ReactNode
   transaction: Transaction | null
   onClose: () => void
@@ -95,7 +95,7 @@ export function TransactionReviewDialogBody(props: TransactionReviewDialogBodyPr
             passwordError={props.passwordError}
             showHash={props.showHash}
             showSource={props.showSource}
-            signatureRequest={props.signatureRequest}
+            // signatureRequest={props.signatureRequest}
             transaction={props.transaction}
           />
         </Box>
@@ -113,7 +113,7 @@ interface Props {
   showHash?: boolean
   showSource?: boolean
   showSubmissionProgress: boolean
-  signatureRequest?: MultisigTransactionResponse
+  // signatureRequest?: MultisigTransactionResponse
   submissionProgress?: React.ReactNode
   transaction: Transaction | null
   onClose: () => void

@@ -22,48 +22,48 @@ import OfferList from "./OfferList"
 import { InteractiveSignatureRequestList } from "./SignatureRequestList"
 import TransactionList from "./TransactionList"
 
-function PendingMultisigTransactions(props: { account: Account }) {
-  const { pendingSignatureRequests } = React.useContext(SignatureDelegationContext)
-  const { t } = useTranslation()
+// function PendingMultisigTransactions(props: { account: Account }) {
+//   const { pendingSignatureRequests } = React.useContext(SignatureDelegationContext)
+//   const { t } = useTranslation()
 
-  const cosignIcon = React.useMemo(() => <DoneAllIcon />, [])
-  const waitingIcon = React.useMemo(() => <UpdateIcon style={{ opacity: 0.5 }} />, [])
+//   const cosignIcon = React.useMemo(() => <DoneAllIcon />, [])
+//   const waitingIcon = React.useMemo(() => <UpdateIcon style={{ opacity: 0.5 }} />, [])
 
-  const pendingRequestsToCosign = React.useMemo(() => {
-    return pendingSignatureRequests.filter(
-      request =>
-        request.status !== "submitted" &&
-        request.signers.some(signer => signer === props.account.publicKey) &&
-        request.signed_by.indexOf(props.account.publicKey) === -1
-    )
-  }, [props.account, pendingSignatureRequests])
+//   const pendingRequestsToCosign = React.useMemo(() => {
+//     return pendingSignatureRequests.filter(
+//       request =>
+//         request.status !== "submitted" &&
+//         request.signers.some(signer => signer === props.account.publicKey) &&
+//         request.signed_by.indexOf(props.account.publicKey) === -1
+//     )
+//   }, [props.account, pendingSignatureRequests])
 
-  const pendingRequestsWaitingForOthers = React.useMemo(() => {
-    return pendingSignatureRequests.filter(
-      request =>
-        request.status !== "submitted" &&
-        request.signers.some(signer => signer === props.account.publicKey) &&
-        request.signed_by.indexOf(props.account.publicKey) > -1
-    )
-  }, [props.account, pendingSignatureRequests])
+//   const pendingRequestsWaitingForOthers = React.useMemo(() => {
+//     return pendingSignatureRequests.filter(
+//       request =>
+//         request.status !== "submitted" &&
+//         request.signers.some(signer => signer === props.account.publicKey) &&
+//         request.signed_by.indexOf(props.account.publicKey) > -1
+//     )
+//   }, [props.account, pendingSignatureRequests])
 
-  return (
-    <>
-      <InteractiveSignatureRequestList
-        account={props.account}
-        icon={cosignIcon}
-        signatureRequests={pendingRequestsToCosign}
-        title={t("account.transactions.signature-request-list.title.requests-to-cosign")}
-      />
-      <InteractiveSignatureRequestList
-        account={props.account}
-        icon={waitingIcon}
-        signatureRequests={pendingRequestsWaitingForOthers}
-        title={t("account.transactions.signature-request-list.title.requests-waiting-for-others")}
-      />
-    </>
-  )
-}
+//   return (
+//     <>
+//       <InteractiveSignatureRequestList
+//         account={props.account}
+//         icon={cosignIcon}
+//         signatureRequests={pendingRequestsToCosign}
+//         title={t("account.transactions.signature-request-list.title.requests-to-cosign")}
+//       />
+//       <InteractiveSignatureRequestList
+//         account={props.account}
+//         icon={waitingIcon}
+//         signatureRequests={pendingRequestsWaitingForOthers}
+//         title={t("account.transactions.signature-request-list.title.requests-waiting-for-others")}
+//       />
+//     </>
+//   )
+// }
 
 function AccountTransactions(props: { account: Account }) {
   const { account } = props
@@ -91,7 +91,7 @@ function AccountTransactions(props: { account: Account }) {
     <>
       {accountData.balances.length > 0 ? (
         <>
-          {settings.multiSignature ? <PendingMultisigTransactions account={account} /> : null}
+          {/* {settings.multiSignature ? <PendingMultisigTransactions account={account} /> : null} */}
           <OfferList account={account} title={t("account.transactions.offer-list.title")} />
           <TransactionList
             account={account}

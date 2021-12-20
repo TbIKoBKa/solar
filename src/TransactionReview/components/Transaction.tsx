@@ -7,7 +7,7 @@ import UpdateIcon from "@material-ui/icons/Update"
 import { Account } from "~App/contexts/accounts"
 import { useIsMobile } from "~Generic/hooks/userinterface"
 import { AccountData } from "~Generic/lib/account"
-import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
+// import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
 import { hasSigned } from "~Generic/lib/transaction"
 import { Address } from "~Generic/components/PublicKey"
 import MemoMessage from "~Transaction/components/MemoMessage"
@@ -57,7 +57,7 @@ const Signer = React.memo(function Signer(props: {
 export function Signers(props: {
   accounts: Account[]
   accountData: AccountData
-  signatureRequest?: MultisigTransactionResponse
+  // signatureRequest?: MultisigTransactionResponse
   transaction: Transaction
   style?: React.CSSProperties
 }) {
@@ -91,7 +91,7 @@ export function Signers(props: {
         }}
         value={props.accountData.signers.map((signer, index) => (
           <Signer
-            hasSigned={hasSigned(props.transaction, signer.key, props.signatureRequest)}
+            hasSigned={hasSigned(props.transaction, signer.key, /* props.signatureRequest */)}
             key={index}
             signer={signer}
             transaction={props.transaction}

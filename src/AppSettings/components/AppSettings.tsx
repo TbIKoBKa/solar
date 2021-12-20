@@ -72,7 +72,7 @@ function AppSettings() {
           value={settings.showTestnet || hasTestnetAccount}
         />
         <HideMemoSetting onToggle={settings.toggleHideMemos} value={settings.hideMemos} />
-        <MultiSigSetting onToggle={settings.toggleMultiSignature} value={settings.multiSignature} />
+        {/* <MultiSigSetting onToggle={settings.toggleMultiSignature} value={settings.multiSignature} /> */}
         {trustedServicesEnabled ? <TrustedServicesSetting onClick={navigateToTrustedServices} /> : undefined}
       </List>
       <SettingsDialogs />

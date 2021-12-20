@@ -8,7 +8,7 @@ declare namespace Platform {
     agreedToTermsAt?: string
     biometricLock: boolean
     hideMemos: boolean
-    multisignature: boolean
+    // multisignature: boolean
     testnet: boolean
     trustedServices: TrustedService[]
   }

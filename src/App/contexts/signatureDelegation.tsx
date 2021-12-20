@@ -1,5 +1,5 @@
 import React from "react"
-import { resolveMultiSignatureCoordinator } from "~Generic/lib/multisig-discovery"
+// import { resolveMultiSignatureCoordinator } from "~Generic/lib/multisig-discovery"
 import { MultisigTransactionResponse, MultisigTransactionStatus } from "~Generic/lib/multisig-service"
 import { workers } from "~Workers/worker-controller"
 import { Account, AccountsContext } from "./accounts"
@@ -22,7 +22,7 @@ const SignatureDelegationContext = React.createContext<ContextValue>({
   subscribeToNewSignatureRequests: () => () => undefined
 })
 
-function useSignatureRequestSubscription(multiSignatureCoordinator: string, accounts: Account[]) {
+function useSignatureRequestSubscription(/* multiSignatureCoordinator: string, */ accounts: Account[]) {
   const accountPubKeys = React.useMemo(() => accounts.map(account => account.publicKey), [accounts])
 
   const { ignoredSignatureRequests } = React.useContext(SettingsContext)
@@ -41,46 +41,46 @@ function useSignatureRequestSubscription(multiSignatureCoordinator: string, acco
     }
 
     const setup = async () => {
-      const { netWorker } = await workers
-      const multiSignatureServiceURL = await resolveMultiSignatureCoordinator(multiSignatureCoordinator)
+      // const { netWorker } = await workers
+      // const multiSignatureServiceURL = await resolveMultiSignatureCoordinator(multiSignatureCoordinator)
 
-      netWorker
-        .fetchTransactions(multiSignatureServiceURL, accountPubKeys)
-        .then(requests => setPendingTransactions(requests.reverse()))
-        .catch(trackError)
+      // netWorker
+      //   .fetchTransactions(multiSignatureServiceURL, accountPubKeys)
+      //   .then(requests => setPendingTransactions(requests.reverse()))
+      //   .catch(trackError)
 
-      if (cancelled) {
-        return
-      }
+      // if (cancelled) {
+      //   return
+      // }
 
-      const signatureRequests = netWorker.subscribeToTransactions(multiSignatureServiceURL, accountPubKeys)
+      // const signatureRequests = netWorker.subscribeToTransactions(multiSignatureServiceURL, accountPubKeys)
 
-      const subscription = signatureRequests.subscribe(event => {
-        if (event.type === "transaction:added") {
-          setPendingTransactions(prevPending => [event.transaction, ...prevPending])
-          subscribersRef.current.newRequestSubscribers.forEach(subscriber => subscriber(event.transaction))
-        }
-        if (event.type === "transaction:updated" && event.transaction.status === MultisigTransactionStatus.submitted) {
-          setPendingTransactions(prevPending => {
-            // Hacky: Also mutate existing multisig tx to make double sure everyone gets the update
-            const prev = prevPending.find(request => request.hash !== event.transaction.hash)
-            if (prev) {
-              Object.assign(prev, event.transaction)
-            }
+      // const subscription = signatureRequests.subscribe(event => {
+      //   if (event.type === "transaction:added") {
+      //     setPendingTransactions(prevPending => [event.transaction, ...prevPending])
+      //     subscribersRef.current.newRequestSubscribers.forEach(subscriber => subscriber(event.transaction))
+      //   }
+      //   if (event.type === "transaction:updated" && event.transaction.status === MultisigTransactionStatus.submitted) {
+      //     setPendingTransactions(prevPending => {
+      //       // Hacky: Also mutate existing multisig tx to make double sure everyone gets the update
+      //       const prev = prevPending.find(request => request.hash !== event.transaction.hash)
+      //       if (prev) {
+      //         Object.assign(prev, event.transaction)
+      //       }
 
-            return prevPending.map(request => (request.hash === event.transaction.hash ? event.transaction : request))
-          })
-        }
-      })
+      //       return prevPending.map(request => (request.hash === event.transaction.hash ? event.transaction : request))
+      //     })
+      //   }
+      // })
 
-      unsubscribe = () => subscription.unsubscribe()
+      // unsubscribe = () => subscription.unsubscribe()
     }
 
     setup().catch(trackError)
 
     // Do not shorten to `return unsubscribe`, as we always want to call the current `unsubscribe`
     return () => unsubscribe()
-  }, [accountPubKeys, accounts.length, multiSignatureCoordinator])
+  }, [accountPubKeys, accounts.length])
 
   const subscribeToNewSignatureRequests = (callback: SignatureRequestCallback) => {
     subscribersRef.current.newRequestSubscribers.push(callback)
@@ -110,7 +110,7 @@ interface Props {
 function SignatureDelegationProvider(props: Props) {
   const { accounts } = React.useContext(AccountsContext)
   const settings = React.useContext(SettingsContext)
-  const contextValue: ContextValue = useSignatureRequestSubscription(settings.multiSignatureCoordinator, accounts)
+  const contextValue: ContextValue = useSignatureRequestSubscription(/* settings.multiSignatureCoordinator, */accounts)
 
   return (
     <SignatureDelegationContext.Provider value={contextValue}>{props.children}</SignatureDelegationContext.Provider>
@@ -118,17 +118,22 @@ function SignatureDelegationProvider(props: Props) {
 }
 
 function FeatureFlaggedProvider(props: Props) {
-  const settings = React.useContext(SettingsContext)
+  // const settings = React.useContext(SettingsContext)
 
-  if (settings.multiSignature) {
-    return <SignatureDelegationProvider {...props} />
-  } else {
-    const value = {
-      pendingSignatureRequests: [],
-      subscribeToNewSignatureRequests: () => () => undefined
-    }
-    return <SignatureDelegationContext.Provider value={value}>{props.children}</SignatureDelegationContext.Provider>
+  // if (settings.multiSignature) {
+  //   return <SignatureDelegationProvider {...props} />
+  // } else {
+  //   const value = {
+  //     pendingSignatureRequests: [],
+  //     subscribeToNewSignatureRequests: () => () => undefined
+  //   }
+  //   return <SignatureDelegationContext.Provider value={value}>{props.children}</SignatureDelegationContext.Provider>
+  // }
+  const value = {
+    pendingSignatureRequests: [],
+    subscribeToNewSignatureRequests: () => () => undefined
   }
+  return <SignatureDelegationContext.Provider value={value}>{props.children}</SignatureDelegationContext.Provider>
 }
 
 export {

@@ -53,7 +53,7 @@ export type DigitalBitsTomlCurrency = Partial<{
 export type DigitalBitsToml = Partial<{
   CURRENCIES: DigitalBitsTomlCurrency[]
   DOCUMENTATION: DigitalBitsTomlIssuer
-  MULTISIG_ENDPOINT: string
+  // MULTISIG_ENDPOINT: string
   PRINCIPALS: DigitalBitsTomlPrincipal[]
   SIGNING_KEY?: string
   TRANSFER_SERVER?: string

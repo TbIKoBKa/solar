@@ -33,13 +33,13 @@ function Heading(props: { children: React.ReactNode }) {
 
 export enum SubmissionType {
   default,
-  multisig,
+  // multisig,
   thirdParty
 }
 
 const successMessages: { [type: number]: string } = {
   [SubmissionType.default]: "generic.submission-progress.success.default",
-  [SubmissionType.multisig]: "generic.submission-progress.success.multisig",
+  // [SubmissionType.multisig]: "generic.submission-progress.success.multisig",
   [SubmissionType.thirdParty]: "generic.submission-progress.success.third-party"
 }
 

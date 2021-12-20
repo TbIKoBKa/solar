@@ -55,7 +55,7 @@ function TestnetBadge(props: { style?: React.CSSProperties }) {
 }
 
 interface StaticBadgesProps {
-  multisig: "generic" | ThirdPartySecurityService | undefined
+  // multisig: "generic" | ThirdPartySecurityService | undefined
   password: boolean
   testnet: boolean
 }
@@ -65,7 +65,7 @@ export const StaticBadges = React.memo(function StaticBadges(props: StaticBadges
   return (
     <HorizontalLayout display="inline-flex" alignItems="center" width="auto" fontSize="1.5rem">
       {props.testnet ? <TestnetBadge style={{ marginRight: 16 }} /> : null}
-      {(() => {
+      {/* {(() => {
         if (props.multisig === "generic") {
           return (
             <Tooltip title={t("account.title.tooltip.multi-sig-account")}>
@@ -85,7 +85,7 @@ export const StaticBadges = React.memo(function StaticBadges(props: StaticBadges
         } else {
           return null
         }
-      })()}
+      })()} */}
       <PasswordStatus safe={props.password} style={{ fontSize: "90%", marginTop: "-0.05em" }} />
     </HorizontalLayout>
   )
@@ -99,9 +99,9 @@ export const Badges = React.memo(function Badges(props: BadgesProps) {
   const accountData = useLiveAccountData(props.account.accountID, props.account.testnet)
 
   const securityService = containsThirdPartySigner(accountData.signers)
-  const multisig = accountData.signers.length > 1 ? (securityService ? securityService : "generic") : undefined
+  // const multisig = accountData.signers.length > 1 ? (securityService ? securityService : "generic") : undefined
 
-  return <StaticBadges multisig={multisig} password={props.account.requiresPassword} testnet={props.account.testnet} />
+  return <StaticBadges /* multisig={multisig} */ password={props.account.requiresPassword} testnet={props.account.testnet} />
 })
 
 const useTitleTextfieldStyles = makeStyles({
