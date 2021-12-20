@@ -7,6 +7,8 @@ import { useLiveAccountData } from "~Generic/hooks/digitalbits-subscriptions"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import QRCodeIcon from "~Icons/components/QRCode"
 
+const platform = process.env.PLATFORM || require("os").platform()
+
 export const useButtonStyles = makeStyles(theme => ({
   desktop: {
     margin: "0",
@@ -16,7 +18,9 @@ export const useButtonStyles = makeStyles(theme => ({
       marginLeft: 40
     }
   },
-  mobile: {},
+  mobile: {
+    marginBottom: platform === "android" ? "50px" : "0"
+  },
   hidden: {
     paddingTop: 0
   },

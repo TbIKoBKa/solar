@@ -1,15 +1,15 @@
 import BigNumber from "big.js"
 import React from "react"
-import { useTranslation } from "react-i18next"
+// import { useTranslation } from "react-i18next"
 import { Asset, Frontier, ServerApi } from "xdb-digitalbits-sdk"
 import Dialog from "@material-ui/core/Dialog"
 import Divider from "@material-ui/core/Divider"
 import List from "@material-ui/core/List"
-import AddIcon from "@material-ui/icons/Add"
+// import AddIcon from "@material-ui/icons/Add"
 import { Account } from "~App/contexts/accounts"
 import * as routes from "~App/routes"
 import { FullscreenDialogTransition } from "~App/theme"
-import ButtonListItem from "~Generic/components/ButtonListItem"
+// import ButtonListItem from "~Generic/components/ButtonListItem"
 import MainTitle from "~Generic/components/MainTitle"
 import ViewLoading from "~Generic/components/ViewLoading"
 import { useLiveAccountData, useLiveAccountOffers } from "~Generic/hooks/digitalbits-subscriptions"
@@ -133,12 +133,12 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
   )
   const isSmallScreen = useIsMobile()
   const router = useRouter()
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
-  const openAddAssetDialog = React.useCallback(
-    () => router.history.push(routes.manageAccountAssets(props.account.id)),
-    [props.account.id, router.history]
-  )
+  // const openAddAssetDialog = React.useCallback(
+  //   () => router.history.push(routes.manageAccountAssets(props.account.id)),
+  //   [props.account.id, router.history]
+  // )
   const closeAddAssetDialog = React.useCallback(() => router.history.push(routes.balanceDetails(props.account.id)), [
     props.account.id,
     router.history
@@ -169,7 +169,7 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
   return (
     <DialogBody excessWidth={12} top={<MainTitle onBack={props.onClose} title={props.account.name} />}>
       <List style={{ paddingLeft: hpadding, paddingRight: hpadding, margin: "0 -8px" }}>
-        <ButtonListItem
+        {/* <ButtonListItem
           gutterBottom
           onClick={openAddAssetDialog}
           style={{
@@ -180,7 +180,7 @@ function BalanceDetailsDialog(props: BalanceDetailsProps) {
         >
           <AddIcon />
           &nbsp;&nbsp;{t("account.balance-details.button.add-asset.label")}
-        </ButtonListItem>
+        </ButtonListItem> */}
         <TrustedAssets
           account={props.account}
           accountData={accountData}
