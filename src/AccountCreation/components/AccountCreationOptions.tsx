@@ -1,7 +1,7 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Divider from "@material-ui/core/Divider"
-import GroupIcon from "@material-ui/icons/Group"
+// import Divider from "@material-ui/core/Divider"
+// import GroupIcon from "@material-ui/icons/Group"
 import RestoreIcon from "@material-ui/icons/SettingsBackupRestore"
 import WalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import { Account } from "~App/contexts/accounts"
@@ -36,10 +36,10 @@ const InitialSelection = React.memo(
       router.history.push(routes.importAccount(props.testnet))
     }, [onUpdateAccountCreation, props.testnet, router.history])
 
-    const joinSharedAccount = React.useCallback(() => {
-      onUpdateAccountCreation({ cosigner: true, import: false })
-      router.history.push(routes.joinSharedAccount(props.testnet))
-    }, [onUpdateAccountCreation, props.testnet, router.history])
+    // const joinSharedAccount = React.useCallback(() => {
+    //   onUpdateAccountCreation({ cosigner: true, import: false })
+    //   router.history.push(routes.joinSharedAccount(props.testnet))
+    // }, [onUpdateAccountCreation, props.testnet, router.history])
 
     return (
       <VerticalLayout ref={ref} alignItems="center" margin="48px 0 24px" padding="0 8px">
@@ -61,7 +61,7 @@ const InitialSelection = React.memo(
             onClick={importAccount}
             Icon={RestoreIcon}
           />
-          <Divider style={{ marginBottom: 16 }} />
+          {/* <Divider style={{ marginBottom: 16 }} />
           <MainSelectionButton
             dense
             label={t("create-account.action-selection.join-shared.label")}
@@ -69,7 +69,7 @@ const InitialSelection = React.memo(
             gutterBottom
             onClick={joinSharedAccount}
             Icon={GroupIcon}
-          />
+          /> */}
         </VerticalLayout>
       </VerticalLayout>
     )
