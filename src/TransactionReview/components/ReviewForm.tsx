@@ -5,13 +5,13 @@ import { useTranslation } from "react-i18next"
 import { Transaction } from "xdb-digitalbits-sdk"
 import CheckIcon from "@material-ui/icons/Check"
 import CloseIcon from "@material-ui/icons/Close"
-import OpenInNewIcon from "@material-ui/icons/OpenInNew"
+// import OpenInNewIcon from "@material-ui/icons/OpenInNew"
 import { Account } from "~App/contexts/accounts"
 import { SettingsContext } from "~App/contexts/settings"
 import { RefStateObject } from "~Generic/hooks/userinterface"
 import { renderFormFieldError } from "~Generic/lib/errors"
 import { MultisigTransactionResponse } from "~Generic/lib/multisig-service"
-import { openLink } from "~Platform/links"
+// import { openLink } from "~Platform/links"
 import { ActionButton, DialogActionsBox } from "~Generic/components/DialogActions"
 import { VerticalLayout } from "~Layout/components/Box"
 import Portal from "~Generic/components/Portal"
@@ -73,14 +73,14 @@ function TxConfirmationForm(props: Props) {
     }))
   }
 
-  const openInDigitalBitsExpert = React.useCallback(() => {
-    //TODO transaction explorer
-    openLink(
-      `https://stellar.expert/explorer/${
-        props.account.testnet ? "testnet" : "public"
-      }/tx/${props.transaction.hash().toString("hex")}`
-    )
-  }, [props.account.testnet, props.transaction])
+  // const openInDigitalBitsExpert = React.useCallback(() => {
+  //   //TODO transaction explorer
+  //   openLink(
+  //     `https://stellar.expert/explorer/${
+  //       props.account.testnet ? "testnet" : "public"
+  //     }/tx/${props.transaction.hash().toString("hex")}`
+  //   )
+  // }, [props.account.testnet, props.transaction])
 
   // const openInDigitalBitsExpert = React.useCallback(() => {
   //   openLink(
@@ -188,11 +188,11 @@ function TxConfirmationForm(props: Props) {
                 : t("account.transaction-review.action.confirm")}
             </ActionButton>
           )}
-          {props.disabled && !props.signatureRequest ? (
+          {/* {props.disabled && !props.signatureRequest ? (
             <ActionButton icon={<OpenInNewIcon />} onClick={openInDigitalBitsExpert} type="secondary">
               {t("account.transaction-review.action.inspect")}
             </ActionButton>
-          ) : null}
+          ) : null} */}
         </DialogActionsBox>
       </Portal>
       <DismissalConfirmationDialog

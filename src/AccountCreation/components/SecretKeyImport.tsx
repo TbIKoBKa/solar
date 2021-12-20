@@ -55,7 +55,9 @@ function SecretKeyImport(props: SecretKeyImportProps) {
         <ListItemText style={{ marginLeft: 12, marginRight: 56, marginTop: -8 }}>
           <TextField
             error={Boolean(props.error)}
-            helperText={props.error ? t("create-account.inputs.import.helper-text") : ""}
+            helperText={
+              props.error !== "Already added this account." ? t("create-account.inputs.import.helper-text") : ""
+            }
             label={props.error || t("create-account.inputs.import.label")}
             placeholder={t("create-account.inputs.import.placeholder")}
             fullWidth
