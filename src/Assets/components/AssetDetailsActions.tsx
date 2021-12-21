@@ -84,9 +84,9 @@ function AssetDetailsActions(props: Props) {
             <ActionButton icon={<ClearIcon />} onClick={removeThisAsset} type="secondary">
               {t("account.add-asset.action.remove")}
             </ActionButton>
-            <ActionButton icon={<SwapHorizIcon />} onClick={tradeThisAsset} type="primary">
+            {/* <ActionButton icon={<SwapHorizIcon />} onClick={tradeThisAsset} type="primary">
               {t("account.add-asset.action.trade")}
-            </ActionButton>
+            </ActionButton> */}
           </>
         ) : (
           <ActionButton loading={txCreationPending} onClick={addThisAsset} type="primary">
