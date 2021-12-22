@@ -10,6 +10,9 @@ import MainTitle from "~Generic/components/MainTitle"
 import { useIsMobile, useRouter } from "~Generic/hooks/userinterface"
 import { matchesRoute } from "~Generic/lib/routes"
 import { Section } from "~Layout/components/Page"
+import { SettingsContext } from "~App/contexts/settings"
+import { FormControlLabel, Switch } from "@material-ui/core"
+import { AccountsContext } from "~App/contexts/accounts"
 
 // tslint:disable-next-line
 const pkg = require("../../../package.json")
@@ -18,7 +21,10 @@ function SettingsPage() {
   const isSmallScreen = useIsMobile()
   const router = useRouter()
   const { t } = useTranslation()
+  const settings = React.useContext(SettingsContext)
+  const { accounts, networkSwitch, toggleNetwork } = React.useContext(AccountsContext)
 
+  const testnetAccounts = React.useMemo(() => accounts.filter(account => account.testnet), [accounts])
   const showSettingsOverview = matchesRoute(router.location.pathname, routes.settings(), true)
 
   const navigateToAllAccounts = React.useCallback(() => {
@@ -26,6 +32,14 @@ function SettingsPage() {
   }, [router.history])
 
   const navigateToSettingsOverview = React.useCallback(() => router.history.push(routes.settings()), [router.history])
+
+  const networkSwitchButton = (
+    <FormControlLabel
+      control={<Switch checked={networkSwitch === "testnet"} color="secondary" onChange={toggleNetwork} />}
+      label={t("app.all-accounts.switch.label")}
+      style={{ marginRight: 0 }}
+    />
+  )
 
   const headerCard = React.useMemo(
     () => (
@@ -37,17 +51,37 @@ function SettingsPage() {
           boxShadow: "none"
         }}
       >
-        <CardContent style={{ padding: isSmallScreen ? 8 : undefined, paddingBottom: 8 }}>
+        <CardContent
+          style={{
+            padding: isSmallScreen ? 8 : undefined,
+            paddingBottom: 8,
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
           <MainTitle
             onBack={showSettingsOverview ? navigateToAllAccounts : navigateToSettingsOverview}
             title={t("app-settings.settings.title")}
             titleColor="inherit"
             style={{ marginTop: -12, marginLeft: 0 }}
           />
+          {settings.showTestnet || networkSwitch === "testnet" || testnetAccounts.length > 0
+            ? networkSwitchButton
+            : null}
         </CardContent>
       </Card>
     ),
-    [isSmallScreen, navigateToAllAccounts, navigateToSettingsOverview, showSettingsOverview, t]
+    [
+      isSmallScreen,
+      navigateToAllAccounts,
+      navigateToSettingsOverview,
+      networkSwitch,
+      networkSwitchButton,
+      settings.showTestnet,
+      showSettingsOverview,
+      t,
+      testnetAccounts.length
+    ]
   )
 
   return (

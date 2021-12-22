@@ -64,7 +64,7 @@ function TxConfirmationForm(props: Props) {
     if (onClose) {
       onClose()
     }
-  }, [onClose,/* props.signatureRequest, */ settings])
+  }, [onClose])
 
   const setFormValue = <Key extends keyof FormValues>(key: keyof FormValues, value: FormValues[Key]) => {
     setFormValues(prevValues => ({
@@ -92,35 +92,34 @@ function TxConfirmationForm(props: Props) {
 
   const handleTextFieldChange = React.useCallback(event => setFormValue("password", event.target.value), [])
 
-  const handleFormSubmission = React.useCallback(
-    async (event: React.SyntheticEvent) => {
-      event.preventDefault()
+  const handleFormSubmission = async (event: React.SyntheticEvent) => {
+    console.log("submit")
+    event.preventDefault()
+    setLoading(true)
 
-      if (props.disabled) {
-        // Just a precaution; we shouldn't even get here if the component is disabled
-        return
-      }
+    if (props.disabled) {
+      // Just a precaution; we shouldn't even get here if the component is disabled
+      return
+    }
 
-      if (props.account.requiresPassword && !formValues.password) {
-        setLoading(false)
-        return setErrors({
-          ...errors,
-          password: new Error(t("account.transaction-review.validation.password-required"))
-        })
-      }
+    if (props.account.requiresPassword && !formValues.password) {
+      setLoading(false)
+      return setErrors({
+        ...errors,
+        password: new Error(t("account.transaction-review.validation.password-required"))
+      })
+    }
 
-      setErrors({})
-      try {
-        await onConfirm(formValues)
-      } catch (error) {
-        // re-throw error
-        throw error
-      } finally {
-        setLoading(false)
-      }
-    },
-    [props.disabled, props.account.requiresPassword, formValues, errors, t, onConfirm]
-  )
+    setErrors({})
+    try {
+      await onConfirm(formValues)
+    } catch (error) {
+      // re-throw error
+      throw error
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const DismissIcon = React.useMemo(() => <CloseIcon style={{ fontSize: "140%" }} />, [])
   const ConfirmIcon = React.useMemo(() => <CheckIcon />, [])
@@ -131,13 +130,13 @@ function TxConfirmationForm(props: Props) {
       (op.type === "manageSellOffer" && BigNumber(op.amount).eq(0))
   )
 
-  const showLoadingIndicator = React.useCallback(() => {
-    setTimeout(() => {
-      // wrap in timeout because setLoading(true) will cause the submit button to be disabled
-      // which prevents the form onSubmit() function from being called if handled synchronously
-      setLoading(true)
-    }, 0)
-  }, [])
+  // const showLoadingIndicator = React.useCallback(() => {
+  //   setTimeout(() => {
+  //     // wrap in timeout because setLoading(true) will cause the submit button to be disabled
+  //     // which prevents the form onSubmit() function from being called if handled synchronously
+  //     setLoading(true)
+  //   }, 0)
+  // }, [])
 
   return (
     <form id={formID} noValidate onSubmit={handleFormSubmission}>
@@ -176,13 +175,7 @@ function TxConfirmationForm(props: Props) {
             </ActionButton>
           ) : null} */}
           {props.disabled ? null : (
-            <ActionButton
-              icon={ConfirmIcon}
-              form={formID}
-              loading={props.loading || loading}
-              onClick={showLoadingIndicator}
-              type="submit"
-            >
+            <ActionButton icon={ConfirmIcon} form={formID} loading={props.loading || loading} type="submit">
               {isOrderCancellation
                 ? t("account.transaction-review.action.cancel-order")
                 : t("account.transaction-review.action.confirm")}

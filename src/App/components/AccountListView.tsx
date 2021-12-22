@@ -1,10 +1,10 @@
 import React from "react"
 import { useTranslation } from "react-i18next"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
+// import FormControlLabel from "@material-ui/core/FormControlLabel"
 import IconButton from "@material-ui/core/IconButton"
 import makeStyles from "@material-ui/core/styles/makeStyles"
 import SettingsIcon from "@material-ui/icons/Settings"
-import Switch from "@material-ui/core/Switch"
+// import Switch from "@material-ui/core/Switch"
 import Tooltip from "@material-ui/core/Tooltip"
 import useMediaQuery from "@material-ui/core/useMediaQuery"
 import UpdateIcon from "@material-ui/icons/SystemUpdateAlt"
@@ -35,11 +35,11 @@ const useStyles = makeStyles({
 })
 
 function AllAccountsPage() {
-  const { accounts, networkSwitch, toggleNetwork } = React.useContext(AccountsContext)
+  const { accounts, networkSwitch /* toggleNetwork */ } = React.useContext(AccountsContext)
   const router = useRouter()
   const settings = React.useContext(SettingsContext)
   const { showNotification } = React.useContext(NotificationsContext)
-  const testnetAccounts = React.useMemo(() => accounts.filter(account => account.testnet), [accounts])
+  // const testnetAccounts = React.useMemo(() => accounts.filter(account => account.testnet), [accounts])
   const [isUpdateInProgress, setUpdateInProgress] = React.useState(false)
   const { t } = useTranslation()
 
@@ -75,13 +75,13 @@ function AllAccountsPage() {
     </Tooltip>
   )
 
-  const networkSwitchButton = (
-    <FormControlLabel
-      control={<Switch checked={networkSwitch === "testnet"} color="secondary" onChange={toggleNetwork} />}
-      label={t("app.all-accounts.switch.label")}
-      style={{ marginRight: 0 }}
-    />
-  )
+  // const networkSwitchButton = (
+  //   <FormControlLabel
+  //     control={<Switch checked={networkSwitch === "testnet"} color="secondary" onChange={toggleNetwork} />}
+  //     label={t("app.all-accounts.switch.label")}
+  //     style={{ marginRight: 0 }}
+  //   />
+  // )
 
   const headerContent = React.useMemo(
     () => (
@@ -93,9 +93,9 @@ function AllAccountsPage() {
         onBack={() => undefined}
         actions={
           <Box style={{ marginLeft: "auto" }}>
-            {settings.showTestnet || networkSwitch === "testnet" || testnetAccounts.length > 0
+            {/* {settings.showTestnet || networkSwitch === "testnet" || testnetAccounts.length > 0
               ? networkSwitchButton
-              : null}
+              : null} */}
             {settings.updateAvailable &&
             !isUpdateInProgress &&
             !updater.isUpdateStarted() &&
@@ -113,17 +113,14 @@ function AllAccountsPage() {
       />
     ),
     [
-      isUpdateInProgress,
-      isWidthMax450,
       networkSwitch,
-      networkSwitchButton,
-      router.history,
-      settings.showTestnet,
+      t,
+      isWidthMax450,
       settings.updateAvailable,
-      testnetAccounts.length,
+      isUpdateInProgress,
       updater,
       updateButton,
-      t
+      router.history
     ]
   )
 

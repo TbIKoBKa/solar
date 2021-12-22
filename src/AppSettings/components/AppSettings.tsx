@@ -13,7 +13,6 @@ import {
   BiometricLockSetting,
   HideMemoSetting,
   LanguageSetting,
-  MultiSigSetting,
   TestnetSetting,
   TrustedServicesSetting
 } from "./Settings"

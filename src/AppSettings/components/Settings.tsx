@@ -172,6 +172,7 @@ interface TestnetSettingProps {
 export const TestnetSetting = React.memo(function TestnetSetting(props: TestnetSettingProps) {
   const classes = useSettingsStyles(props)
   const { t } = useTranslation()
+
   return (
     <AppSettingsItem
       actions={<SettingsToggle checked={props.value} disabled={props.hasTestnetAccount} onChange={props.onToggle} />}
